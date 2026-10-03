@@ -1,0 +1,11 @@
+"""Knowledge Graph Service Package."""
+
+from services.graph.prompts import (
+    CONCEPT_HIERARCHY_EXTRACTION_PROMPT,
+    PREREQUISITE_IDENTIFICATION_PROMPT,
+)
+
+__all__ = [
+    "CONCEPT_HIERARCHY_EXTRACTION_PROMPT",
+    "PREREQUISITE_IDENTIFICATION_PROMPT",
+]

@@ -1,0 +1,42 @@
+# ==========================================
+# KnowTrace Backend Dockerfile (Python 3.11)
+# ==========================================
+FROM python:3.11-slim as base
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    PIP_NO_CACHE_DIR=1
+
+# Install system dependencies: ffmpeg (video audio), libreoffice (slides conversion), poppler, curl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    ffmpeg \
+    libreoffice-writer \
+    libreoffice-impress \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install pinned Python dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Copy backend codebase, services, database models, and scripts
+COPY backend/ backend/
+COPY database/ database/
+COPY services/ services/
+COPY evaluation/ evaluation/
+COPY scripts/ scripts/
+COPY alembic.ini .
+
+# Create directory for uploads and logs
+RUN mkdir -p /app/uploads /app/logs && chmod -R 777 /app/uploads /app/logs
+
+EXPOSE 8000
+
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
