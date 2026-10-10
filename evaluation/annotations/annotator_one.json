@@ -1,0 +1,402 @@
+[
+  {
+    "id": "q001",
+    "category": "direct"
+  },
+  {
+    "id": "q002",
+    "category": "direct"
+  },
+  {
+    "id": "q003",
+    "category": "direct"
+  },
+  {
+    "id": "q004",
+    "category": "direct"
+  },
+  {
+    "id": "q005",
+    "category": "direct"
+  },
+  {
+    "id": "q006",
+    "category": "direct"
+  },
+  {
+    "id": "q007",
+    "category": "direct"
+  },
+  {
+    "id": "q008",
+    "category": "direct"
+  },
+  {
+    "id": "q009",
+    "category": "direct"
+  },
+  {
+    "id": "q010",
+    "category": "direct"
+  },
+  {
+    "id": "q011",
+    "category": "direct"
+  },
+  {
+    "id": "q012",
+    "category": "direct"
+  },
+  {
+    "id": "q013",
+    "category": "direct"
+  },
+  {
+    "id": "q014",
+    "category": "direct"
+  },
+  {
+    "id": "q015",
+    "category": "direct"
+  },
+  {
+    "id": "q016",
+    "category": "direct"
+  },
+  {
+    "id": "q017",
+    "category": "direct"
+  },
+  {
+    "id": "q018",
+    "category": "direct"
+  },
+  {
+    "id": "q019",
+    "category": "direct"
+  },
+  {
+    "id": "q020",
+    "category": "direct"
+  },
+  {
+    "id": "q021",
+    "category": "direct"
+  },
+  {
+    "id": "q022",
+    "category": "direct"
+  },
+  {
+    "id": "q023",
+    "category": "direct"
+  },
+  {
+    "id": "q024",
+    "category": "direct"
+  },
+  {
+    "id": "q025",
+    "category": "direct"
+  },
+  {
+    "id": "q026",
+    "category": "reasoning"
+  },
+  {
+    "id": "q027",
+    "category": "reasoning"
+  },
+  {
+    "id": "q028",
+    "category": "reasoning"
+  },
+  {
+    "id": "q029",
+    "category": "reasoning"
+  },
+  {
+    "id": "q030",
+    "category": "reasoning"
+  },
+  {
+    "id": "q031",
+    "category": "reasoning"
+  },
+  {
+    "id": "q032",
+    "category": "reasoning"
+  },
+  {
+    "id": "q033",
+    "category": "reasoning"
+  },
+  {
+    "id": "q034",
+    "category": "reasoning"
+  },
+  {
+    "id": "q035",
+    "category": "reasoning"
+  },
+  {
+    "id": "q036",
+    "category": "reasoning"
+  },
+  {
+    "id": "q037",
+    "category": "reasoning"
+  },
+  {
+    "id": "q038",
+    "category": "reasoning"
+  },
+  {
+    "id": "q039",
+    "category": "reasoning"
+  },
+  {
+    "id": "q040",
+    "category": "reasoning"
+  },
+  {
+    "id": "q041",
+    "category": "reasoning"
+  },
+  {
+    "id": "q042",
+    "category": "reasoning"
+  },
+  {
+    "id": "q043",
+    "category": "reasoning"
+  },
+  {
+    "id": "q044",
+    "category": "reasoning"
+  },
+  {
+    "id": "q045",
+    "category": "reasoning"
+  },
+  {
+    "id": "q046",
+    "category": "reasoning"
+  },
+  {
+    "id": "q047",
+    "category": "reasoning"
+  },
+  {
+    "id": "q048",
+    "category": "reasoning"
+  },
+  {
+    "id": "q049",
+    "category": "reasoning"
+  },
+  {
+    "id": "q050",
+    "category": "reasoning"
+  },
+  {
+    "id": "q051",
+    "category": "multimodal"
+  },
+  {
+    "id": "q052",
+    "category": "multimodal"
+  },
+  {
+    "id": "q053",
+    "category": "multimodal"
+  },
+  {
+    "id": "q054",
+    "category": "multimodal"
+  },
+  {
+    "id": "q055",
+    "category": "multimodal"
+  },
+  {
+    "id": "q056",
+    "category": "multimodal"
+  },
+  {
+    "id": "q057",
+    "category": "multimodal"
+  },
+  {
+    "id": "q058",
+    "category": "multimodal"
+  },
+  {
+    "id": "q059",
+    "category": "multimodal"
+  },
+  {
+    "id": "q060",
+    "category": "multimodal"
+  },
+  {
+    "id": "q061",
+    "category": "multimodal"
+  },
+  {
+    "id": "q062",
+    "category": "multimodal"
+  },
+  {
+    "id": "q063",
+    "category": "multimodal"
+  },
+  {
+    "id": "q064",
+    "category": "multimodal"
+  },
+  {
+    "id": "q065",
+    "category": "multimodal"
+  },
+  {
+    "id": "q066",
+    "category": "multimodal"
+  },
+  {
+    "id": "q067",
+    "category": "multimodal"
+  },
+  {
+    "id": "q068",
+    "category": "multimodal"
+  },
+  {
+    "id": "q069",
+    "category": "multimodal"
+  },
+  {
+    "id": "q070",
+    "category": "multimodal"
+  },
+  {
+    "id": "q071",
+    "category": "cross_source"
+  },
+  {
+    "id": "q072",
+    "category": "cross_source"
+  },
+  {
+    "id": "q073",
+    "category": "cross_source"
+  },
+  {
+    "id": "q074",
+    "category": "cross_source"
+  },
+  {
+    "id": "q075",
+    "category": "cross_source"
+  },
+  {
+    "id": "q076",
+    "category": "cross_source"
+  },
+  {
+    "id": "q077",
+    "category": "cross_source"
+  },
+  {
+    "id": "q078",
+    "category": "cross_source"
+  },
+  {
+    "id": "q079",
+    "category": "cross_source"
+  },
+  {
+    "id": "q080",
+    "category": "cross_source"
+  },
+  {
+    "id": "q081",
+    "category": "cross_source"
+  },
+  {
+    "id": "q082",
+    "category": "cross_source"
+  },
+  {
+    "id": "q083",
+    "category": "cross_source"
+  },
+  {
+    "id": "q084",
+    "category": "cross_source"
+  },
+  {
+    "id": "q085",
+    "category": "cross_source"
+  },
+  {
+    "id": "q086",
+    "category": "unsupported"
+  },
+  {
+    "id": "q087",
+    "category": "unsupported"
+  },
+  {
+    "id": "q088",
+    "category": "unsupported"
+  },
+  {
+    "id": "q089",
+    "category": "unsupported"
+  },
+  {
+    "id": "q090",
+    "category": "unsupported"
+  },
+  {
+    "id": "q091",
+    "category": "unsupported"
+  },
+  {
+    "id": "q092",
+    "category": "unsupported"
+  },
+  {
+    "id": "q093",
+    "category": "unsupported"
+  },
+  {
+    "id": "q094",
+    "category": "unsupported"
+  },
+  {
+    "id": "q095",
+    "category": "unsupported"
+  },
+  {
+    "id": "q096",
+    "category": "unsupported"
+  },
+  {
+    "id": "q097",
+    "category": "unsupported"
+  },
+  {
+    "id": "q098",
+    "category": "unsupported"
+  },
+  {
+    "id": "q099",
+    "category": "unsupported"
+  },
+  {
+    "id": "q100",
+    "category": "unsupported"
+  }
+]

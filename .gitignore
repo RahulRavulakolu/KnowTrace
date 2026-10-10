@@ -2,8 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
 
 # Distribution / packaging
@@ -20,32 +18,22 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # Virtual environments
 .env
 .venv
 env/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Environment variables
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # IDE & Editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+.kilo/
 
 # Node / Frontend
 node_modules/
@@ -63,10 +51,24 @@ htmlcov/
 *.db
 dump.rdb
 
-# KnowTrace artifacts & temp
-.temp/
-.pip_cache/
-scratch/
+# KnowTrace data, cache, artifacts
+data/
 uploads/
 processed/
 logs/
+.temp/
+.pip_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Scratch and generator scripts
+find_*.py
+scratch_*.py
+test_catalog_videos.py
+verify_*.py
+check_all_course_videos.py
+generate_mit_lectures.py
+export_mit_lectures.py
+mit_lectures_data.json

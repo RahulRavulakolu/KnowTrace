@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: pgvector/pgvector:pg16
@@ -13,7 +11,7 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ../database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d knowtrace"]
       interval: 5s
@@ -38,19 +36,17 @@ services:
     networks:
       - knowtrace-network
 
-  backend:
+  api:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.backend
-    container_name: knowtrace-backend
+      dockerfile: Dockerfile.backend
+    container_name: knowtrace-api
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
-    env_file:
-      - ../.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
       REDIS_URL: redis://redis:6379/0
@@ -60,14 +56,16 @@ services:
       - ../backend:/app/backend
       - ../database:/app/database
       - ../services:/app/services
+      - ../tests:/app/tests
       - ../uploads:/app/uploads
+      - ../data:/app/data
     networks:
       - knowtrace-network
 
   worker:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.backend
+      dockerfile: Dockerfile.backend
     container_name: knowtrace-worker
     restart: unless-stopped
     command: rq worker -u redis://redis:6379/0 default ingestion assessments
@@ -76,8 +74,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    env_file:
-      - ../.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
       REDIS_URL: redis://redis:6379/0
@@ -86,17 +82,18 @@ services:
       - ../database:/app/database
       - ../services:/app/services
       - ../uploads:/app/uploads
+      - ../data:/app/data
     networks:
       - knowtrace-network
 
   frontend:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile.frontend
+      context: ../frontend
+      dockerfile: ../docker/Dockerfile.frontend
     container_name: knowtrace-frontend
     restart: unless-stopped
     depends_on:
-      - backend
+      - api
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
     ports:

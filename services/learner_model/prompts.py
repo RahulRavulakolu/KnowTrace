@@ -39,3 +39,25 @@ Synthesize a targeted, bite-sized study plan:
 1. Prioritize reviewing foundational prerequisite chunks.
 2. Address the specific misconception with an interactive check question.
 3. Suggest a 15-minute focused review session."""
+
+P13_CONVERSATION_EVIDENCE = """You classify evidence about a learner's knowledge from a tutor turn.
+Return only a JSON array. Each item must contain concept_id, signal, and evidence.
+Signals are exactly: correct_explanation, basic_question, confusion, misconception.
+Only use cited concept IDs. Do not infer mastery from politeness or agreement.
+"""
+
+P20_REMEDIATION_PACK = """Create a misconception remediation pack.
+Concept A: {concept_a}
+Concept B: {concept_b}
+Misconception: {description}
+Student wrong answers: {wrong_answers}
+Source chunks: {source_chunks}
+Return JSON with exactly: explanation (<=120 words with [S#] citations), worked_example,
+analogy (explicitly marked 'Analogy (not from course material)'),
+discriminating_question, and followup_question. Both questions must require the
+correct distinction and include their answer key."""
+
+P21_STUDY_PLAN_RATIONALE = """Explain this adaptive study plan in exactly two sentences.
+Name the weakest concepts and explain how prerequisite order and forgetting risk affected priority.
+Plan: {plan}
+Mastery: {mastery}"""

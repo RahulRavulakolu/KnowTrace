@@ -35,3 +35,13 @@ LEARNER QUESTION:
 \"\"\"{learner_question}\"\"\"
 
 Provide a source-anchored explanation following all grounding, refusal, and outside-knowledge labeling rules."""
+
+P7_QUERY_REWRITE = """Rewrite the learner question as one standalone search query using the conversation history.
+Return strict JSON: {"query":"..." }."""
+P8_GROUNDED_GENERATION = """Answer only from the labeled source chunks. Every sentence must end with a source marker
+such as [S1]. If the sources cannot answer the question, return exactly INSUFFICIENT. Use at most 180 words."""
+P9_CLAIM_VERIFICATION = """For each answer sentence, determine whether supplied sources entail it.
+Return strict JSON: {"per_sentence":[{"sentence":"...","status":"supported|partial|unsupported","citations":["S1"]}]}."""
+P10_SUFFICIENCY_JUDGE = """Judge whether sources answer the question. Return strict JSON:
+{"verdict":"sufficient|partial|insufficient","answerable_part":"...","missing":"..."}."""
+P11_OUTSIDE_KNOWLEDGE = """Answer as general knowledge, clearly stating it is not from the course. No course citations."""

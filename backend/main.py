@@ -1,106 +1,123 @@
 """Main FastAPI Application Entrypoint for KnowTrace.
 
 Configures:
-- Request ID middleware for distributed tracing
-- CORS middleware
-- Application lifespan events
-- API route mounting under /api/v1
+- Request ID middleware for distributed tracing (X-Request-ID header on all responses)
+- CORS middleware (allowing all origins for dev)
+- Database schema initialization
+- Health check endpoints
+- Course API routes
 """
 
-import time
-import uuid
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Dict
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
-from backend.api.routes import router as api_router
+from backend.api.routes import router as system_router
+from backend.api.routers.courses import router as courses_router
+from backend.api.routers.concepts import router as concepts_router
+from backend.api.routers.chat import router as chat_router
+from backend.api.routers.learner import router as learner_router
+from backend.api.routers.questions import router as questions_router
+from backend.api.routers.assessments import router as assessments_router
+from backend.api.routers.misconceptions import router as misconceptions_router
+from backend.api.routers.graph import router as graph_router
+from backend.api.routers.discover import router as discover_router
+from backend.api.routers.sandbox import router as sandbox_router
+from backend.api.routers.certificates import router as certificates_router
 from backend.core.config import settings
-from backend.core.database import Base, engine
-from backend.core.logging import logger, set_request_id, setup_logging
+from backend.core.db import Base, engine
+from backend.core.logging import RequestIdMiddleware, logger, setup_logging
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Lifespan event handler for startup and shutdown procedures."""
     setup_logging()
-    logger.info("Initializing KnowTrace Application (Environment: %s)", settings.APP_ENV)
+    logger.info("Initializing %s (Env: %s, Version: %s)",
+                settings.APP_NAME, settings.APP_ENV, settings.VERSION)
 
-    # In local development or testing with sqlite, create tables if they do not exist
-    if "sqlite" in settings.DATABASE_URL or settings.APP_ENV == "development":
-        try:
-            Base.metadata.create_all(bind=engine)
-            logger.info("Database schemas verified / tables initialized.")
-        except Exception as exc:
-            logger.warning("Auto table initialization skipped or encountered notice: %s", exc)
+    # In local development or SQLite environments, initialize tables
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database schemas verified / tables initialized successfully.")
+    except Exception:
+        logger.exception("Database schema initialization failed.")
+        raise
 
     yield
 
-    logger.info("Shutting down KnowTrace Application...")
+    logger.info("Shutting down %s...", settings.APP_NAME)
 
 
 def create_app() -> FastAPI:
     """FastAPI application factory."""
     app = FastAPI(
         title=settings.APP_NAME,
-        version="0.1.0",
-        description="KnowTrace: Source-Anchored Adaptive Tutor Backend",
+        version=settings.VERSION,
+        description="KnowTrace: Source-Anchored Adaptive AI Tutor",
         docs_url="/docs",
         redoc_url="/redoc",
         lifespan=lifespan,
     )
 
-    # Configure CORS
+    # 1. Request ID Middleware (propagates X-Request-ID to all responses)
+    app.add_middleware(RequestIdMiddleware)
+
+    # 2. CORS Middleware
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.BACKEND_CORS_ORIGINS,
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    # Request ID and Access Logging Middleware
-    @app.middleware("http")
-    async def request_id_and_logging_middleware(request: Request, call_next) -> Response:
-        incoming_req_id = request.headers.get("X-Request-ID")
-        req_id = set_request_id(incoming_req_id or str(uuid.uuid4()))
+    # 3. Health Check endpoint
+    @app.get("/health", summary="Health check", tags=["System"])
+    def health_check() -> Dict[str, str]:
+        """Health check returning status and API version."""
+        return {
+            "status": "ok",
+            "version": settings.VERSION,
+        }
 
-        start_time = time.perf_counter()
-        logger.info("Started %s '%s'", request.method, request.url.path)
-
-        try:
-            response: Response = await call_next(request)
-            process_time_ms = (time.perf_counter() - start_time) * 1000
-            response.headers["X-Request-ID"] = req_id
-            logger.info("Completed %s '%s' status=%d duration=%.2fms",
-                        request.method, request.url.path, response.status_code, process_time_ms)
-            return response
-        except Exception as exc:
-            process_time_ms = (time.perf_counter() - start_time) * 1000
-            logger.error("Unhandled error processing %s '%s' duration=%.2fms: %s",
-                         request.method, request.url.path, process_time_ms, exc, exc_info=True)
-            return JSONResponse(
-                status_code=500,
-                content={
-                    "detail": "Internal Server Error",
-                    "request_id": req_id,
-                },
-                headers={"X-Request-ID": req_id},
-            )
-
-    # Mount API routers
-    app.include_router(api_router, prefix=settings.API_V1_STR)
-
-    @app.get("/", summary="Root index")
-    def root():
+    # 4. Root information
+    @app.get("/", summary="Root endpoint", tags=["System"])
+    def root() -> Dict[str, str]:
+        """Root endpoint returning system overview."""
         return {
             "app": settings.APP_NAME,
-            "version": "0.1.0",
+            "version": settings.VERSION,
+            "status": "online",
             "docs": "/docs",
-            "api_v1": settings.API_V1_STR,
         }
+
+    # 5. Include Course router at both /courses and /api/v1/courses
+    app.include_router(courses_router)
+    app.include_router(courses_router, prefix=settings.API_V1_STR)
+    app.include_router(concepts_router)
+    app.include_router(concepts_router, prefix=settings.API_V1_STR)
+    app.include_router(chat_router)
+    app.include_router(chat_router, prefix=settings.API_V1_STR)
+    app.include_router(learner_router)
+    app.include_router(learner_router, prefix=settings.API_V1_STR)
+    app.include_router(questions_router)
+    app.include_router(questions_router, prefix=settings.API_V1_STR)
+    app.include_router(assessments_router)
+    app.include_router(assessments_router, prefix=settings.API_V1_STR)
+    app.include_router(misconceptions_router)
+    app.include_router(misconceptions_router, prefix=settings.API_V1_STR)
+    app.include_router(graph_router)
+    app.include_router(graph_router, prefix=settings.API_V1_STR)
+    app.include_router(discover_router)
+    app.include_router(discover_router, prefix=settings.API_V1_STR)
+    app.include_router(sandbox_router)
+    app.include_router(sandbox_router, prefix=settings.API_V1_STR)
+    app.include_router(certificates_router)
+    app.include_router(certificates_router, prefix=settings.API_V1_STR)
+    app.include_router(system_router, prefix=settings.API_V1_STR)
 
     return app
 

@@ -1,0 +1,4 @@
+{
+  "status": "not_run",
+  "reason": "Run evaluation/run_ragas.py against a populated course and API."
+}

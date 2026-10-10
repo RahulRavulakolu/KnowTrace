@@ -1,26 +1,49 @@
 # KnowTrace Backend Dependencies (Pinned)
+# Core Framework
 fastapi==0.104.1
 uvicorn[standard]==0.24.0.post1
+python-multipart==0.0.6
+python-magic==0.4.27
+
+# Database & ORM
 sqlalchemy==2.0.23
-pydantic==2.5.0
-pydantic-settings==2.1.0
 psycopg[binary]==3.1.17
 pgvector==0.2.4
 alembic==1.13.0
-google-generativeai==0.3.5
+
+# Pydantic & Settings
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# LLM Providers
+google-generativeai==0.3.2
 groq==0.4.1
+
+# Resilience & Caching
 tenacity==8.2.3
+diskcache==5.6.3
+
+# Async Jobs
 redis==5.0.1
 rq==1.15.1
-python-multipart==0.0.6
 
-# Ingestion engines
+# Ingestion engines (Phase 2+)
 PyMuPDF==1.23.8
 python-pptx==0.6.21
-faster-whisper==0.10.0
+faster-whisper==1.1.1
 scenedetect==0.6.1
+networkx==3.2.1
 
 # Testing & Dev
 pytest==7.4.3
 pytest-asyncio==0.21.1
+pytest-cov==4.1.0
 httpx==0.25.2
+Pillow==10.1.0
+matplotlib==3.8.2
+ruff==0.1.15
+mypy==1.8.0
+
+# Evaluation (used by evaluation/run_ragas.py when --use-ragas is enabled)
+ragas==0.1.21
+datasets==2.16.1

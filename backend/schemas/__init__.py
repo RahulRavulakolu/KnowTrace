@@ -1,15 +1,9 @@
-"""KnowTrace Schemas Package."""
+"""KnowTrace Pydantic Schemas."""
 
-from backend.schemas.common import (
-    HealthResponse,
-    ProvenanceAnchorSchema,
-    ContentChunkBase,
-    LLMValidationResult,
-)
+from backend.schemas.course import CourseCreate, CourseCreateResponse, CourseResponse
 
 __all__ = [
-    "HealthResponse",
-    "ProvenanceAnchorSchema",
-    "ContentChunkBase",
-    "LLMValidationResult",
+    "CourseCreate",
+    "CourseCreateResponse",
+    "CourseResponse",
 ]

@@ -1,20 +1,35 @@
-# ==========================================
+# ============================================================
 # KnowTrace Backend Dockerfile (Python 3.11)
-# ==========================================
-FROM python:3.11-slim as base
+# ============================================================
+FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1
 
-# Install system dependencies: ffmpeg (video audio), libreoffice (slides conversion), poppler, curl
+# Install system dependencies:
+# - ffmpeg (video & audio extraction)
+# - libreoffice (PPTX/DOCX slide conversion)
+# - tesseract-ocr (OCR for figure & slide extraction)
+# - poppler-utils (PDF rendering & extraction)
+# - libgl1, libglib2.0-0 (OpenCV / PyMuPDF vision support)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
+    pkg-config \
     ffmpeg \
+    libavcodec-dev \
+    libavdevice-dev \
+    libavfilter-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libswresample-dev \
+    libswscale-dev \
     libreoffice-writer \
     libreoffice-impress \
+    tesseract-ocr \
+    poppler-utils \
     libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
@@ -26,16 +41,16 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Copy backend codebase, services, database models, and scripts
+# Copy codebase
 COPY backend/ backend/
 COPY database/ database/
-COPY services/ services/
-COPY evaluation/ evaluation/
 COPY scripts/ scripts/
+COPY tests/ tests/
+COPY pyproject.toml .
 COPY alembic.ini .
 
-# Create directory for uploads and logs
-RUN mkdir -p /app/uploads /app/logs && chmod -R 777 /app/uploads /app/logs
+# Create cache and upload directories
+RUN mkdir -p /app/uploads /app/logs /app/data/cache && chmod -R 777 /app/uploads /app/logs /app/data
 
 EXPOSE 8000
 

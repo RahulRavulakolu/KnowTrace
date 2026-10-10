@@ -32,63 +32,66 @@ def test_provenance_spine_content_chunk(db_session: Session):
 
     source = Source(
         course_id=course.id,
-        title="Algorithms Textbook",
-        source_type="pdf",
-        file_path="uploads/algo.pdf",
+        filename="algo.pdf",
+        type="pdf",
+        uri="uploads/algo.pdf",
     )
     db_session.add(source)
     db_session.flush()
 
     # 2. Text Chunk with PDF Page and BBox
     pdf_chunk = ContentChunk(
+        course_id=course.id,
         source_id=source.id,
-        chunk_type="figure",
-        content="Binary Search Tree balance rotation figure.",
-        page_number=42,
-        slide_number=None,
+        modality="figure",
+        text="Binary Search Tree balance rotation figure.",
+        page=42,
+        slide=None,
         ts_start=None,
         ts_end=None,
-        bbox={"x0": 10.0, "y0": 20.0, "x1": 200.0, "y1": 150.0},
+        bbox=[10.0, 20.0, 200.0, 150.0],
     )
     db_session.add(pdf_chunk)
 
     # 3. Video Transcript Chunk with ts_start and ts_end
     video_source = Source(
         course_id=course.id,
-        title="Lecture 4 Video",
-        source_type="video",
-        file_path="uploads/lec4.mp4",
+        filename="lec4.mp4",
+        type="video",
+        uri="uploads/lec4.mp4",
     )
     db_session.add(video_source)
     db_session.flush()
 
     video_chunk = ContentChunk(
+        course_id=course.id,
         source_id=video_source.id,
-        chunk_type="transcript",
-        content="Now let's examine AVL tree rotations in detail.",
-        page_number=None,
-        slide_number=None,
+        modality="transcript",
+        text="Now let's examine AVL tree rotations in detail.",
+        page=None,
+        slide=None,
         ts_start=124.5,
         ts_end=158.0,
     )
     db_session.add(video_chunk)
 
-    # 4. Slide Chunk with slide_number
+    # 4. Slide Chunk with slide number
     slides_source = Source(
         course_id=course.id,
-        title="Deck 5 Slides",
-        source_type="slides",
-        file_path="uploads/deck5.pptx",
+        filename="deck5.pptx",
+        type="slides",
+        uri="uploads/deck5.pptx",
     )
     db_session.add(slides_source)
     db_session.flush()
 
     slide_chunk = ContentChunk(
+        course_id=course.id,
         source_id=slides_source.id,
-        chunk_type="slide_text",
-        content="Worst-case time complexity of BST operations.",
-        page_number=None,
-        slide_number=7,
+        modality="slide_text",
+        text="Worst-case time complexity of BST operations.",
+        page=None,
+        slide=7,
         ts_start=None,
         ts_end=None,
     )
@@ -98,8 +101,8 @@ def test_provenance_spine_content_chunk(db_session: Session):
     # Query and verify provenance spine fields
     queried_pdf = db_session.query(ContentChunk).filter_by(id=pdf_chunk.id).first()
     assert queried_pdf is not None
-    assert queried_pdf.page_number == 42
-    assert queried_pdf.bbox["x0"] == 10.0
+    assert queried_pdf.page == 42
+    assert queried_pdf.bbox[0] == 10.0
 
     queried_vid = db_session.query(ContentChunk).filter_by(id=video_chunk.id).first()
     assert queried_vid is not None
@@ -108,7 +111,7 @@ def test_provenance_spine_content_chunk(db_session: Session):
 
     queried_slide = db_session.query(ContentChunk).filter_by(id=slide_chunk.id).first()
     assert queried_slide is not None
-    assert queried_slide.slide_number == 7
+    assert queried_slide.slide == 7
 
 
 def test_question_status_pipeline(db_session: Session):
@@ -117,7 +120,7 @@ def test_question_status_pipeline(db_session: Session):
     db_session.add(course)
     db_session.flush()
 
-    topic = Topic(course_id=course.id, title="Kinematics")
+    topic = Topic(course_id=course.id, name="Kinematics")
     db_session.add(topic)
     db_session.flush()
 
@@ -167,8 +170,8 @@ def test_chat_turn_refusal_and_outside_knowledge_flags(db_session: Session):
         session_id=str(uuid.uuid4()),
         role="assistant",
         content="Not found in your course material. No chapters discuss quantum electrodynamics.",
-        refusal_triggered=True,
-        outside_knowledge_used=False,
+        refusal=True,
+        outside_knowledge=False,
     )
     # Turn with outside knowledge
     outside_turn = ChatTurn(
@@ -177,14 +180,14 @@ def test_chat_turn_refusal_and_outside_knowledge_flags(db_session: Session):
         session_id=str(uuid.uuid4()),
         role="assistant",
         content="[OUTSIDE KNOWLEDGE] In general chemistry literature, Avogadro's constant is defined as...",
-        refusal_triggered=False,
-        outside_knowledge_used=True,
+        refusal=False,
+        outside_knowledge=True,
     )
     db_session.add_all([refused_turn, outside_turn])
     db_session.commit()
 
-    assert refused_turn.refusal_triggered is True
-    assert outside_turn.outside_knowledge_used is True
+    assert refused_turn.refusal is True
+    assert outside_turn.outside_knowledge is True
 
 
 def test_all_15_entities_integration(db_session: Session):
@@ -197,32 +200,32 @@ def test_all_15_entities_integration(db_session: Session):
     db_session.flush()
 
     # 3. Source
-    source = Source(course_id=course.id, title="Cell Bio PDF", source_type="pdf", file_path="cell.pdf")
+    source = Source(course_id=course.id, filename="cell.pdf", type="pdf", uri="cell.pdf")
     db_session.add(source)
     db_session.flush()
 
     # 4. Topic
-    topic = Topic(course_id=course.id, title="Cell Division")
+    topic = Topic(course_id=course.id, name="Cell Division")
     db_session.add(topic)
     db_session.flush()
 
     # 5. Concepts
-    c1 = Concept(topic_id=topic.id, name="Mitosis", difficulty=0.4)
-    c2 = Concept(topic_id=topic.id, name="Cytokinesis", difficulty=0.5)
+    c1 = Concept(topic_id=topic.id, name="Mitosis", importance=0.4)
+    c2 = Concept(topic_id=topic.id, name="Cytokinesis", importance=0.5)
     db_session.add_all([c1, c2])
     db_session.flush()
 
     # 6. ContentChunk
-    chunk = ContentChunk(source_id=source.id, chunk_type="text", content="Mitosis divides chromosomes.", page_number=5)
+    chunk = ContentChunk(course_id=course.id, source_id=source.id, modality="text", text="Mitosis divides chromosomes.", page=5)
     db_session.add(chunk)
     db_session.flush()
 
     # 7. ChunkConcept
-    chunk_concept = ChunkConcept(chunk_id=chunk.id, concept_id=c1.id, relevance_score=0.95)
+    chunk_concept = ChunkConcept(chunk_id=chunk.id, concept_id=c1.id, relevance=0.95)
     db_session.add(chunk_concept)
 
     # 8. Prerequisite
-    prereq = Prerequisite(concept_id=c2.id, prerequisite_concept_id=c1.id, relationship_type="strict")
+    prereq = Prerequisite(concept_id=c2.id, prerequisite_id=c1.id, kind="strict")
     db_session.add(prereq)
 
     # 9. Question

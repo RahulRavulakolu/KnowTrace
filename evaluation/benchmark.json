@@ -1,0 +1,1632 @@
+[
+  {
+    "id": "q001",
+    "category": "direct",
+    "question": "[direct 1] According to the course material, what is the documented finding 1?",
+    "reference_answer": "The course material documents finding 1 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 2,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q002",
+    "category": "direct",
+    "question": "[direct 2] According to the course material, what is the documented finding 2?",
+    "reference_answer": "The course material documents finding 2 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 3,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q003",
+    "category": "direct",
+    "question": "[direct 3] According to the course material, what is the documented finding 3?",
+    "reference_answer": "The course material documents finding 3 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 4,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q004",
+    "category": "direct",
+    "question": "[direct 4] According to the course material, what is the documented finding 4?",
+    "reference_answer": "The course material documents finding 4 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 5,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q005",
+    "category": "direct",
+    "question": "[direct 5] According to the course material, what is the documented finding 5?",
+    "reference_answer": "The course material documents finding 5 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 6,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q006",
+    "category": "direct",
+    "question": "[direct 6] According to the course material, what is the documented finding 6?",
+    "reference_answer": "The course material documents finding 6 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 7,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q007",
+    "category": "direct",
+    "question": "[direct 7] According to the course material, what is the documented finding 7?",
+    "reference_answer": "The course material documents finding 7 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 8,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q008",
+    "category": "direct",
+    "question": "[direct 8] According to the course material, what is the documented finding 8?",
+    "reference_answer": "The course material documents finding 8 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 9,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q009",
+    "category": "direct",
+    "question": "[direct 9] According to the course material, what is the documented finding 9?",
+    "reference_answer": "The course material documents finding 9 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 10,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q010",
+    "category": "direct",
+    "question": "[direct 10] According to the course material, what is the documented finding 10?",
+    "reference_answer": "The course material documents finding 10 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 11,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q011",
+    "category": "direct",
+    "question": "[direct 11] According to the course material, what is the documented finding 11?",
+    "reference_answer": "The course material documents finding 11 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 12,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q012",
+    "category": "direct",
+    "question": "[direct 12] According to the course material, what is the documented finding 12?",
+    "reference_answer": "The course material documents finding 12 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 13,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q013",
+    "category": "direct",
+    "question": "[direct 13] According to the course material, what is the documented finding 13?",
+    "reference_answer": "The course material documents finding 13 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 14,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q014",
+    "category": "direct",
+    "question": "[direct 14] According to the course material, what is the documented finding 14?",
+    "reference_answer": "The course material documents finding 14 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 15,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q015",
+    "category": "direct",
+    "question": "[direct 15] According to the course material, what is the documented finding 15?",
+    "reference_answer": "The course material documents finding 15 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 16,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q016",
+    "category": "direct",
+    "question": "[direct 16] According to the course material, what is the documented finding 16?",
+    "reference_answer": "The course material documents finding 16 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 17,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q017",
+    "category": "direct",
+    "question": "[direct 17] According to the course material, what is the documented finding 17?",
+    "reference_answer": "The course material documents finding 17 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 18,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q018",
+    "category": "direct",
+    "question": "[direct 18] According to the course material, what is the documented finding 18?",
+    "reference_answer": "The course material documents finding 18 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 19,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q019",
+    "category": "direct",
+    "question": "[direct 19] According to the course material, what is the documented finding 19?",
+    "reference_answer": "The course material documents finding 19 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 20,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q020",
+    "category": "direct",
+    "question": "[direct 20] According to the course material, what is the documented finding 20?",
+    "reference_answer": "The course material documents finding 20 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 21,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q021",
+    "category": "direct",
+    "question": "[direct 21] According to the course material, what is the documented finding 21?",
+    "reference_answer": "The course material documents finding 21 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 22,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q022",
+    "category": "direct",
+    "question": "[direct 22] According to the course material, what is the documented finding 22?",
+    "reference_answer": "The course material documents finding 22 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 23,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q023",
+    "category": "direct",
+    "question": "[direct 23] According to the course material, what is the documented finding 23?",
+    "reference_answer": "The course material documents finding 23 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 24,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q024",
+    "category": "direct",
+    "question": "[direct 24] According to the course material, what is the documented finding 24?",
+    "reference_answer": "The course material documents finding 24 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 25,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q025",
+    "category": "direct",
+    "question": "[direct 25] According to the course material, what is the documented finding 25?",
+    "reference_answer": "The course material documents finding 25 for the direct benchmark case.",
+    "gold_locations": [
+      {
+        "page": 26,
+        "source": "textbook.pdf"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "direct",
+    "annotator_two": "direct"
+  },
+  {
+    "id": "q026",
+    "category": "reasoning",
+    "question": "[reasoning 1] According to the course material, what is the documented finding 1?",
+    "reference_answer": "The course material documents finding 1 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 27,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 27,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q027",
+    "category": "reasoning",
+    "question": "[reasoning 2] According to the course material, what is the documented finding 2?",
+    "reference_answer": "The course material documents finding 2 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 28,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 28,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q028",
+    "category": "reasoning",
+    "question": "[reasoning 3] According to the course material, what is the documented finding 3?",
+    "reference_answer": "The course material documents finding 3 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 29,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 29,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q029",
+    "category": "reasoning",
+    "question": "[reasoning 4] According to the course material, what is the documented finding 4?",
+    "reference_answer": "The course material documents finding 4 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 30,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 30,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q030",
+    "category": "reasoning",
+    "question": "[reasoning 5] According to the course material, what is the documented finding 5?",
+    "reference_answer": "The course material documents finding 5 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 31,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 1,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q031",
+    "category": "reasoning",
+    "question": "[reasoning 6] According to the course material, what is the documented finding 6?",
+    "reference_answer": "The course material documents finding 6 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 32,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 2,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q032",
+    "category": "reasoning",
+    "question": "[reasoning 7] According to the course material, what is the documented finding 7?",
+    "reference_answer": "The course material documents finding 7 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 33,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 3,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q033",
+    "category": "reasoning",
+    "question": "[reasoning 8] According to the course material, what is the documented finding 8?",
+    "reference_answer": "The course material documents finding 8 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 34,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 4,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q034",
+    "category": "reasoning",
+    "question": "[reasoning 9] According to the course material, what is the documented finding 9?",
+    "reference_answer": "The course material documents finding 9 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 35,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 5,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q035",
+    "category": "reasoning",
+    "question": "[reasoning 10] According to the course material, what is the documented finding 10?",
+    "reference_answer": "The course material documents finding 10 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 36,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 6,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q036",
+    "category": "reasoning",
+    "question": "[reasoning 11] According to the course material, what is the documented finding 11?",
+    "reference_answer": "The course material documents finding 11 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 37,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 7,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q037",
+    "category": "reasoning",
+    "question": "[reasoning 12] According to the course material, what is the documented finding 12?",
+    "reference_answer": "The course material documents finding 12 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 38,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 8,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q038",
+    "category": "reasoning",
+    "question": "[reasoning 13] According to the course material, what is the documented finding 13?",
+    "reference_answer": "The course material documents finding 13 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 39,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 9,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q039",
+    "category": "reasoning",
+    "question": "[reasoning 14] According to the course material, what is the documented finding 14?",
+    "reference_answer": "The course material documents finding 14 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 40,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 10,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q040",
+    "category": "reasoning",
+    "question": "[reasoning 15] According to the course material, what is the documented finding 15?",
+    "reference_answer": "The course material documents finding 15 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 41,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 11,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q041",
+    "category": "reasoning",
+    "question": "[reasoning 16] According to the course material, what is the documented finding 16?",
+    "reference_answer": "The course material documents finding 16 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 42,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 12,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q042",
+    "category": "reasoning",
+    "question": "[reasoning 17] According to the course material, what is the documented finding 17?",
+    "reference_answer": "The course material documents finding 17 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 43,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 13,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q043",
+    "category": "reasoning",
+    "question": "[reasoning 18] According to the course material, what is the documented finding 18?",
+    "reference_answer": "The course material documents finding 18 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 44,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 14,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q044",
+    "category": "reasoning",
+    "question": "[reasoning 19] According to the course material, what is the documented finding 19?",
+    "reference_answer": "The course material documents finding 19 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 45,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 15,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q045",
+    "category": "reasoning",
+    "question": "[reasoning 20] According to the course material, what is the documented finding 20?",
+    "reference_answer": "The course material documents finding 20 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 46,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 16,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q046",
+    "category": "reasoning",
+    "question": "[reasoning 21] According to the course material, what is the documented finding 21?",
+    "reference_answer": "The course material documents finding 21 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 47,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 17,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q047",
+    "category": "reasoning",
+    "question": "[reasoning 22] According to the course material, what is the documented finding 22?",
+    "reference_answer": "The course material documents finding 22 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 48,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 18,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q048",
+    "category": "reasoning",
+    "question": "[reasoning 23] According to the course material, what is the documented finding 23?",
+    "reference_answer": "The course material documents finding 23 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 49,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 19,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q049",
+    "category": "reasoning",
+    "question": "[reasoning 24] According to the course material, what is the documented finding 24?",
+    "reference_answer": "The course material documents finding 24 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 50,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 20,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q050",
+    "category": "reasoning",
+    "question": "[reasoning 25] According to the course material, what is the documented finding 25?",
+    "reference_answer": "The course material documents finding 25 for the reasoning benchmark case.",
+    "gold_locations": [
+      {
+        "page": 1,
+        "source": "textbook.pdf"
+      },
+      {
+        "slide": 21,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "reasoning",
+    "annotator_two": "reasoning"
+  },
+  {
+    "id": "q051",
+    "category": "multimodal",
+    "question": "[multimodal 1] According to the course material, what is the documented finding 1?",
+    "reference_answer": "The course material documents finding 1 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 22,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q052",
+    "category": "multimodal",
+    "question": "[multimodal 2] According to the course material, what is the documented finding 2?",
+    "reference_answer": "The course material documents finding 2 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 23,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q053",
+    "category": "multimodal",
+    "question": "[multimodal 3] According to the course material, what is the documented finding 3?",
+    "reference_answer": "The course material documents finding 3 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 24,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q054",
+    "category": "multimodal",
+    "question": "[multimodal 4] According to the course material, what is the documented finding 4?",
+    "reference_answer": "The course material documents finding 4 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 25,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q055",
+    "category": "multimodal",
+    "question": "[multimodal 5] According to the course material, what is the documented finding 5?",
+    "reference_answer": "The course material documents finding 5 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 26,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q056",
+    "category": "multimodal",
+    "question": "[multimodal 6] According to the course material, what is the documented finding 6?",
+    "reference_answer": "The course material documents finding 6 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 27,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q057",
+    "category": "multimodal",
+    "question": "[multimodal 7] According to the course material, what is the documented finding 7?",
+    "reference_answer": "The course material documents finding 7 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 28,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q058",
+    "category": "multimodal",
+    "question": "[multimodal 8] According to the course material, what is the documented finding 8?",
+    "reference_answer": "The course material documents finding 8 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 29,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q059",
+    "category": "multimodal",
+    "question": "[multimodal 9] According to the course material, what is the documented finding 9?",
+    "reference_answer": "The course material documents finding 9 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 30,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q060",
+    "category": "multimodal",
+    "question": "[multimodal 10] According to the course material, what is the documented finding 10?",
+    "reference_answer": "The course material documents finding 10 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 1,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q061",
+    "category": "multimodal",
+    "question": "[multimodal 11] According to the course material, what is the documented finding 11?",
+    "reference_answer": "The course material documents finding 11 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 2,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q062",
+    "category": "multimodal",
+    "question": "[multimodal 12] According to the course material, what is the documented finding 12?",
+    "reference_answer": "The course material documents finding 12 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 3,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q063",
+    "category": "multimodal",
+    "question": "[multimodal 13] According to the course material, what is the documented finding 13?",
+    "reference_answer": "The course material documents finding 13 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 4,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q064",
+    "category": "multimodal",
+    "question": "[multimodal 14] According to the course material, what is the documented finding 14?",
+    "reference_answer": "The course material documents finding 14 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 5,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q065",
+    "category": "multimodal",
+    "question": "[multimodal 15] According to the course material, what is the documented finding 15?",
+    "reference_answer": "The course material documents finding 15 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 6,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q066",
+    "category": "multimodal",
+    "question": "[multimodal 16] According to the course material, what is the documented finding 16?",
+    "reference_answer": "The course material documents finding 16 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 7,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q067",
+    "category": "multimodal",
+    "question": "[multimodal 17] According to the course material, what is the documented finding 17?",
+    "reference_answer": "The course material documents finding 17 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 8,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q068",
+    "category": "multimodal",
+    "question": "[multimodal 18] According to the course material, what is the documented finding 18?",
+    "reference_answer": "The course material documents finding 18 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 9,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q069",
+    "category": "multimodal",
+    "question": "[multimodal 19] According to the course material, what is the documented finding 19?",
+    "reference_answer": "The course material documents finding 19 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 10,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q070",
+    "category": "multimodal",
+    "question": "[multimodal 20] According to the course material, what is the documented finding 20?",
+    "reference_answer": "The course material documents finding 20 for the multimodal benchmark case.",
+    "gold_locations": [
+      {
+        "slide": 11,
+        "source": "lecture_slides.pptx"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "multimodal",
+    "annotator_two": "multimodal"
+  },
+  {
+    "id": "q071",
+    "category": "cross_source",
+    "question": "[cross_source 1] According to the course material, what is the documented finding 1?",
+    "reference_answer": "The course material documents finding 1 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 22,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q072",
+    "category": "cross_source",
+    "question": "[cross_source 2] According to the course material, what is the documented finding 2?",
+    "reference_answer": "The course material documents finding 2 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 23,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q073",
+    "category": "cross_source",
+    "question": "[cross_source 3] According to the course material, what is the documented finding 3?",
+    "reference_answer": "The course material documents finding 3 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 24,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q074",
+    "category": "cross_source",
+    "question": "[cross_source 4] According to the course material, what is the documented finding 4?",
+    "reference_answer": "The course material documents finding 4 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 25,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q075",
+    "category": "cross_source",
+    "question": "[cross_source 5] According to the course material, what is the documented finding 5?",
+    "reference_answer": "The course material documents finding 5 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 26,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q076",
+    "category": "cross_source",
+    "question": "[cross_source 6] According to the course material, what is the documented finding 6?",
+    "reference_answer": "The course material documents finding 6 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 27,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q077",
+    "category": "cross_source",
+    "question": "[cross_source 7] According to the course material, what is the documented finding 7?",
+    "reference_answer": "The course material documents finding 7 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 28,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q078",
+    "category": "cross_source",
+    "question": "[cross_source 8] According to the course material, what is the documented finding 8?",
+    "reference_answer": "The course material documents finding 8 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 29,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q079",
+    "category": "cross_source",
+    "question": "[cross_source 9] According to the course material, what is the documented finding 9?",
+    "reference_answer": "The course material documents finding 9 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 30,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q080",
+    "category": "cross_source",
+    "question": "[cross_source 10] According to the course material, what is the documented finding 10?",
+    "reference_answer": "The course material documents finding 10 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 31,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q081",
+    "category": "cross_source",
+    "question": "[cross_source 11] According to the course material, what is the documented finding 11?",
+    "reference_answer": "The course material documents finding 11 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 32,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q082",
+    "category": "cross_source",
+    "question": "[cross_source 12] According to the course material, what is the documented finding 12?",
+    "reference_answer": "The course material documents finding 12 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 33,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q083",
+    "category": "cross_source",
+    "question": "[cross_source 13] According to the course material, what is the documented finding 13?",
+    "reference_answer": "The course material documents finding 13 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 34,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q084",
+    "category": "cross_source",
+    "question": "[cross_source 14] According to the course material, what is the documented finding 14?",
+    "reference_answer": "The course material documents finding 14 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 35,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q085",
+    "category": "cross_source",
+    "question": "[cross_source 15] According to the course material, what is the documented finding 15?",
+    "reference_answer": "The course material documents finding 15 for the cross_source benchmark case.",
+    "gold_locations": [
+      {
+        "page": 36,
+        "source": "textbook.pdf"
+      },
+      {
+        "ts": [
+          345,
+          368
+        ],
+        "source": "lecture.mp4"
+      }
+    ],
+    "answerable": true,
+    "annotator_one": "cross_source",
+    "annotator_two": "cross_source"
+  },
+  {
+    "id": "q086",
+    "category": "unsupported",
+    "question": "[unsupported 1] What does the course material say about an unrelated topic 1?",
+    "reference_answer": "The course material does not cover unrelated topic 1.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q087",
+    "category": "unsupported",
+    "question": "[unsupported 2] What does the course material say about an unrelated topic 2?",
+    "reference_answer": "The course material does not cover unrelated topic 2.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q088",
+    "category": "unsupported",
+    "question": "[unsupported 3] What does the course material say about an unrelated topic 3?",
+    "reference_answer": "The course material does not cover unrelated topic 3.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q089",
+    "category": "unsupported",
+    "question": "[unsupported 4] What does the course material say about an unrelated topic 4?",
+    "reference_answer": "The course material does not cover unrelated topic 4.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q090",
+    "category": "unsupported",
+    "question": "[unsupported 5] What does the course material say about an unrelated topic 5?",
+    "reference_answer": "The course material does not cover unrelated topic 5.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q091",
+    "category": "unsupported",
+    "question": "[unsupported 6] What does the course material say about an unrelated topic 6?",
+    "reference_answer": "The course material does not cover unrelated topic 6.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q092",
+    "category": "unsupported",
+    "question": "[unsupported 7] What does the course material say about an unrelated topic 7?",
+    "reference_answer": "The course material does not cover unrelated topic 7.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q093",
+    "category": "unsupported",
+    "question": "[unsupported 8] What does the course material say about an unrelated topic 8?",
+    "reference_answer": "The course material does not cover unrelated topic 8.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q094",
+    "category": "unsupported",
+    "question": "[unsupported 9] What does the course material say about an unrelated topic 9?",
+    "reference_answer": "The course material does not cover unrelated topic 9.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q095",
+    "category": "unsupported",
+    "question": "[unsupported 10] What does the course material say about an unrelated topic 10?",
+    "reference_answer": "The course material does not cover unrelated topic 10.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q096",
+    "category": "unsupported",
+    "question": "[unsupported 11] What does the course material say about an unrelated topic 11?",
+    "reference_answer": "The course material does not cover unrelated topic 11.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q097",
+    "category": "unsupported",
+    "question": "[unsupported 12] What does the course material say about an unrelated topic 12?",
+    "reference_answer": "The course material does not cover unrelated topic 12.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q098",
+    "category": "unsupported",
+    "question": "[unsupported 13] What does the course material say about an unrelated topic 13?",
+    "reference_answer": "The course material does not cover unrelated topic 13.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q099",
+    "category": "unsupported",
+    "question": "[unsupported 14] What does the course material say about an unrelated topic 14?",
+    "reference_answer": "The course material does not cover unrelated topic 14.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  },
+  {
+    "id": "q100",
+    "category": "unsupported",
+    "question": "[unsupported 15] What does the course material say about an unrelated topic 15?",
+    "reference_answer": "The course material does not cover unrelated topic 15.",
+    "gold_locations": [],
+    "answerable": false,
+    "annotator_one": "unsupported",
+    "annotator_two": "unsupported"
+  }
+]

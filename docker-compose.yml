@@ -1,0 +1,114 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: knowtrace-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-knowtrace}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d knowtrace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - knowtrace-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: knowtrace-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - knowtrace-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: knowtrace-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./database:/app/database
+      - ./services:/app/services
+      - ./tests:/app/tests
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+    networks:
+      - knowtrace-network
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: knowtrace-worker
+    restart: unless-stopped
+    command: rq worker -u redis://redis:6379/0 default ingestion assessments
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./backend:/app/backend
+      - ./database:/app/database
+      - ./services:/app/services
+      - ./uploads:/app/uploads
+      - ./data:/app/data
+    networks:
+      - knowtrace-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: knowtrace-frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - knowtrace-network
+
+networks:
+  knowtrace-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:

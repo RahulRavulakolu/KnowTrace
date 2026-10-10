@@ -7,22 +7,25 @@ import sys
 os.environ["APP_ENV"] = "test"
 os.environ["DEBUG"] = "false"
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-os.environ["ASYNC_DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["GEMINI_API_KEY"] = "mock-gemini-test-key"
 os.environ["GROQ_API_KEY"] = "mock-groq-test-key"
 os.environ["REDIS_URL"] = ""
+os.environ["LLM_CACHE_DIR"] = "data/test_cache"
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 # Ensure root directory is accessible for imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.core.database import Base, get_db
+from backend.core.db import Base, get_db
+# Import all models to register them on Base.metadata
+import backend.models.db  # noqa: F401
 from backend.main import create_app
+from backend.utils.cache import cache_clear
 
 # SQLite in-memory test engine
 test_engine = create_engine(
@@ -44,6 +47,14 @@ def setup_test_database():
     Base.metadata.create_all(bind=test_engine)
     yield
     Base.metadata.drop_all(bind=test_engine)
+
+
+@pytest.fixture(autouse=True)
+def clear_cache_fixture():
+    """Clear LLM cache before each test."""
+    cache_clear()
+    yield
+    cache_clear()
 
 
 @pytest.fixture

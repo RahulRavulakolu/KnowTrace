@@ -49,3 +49,31 @@ DECISION CRITERIA:
 - If ANY criterion fails or has factual inaccuracy: status = "rejected"
 
 Return your review adhering strictly to the LLMValidationResult JSON schema."""
+
+P14_QUESTION_GENERATION = """Generate one source-grounded assessment question.
+Return JSON with type, stem, options, answer, explanation, support_span,
+source_chunk_id, numerical_python, difficulty_estimate, and marking_rubric.
+support_span must be a verbatim substring of the source and no more than 40 words.
+For mcq, return exactly four options, exactly one marked correct, and tag every
+distractor with a known misconception. Numerical questions must include executable
+stdlib-only Python code that computes the answer."""
+
+P15_BLIND_SOLVER = """Solve this assessment question independently. You have not
+seen the answer key. Return JSON with answer and reasoning. Do not guess from
+any proposed answer field."""
+
+P16_AMBIGUITY_JUDGE = """Judge whether this question has exactly one defensible
+answer. Return JSON {ambiguous: boolean, multiple_correct: boolean, reason: string}."""
+
+P17_TOPIC_RECLASSIFIER = """Classify this question against the supplied concept.
+Return JSON {concept_id: string, confidence: number, reason: string}. Use confidence
+above 0.7 only when the question clearly belongs to another concept."""
+
+P18_SHORT_ANSWER_GRADER = """Grade a short answer against the question rubric and
+source-grounded answer. Return JSON {correct: boolean, score: number, feedback:
+string, misconception_id: string|null}."""
+
+P19_REPORT_GENERATION = """Generate a concise post-assessment learning report.
+Return JSON with summary, misconceptions, root_cause, and actions. Actions must
+reference available source citations when possible. Prefer weak prerequisites as
+the root cause when the attempt and mastery evidence support that conclusion."""

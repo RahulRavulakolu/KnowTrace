@@ -1,5 +1,30 @@
 # KnowTrace Architecture Blueprint
 
+```mermaid
+flowchart LR
+  Client[Next.js client] --> API[FastAPI API]
+  API --> Services[Ingestion, retrieval, assessment, learner model]
+  Services --> DB[(PostgreSQL + pgvector)]
+  Services --> Cache[(Redis + disk cache)]
+  Services --> Worker[RQ worker]
+```
+
+```mermaid
+flowchart LR
+  Q[Question] --> R[Hybrid retrieval] --> S[Sufficiency]
+  S --> G[Grounded generation] --> V[Claim verification] --> C[Citations]
+```
+
+```mermaid
+flowchart LR
+  Select[Select] --> Grade[Grade] --> Misconception[Misconception]
+  Misconception --> Report[Report and replan]
+```
+
+Data flows from files to parsed chunks, provenance, embeddings, taxonomy,
+retrieval, adaptive assessment, and planning. Docker Compose is the local
+deployment; Vercel can host the frontend and a small VM can host API/worker.
+
 ## System Overview
 KnowTrace is a Source-Anchored Adaptive AI Study Companion ingesting multimodal course materials (PDF textbooks, lecture slides, recorded video lectures) with complete provenance tracking, strictly grounded tutoring, cognitive misconception diagnosis, Bayesian knowledge tracing, and dual-vendor psychometric question validation.
 
@@ -37,3 +62,10 @@ KnowTrace is a Source-Anchored Adaptive AI Study Companion ingesting multimodal 
 4. **Prompt Centralization**: Prompts are strictly banned from inline code and must live in `services/<module>/prompts.py`.
 5. **Grounded Tutoring & Refusal**: Unsupported questions are refused with `"Not found in your course material"`. Outside knowledge must be labeled `[OUTSIDE KNOWLEDGE]`.
 6. **Psychometric Question Pipeline**: Only questions validated and marked `status="approved"` by Vendor B can be served to learners.
+7. **Unified Course Discovery & Connector Architecture**:
+   - Multi-platform modular connectors (`backend/connectors/base.py` & registry) support **NPTEL, SWAYAM, MIT OCW, MITx, Khan Academy, edX, and Coursera**.
+   - Clear attribution with `source_platform`, `source_url`, and explicit `access_type` (`free`, `free_paid_cert`, `audit_limited`).
+   - Two-stage architecture:
+     - **Discovery Stage**: Lightweight federated search over catalog metadata (`CatalogCourse`, `CourseModule`, `CourseResource`).
+     - **Ingestion Stage**: One-click promotion to active `Course` for AI tutoring, DAG knowledge mapping, Bayesian Knowledge Tracing, and adaptive quizzes.
+

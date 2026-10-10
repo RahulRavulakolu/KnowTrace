@@ -1,0 +1,30 @@
+[project]
+name = "knowtrace"
+version = "1.0.0"
+description = "KnowTrace: Source-Anchored Adaptive AI Tutor"
+requires-python = ">=3.11"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "I", "N", "W", "UP", "B", "A", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.isort]
+known-first-party = ["backend", "database", "services"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
