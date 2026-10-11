@@ -1,21 +1,30 @@
-'use client';
-
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight, Compass } from 'lucide-react';
 import WordsPullUp from './WordsPullUp';
+import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 const NAV_ITEMS = [
-  { label: 'Courses', href: '/courses' },
-  { label: 'Discover', href: '/discover' },
   { label: 'Adaptive Tutor', href: '#about' },
   { label: 'Provenance', href: '#features' },
-  { label: 'Workspace', href: '/courses' },
 ];
 
 export const HeroSection: React.FC = () => {
-  const [activeItem, setActiveItem] = useState('Courses');
+  const router = useRouter();
+  const { user, openAuthModal, logout } = useAuth();
+  const [activeItem, setActiveItem] = useState('Adaptive Tutor');
+
+  const handleStartLearning = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (user) {
+      router.push('/courses');
+    } else {
+      openAuthModal('register');
+    }
+  };
 
   return (
     <section className="relative w-full h-screen p-4 md:p-6 bg-black select-none">
@@ -35,19 +44,31 @@ export const HeroSection: React.FC = () => {
         <div className="absolute inset-0 noise-overlay opacity-[0.7] mix-blend-overlay pointer-events-none" />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none" />
 
-        {/* Navbar */}
-        <header className="absolute top-0 left-1/2 -translate-x-1/2 z-30">
-          <nav className="bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8 border-b border-x border-white/5 shadow-2xl">
-            <ul className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
+        {/* Floating Brand Navbar */}
+        <header className="absolute top-0 left-1/2 -translate-x-1/2 z-30 w-full max-w-4xl px-3 sm:px-6 pt-3 sm:pt-6">
+          <nav className="bg-black/80 backdrop-blur-2xl rounded-full px-3.5 sm:px-6 py-2 border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.7)] flex items-center justify-between gap-3 sm:gap-6">
+            <Link href="/" className="flex items-center gap-2 group shrink-0">
+              <Image
+                src="/logo-icon.png"
+                alt="KnowTrace"
+                width={28}
+                height={28}
+                className="w-6 h-6 sm:w-7 sm:h-7 object-contain transition-transform group-hover:scale-105"
+              />
+              <span className="text-xs sm:text-sm font-extrabold tracking-tight text-[#EDEDE8] group-hover:text-white">
+                KnowTrace
+              </span>
+            </Link>
+
+            <ul className="flex items-center gap-1 sm:gap-3 md:gap-5">
               {NAV_ITEMS.map((item) => {
                 const isActive = activeItem === item.label;
-                const linkStyle = {
-                  color: isActive ? '#E1E0CC' : 'rgba(225, 224, 204, 0.8)',
-                };
-                const linkClass =
-                  'text-[10px] sm:text-xs md:text-sm tracking-wide transition-colors duration-200 hover:!text-[#E1E0CC]';
+                const linkClass = `text-[10px] sm:text-xs md:text-sm tracking-wide transition-all duration-200 px-2 sm:px-3 py-1 rounded-full ${isActive
+                  ? 'text-[#EDEDE8] bg-white/10 font-semibold shadow-xs'
+                  : 'text-[#E1E0CC]/70 hover:text-[#EDEDE8] hover:bg-white/5'
+                  }`;
 
                 return (
                   <li key={item.label}>
@@ -55,7 +76,6 @@ export const HeroSection: React.FC = () => {
                       <a
                         href={item.href}
                         onClick={() => setActiveItem(item.label)}
-                        style={linkStyle}
                         className={linkClass}
                       >
                         {item.label}
@@ -64,7 +84,6 @@ export const HeroSection: React.FC = () => {
                       <Link
                         href={item.href}
                         onClick={() => setActiveItem(item.label)}
-                        style={linkStyle}
                         className={linkClass}
                       >
                         {item.label}
@@ -74,6 +93,44 @@ export const HeroSection: React.FC = () => {
                 );
               })}
             </ul>
+
+            {/* Auth Action Buttons */}
+            <div className="flex items-center gap-1.5 sm:gap-2 ml-1 sm:ml-2 pl-2 sm:pl-3 border-l border-white/10 shrink-0">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-[10px] sm:text-xs text-indigo-300 font-medium hidden sm:inline-block max-w-[100px] truncate"
+                    title={user.email}
+                  >
+                    {user.name || user.email.split('@')[0]}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="text-[10px] sm:text-xs text-[#E1E0CC]/70 hover:text-rose-400 px-2 sm:px-2.5 py-1 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('login')}
+                    className="text-[10px] sm:text-xs text-[#E1E0CC]/80 hover:text-white px-2 sm:px-2.5 py-1 rounded-full hover:bg-white/5 transition-colors font-medium cursor-pointer"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('register')}
+                    className="text-[10px] sm:text-xs bg-[#DEDBC8] hover:bg-white text-black font-semibold px-2.5 sm:px-3 py-1 rounded-full transition-all shadow-[0_0_15px_rgba(222,219,200,0.2)] cursor-pointer"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
+            </div>
           </nav>
         </header>
 
@@ -131,24 +188,25 @@ export const HeroSection: React.FC = () => {
                 className="mt-5 sm:mt-7 flex flex-wrap items-center gap-3"
               >
                 {/* Primary CTA */}
-                <Link
-                  href="/courses"
-                  className="bg-primary rounded-full pl-5 pr-2 py-2 sm:pl-6 sm:pr-2.5 sm:py-2.5 inline-flex items-center gap-2 group transition-all duration-300 hover:gap-3 text-black font-medium text-sm sm:text-base cursor-pointer shadow-lg"
+                <button
+                  type="button"
+                  onClick={handleStartLearning}
+                  className="bg-primary rounded-full pl-5 pr-2 py-2 sm:pl-6 sm:pr-2.5 sm:py-2.5 inline-flex items-center gap-2 group transition-all duration-300 hover:gap-3 text-black font-semibold text-sm sm:text-base cursor-pointer shadow-[0_0_30px_rgba(222,219,200,0.3)] hover:shadow-[0_0_35px_rgba(99,102,241,0.4)]"
                   style={{ backgroundColor: '#DEDBC8' }}
                 >
-                  <span className="text-black font-medium">Start Learning</span>
+                  <span className="text-black font-semibold">Start Learning</span>
                   <span className="bg-black rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                    <ArrowRight className="w-4 h-4 text-[#E1E0CC]" />
+                    <ArrowRight className="w-4 h-4 text-[#DEDBC8]" />
                   </span>
-                </Link>
+                </button>
 
                 {/* Secondary CTA */}
                 <Link
                   href="/discover"
-                  className="rounded-full px-5 py-2.5 sm:px-6 sm:py-3 inline-flex items-center gap-2 border border-white/20 hover:border-white/40 text-xs sm:text-sm font-medium transition-colors duration-200"
+                  className="rounded-full px-5 py-2.5 sm:px-6 sm:py-3 inline-flex items-center gap-2 border border-white/20 hover:border-indigo-400/60 hover:bg-indigo-950/30 text-xs sm:text-sm font-medium transition-all duration-200 backdrop-blur-sm"
                   style={{ color: '#E1E0CC' }}
                 >
-                  <Compass className="w-4 h-4" />
+                  <Compass className="w-4 h-4 text-indigo-400" />
                   <span>Explore Courses</span>
                 </Link>
               </motion.div>

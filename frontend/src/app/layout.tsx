@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { AuthProvider } from '@/context/AuthContext';
+import { AuthModal } from '@/components/auth/AuthModal';
 
 export const metadata: Metadata = {
-  title: 'Prisma — Creative Studio',
+  title: 'KnowledgeTrace',
   description:
-    'Prisma is a worldwide network of visual artists, filmmakers and storytellers bound not by place, status or labels but by passion and hunger to unlock potential through our unique perspectives.',
+    'KnowledgeTrace is a source-anchored adaptive AI tutor for personalized learning.',
 };
 
 export default function RootLayout({
@@ -23,7 +25,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-black text-[#E1E0CC] selection:bg-[#DEDBC8] selection:text-black">
-        {children}
+        <AuthProvider>
+          {children}
+          <AuthModal />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-﻿--
+--
 -- PostgreSQL database dump
 --
 
@@ -419,6 +419,7 @@ CREATE TABLE public.users (
     id character varying(36) NOT NULL,
     email character varying(255) NOT NULL,
     name character varying(255),
+    password_hash character varying(255),
     created_at timestamp without time zone NOT NULL
 );
 

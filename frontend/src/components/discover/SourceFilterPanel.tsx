@@ -56,9 +56,9 @@ export function SourceFilterPanel({
   return (
     <div className="space-y-6">
       {/* Header & Reset */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
-          <Filter className="w-3.5 h-3.5 text-indigo-500" />
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#EDEDE8]">
+          <Filter className="w-3.5 h-3.5 text-indigo-400" />
           <span>Catalog Filters</span>
         </div>
 
@@ -66,7 +66,7 @@ export function SourceFilterPanel({
           <button
             type="button"
             onClick={onResetFilters}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 hover:underline cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Reset</span>
@@ -76,7 +76,7 @@ export function SourceFilterPanel({
 
       {/* Platform Filter */}
       <div>
-        <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-2.5">
+        <label className="block text-xs font-bold text-[#EDEDE8] mb-2.5">
           Learning Platforms
         </label>
         <div className="space-y-1.5">
@@ -88,8 +88,8 @@ export function SourceFilterPanel({
                 key={pId}
                 className={`flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-all border ${
                   isSelected
-                    ? 'bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-200 border-indigo-200 dark:border-indigo-800'
-                    : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300'
+                    ? 'bg-indigo-950/60 text-indigo-300 border-indigo-500/80 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
+                    : 'bg-white/[0.02] text-[#9E9EA8] border-white/[0.06] hover:border-white/20 hover:text-[#EDEDE8]'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export function SourceFilterPanel({
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => onTogglePlatform(pId)}
-                    className="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                    className="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 border-zinc-700 cursor-pointer"
                   />
                   <span>{config.icon}</span>
                   <span className="truncate">{config.name}</span>
@@ -110,7 +110,7 @@ export function SourceFilterPanel({
 
       {/* Access Type Filter */}
       <div>
-        <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-2.5">
+        <label className="block text-xs font-bold text-[#EDEDE8] mb-2.5">
           Access Policy
         </label>
         <div className="space-y-1.5">
@@ -121,8 +121,8 @@ export function SourceFilterPanel({
                 key={opt.id}
                 className={`flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-all border ${
                   isSelected
-                    ? 'bg-emerald-50/60 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800'
-                    : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200/80 dark:border-zinc-800 hover:border-zinc-300'
+                    ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/80 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                    : 'bg-white/[0.02] text-[#9E9EA8] border-white/[0.06] hover:border-white/20 hover:text-[#EDEDE8]'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -130,7 +130,7 @@ export function SourceFilterPanel({
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => onToggleAccessType(opt.id)}
-                    className="w-3.5 h-3.5 rounded text-emerald-600 focus:ring-emerald-500 border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                    className="w-3.5 h-3.5 rounded text-emerald-600 focus:ring-emerald-500 border-zinc-700 cursor-pointer"
                   />
                   <span>{opt.label}</span>
                 </div>
@@ -143,17 +143,17 @@ export function SourceFilterPanel({
       {/* Categories Filter */}
       {availableCategories.length > 0 && (
         <div>
-          <label className="block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-2.5">
+          <label className="block text-xs font-bold text-[#EDEDE8] mb-2.5">
             Subject Domain
           </label>
           <div className="flex flex-wrap gap-1.5">
             <button
               type="button"
               onClick={() => onSelectCategory(null)}
-              className={`text-[11px] px-2.5 py-1 rounded-lg font-semibold transition-all ${
+              className={`text-[11px] px-2.5 py-1 rounded-full font-semibold transition-all border cursor-pointer ${
                 selectedCategory === null
-                  ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  ? 'bg-white text-black border-white shadow-xs'
+                  : 'bg-white/[0.03] text-[#9E9EA8] border-white/[0.08] hover:border-white/20 hover:text-[#EDEDE8]'
               }`}
             >
               All Subjects
@@ -165,10 +165,10 @@ export function SourceFilterPanel({
                   key={cat}
                   type="button"
                   onClick={() => onSelectCategory(isSelected ? null : cat)}
-                  className={`text-[11px] px-2.5 py-1 rounded-lg font-semibold transition-all ${
+                  className={`text-[11px] px-2.5 py-1 rounded-full font-semibold transition-all border cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)]'
+                      : 'bg-white/[0.03] text-[#9E9EA8] border-white/[0.08] hover:border-white/20 hover:text-[#EDEDE8]'
                   }`}
                 >
                   {cat}

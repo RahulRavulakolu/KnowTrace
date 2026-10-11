@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Menu, RotateCcw, AlertTriangle, User, ChevronRight, GraduationCap } from 'lucide-react';
 import { api } from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
 
 interface HeaderProps {
   courseId: string;
@@ -20,6 +21,8 @@ export function Header({
   onMenuToggle,
   activeMisconceptions = 2,
 }: HeaderProps) {
+  const { user, openAuthModal, logout } = useAuth();
+
   const handleReset = () => {
     if (confirm('Reset demo course data to fresh initial state?')) {
       api.resetDemoData(courseId);
@@ -86,13 +89,33 @@ export function Header({
         </button>
 
         <div className="flex items-center gap-2 pl-2 sm:border-l sm:border-zinc-200 dark:sm:border-zinc-800">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-2xs font-bold text-xs">
-            <User className="w-4 h-4" />
-          </div>
-          <div className="hidden lg:block text-left text-xs">
-            <div className="font-semibold text-zinc-800 dark:text-zinc-200">Alex Chen</div>
-            <div className="text-[10px] text-zinc-400 font-mono">Student ID #4829</div>
-          </div>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-2xs font-bold text-xs uppercase">
+                {user.name ? user.name[0] : user.email[0]}
+              </div>
+              <div className="hidden lg:block text-left text-xs">
+                <div className="font-semibold text-zinc-800 dark:text-zinc-200 max-w-[120px] truncate">
+                  {user.name || user.email.split('@')[0]}
+                </div>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-[10px] text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
+              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-xs cursor-pointer"
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </div>
     </header>

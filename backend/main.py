@@ -26,6 +26,7 @@ from backend.api.routers.graph import router as graph_router
 from backend.api.routers.discover import router as discover_router
 from backend.api.routers.sandbox import router as sandbox_router
 from backend.api.routers.certificates import router as certificates_router
+from backend.api.routers.auth import router as auth_router
 from backend.core.config import settings
 from backend.core.db import Base, engine
 from backend.core.logging import RequestIdMiddleware, logger, setup_logging
@@ -113,6 +114,7 @@ def create_app() -> FastAPI:
         discover_router,
         sandbox_router,
         certificates_router,
+        auth_router,
     ]
     for r in feature_routers:
         app.include_router(r)

@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from backend.core.db import get_db
+from backend.api.deps import get_optional_user
 from backend.connectors.registry import get_registry
 from backend.models.db import Course, Source, User
 from backend.schemas.discover import (
@@ -148,6 +149,7 @@ def list_categories() -> dict:
 )
 def ingest_catalog_course(
     request: IngestCourseRequest,
+    current_user: Optional[User] = Depends(get_optional_user),
     db: Session = Depends(get_db),
 ) -> IngestCourseResponse:
     """Enroll and ingest a course from an external platform into KnowTrace.
@@ -164,8 +166,8 @@ def ingest_catalog_course(
         )
 
     # Resolve user
-    user = None
-    if request.owner_id:
+    user = current_user
+    if not user and request.owner_id:
         user = db.query(User).filter(User.id == request.owner_id).first()
     if not user:
         default_email = "student@knowtrace.ai"

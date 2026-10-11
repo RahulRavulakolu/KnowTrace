@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from backend.core.config import settings
 from backend.core.db import get_db
 from backend.core.logging import logger
+from backend.api.deps import get_optional_user
 from backend.models.db import (
     Concept,
     ContentChunk,
@@ -74,10 +75,11 @@ def _get_or_create_default_user(db: Session, owner_id: Optional[str] = None) -> 
 )
 def create_course(
     payload: CourseCreate,
+    current_user: Optional[User] = Depends(get_optional_user),
     db: Session = Depends(get_db),
 ) -> CourseCreateResponse:
     """Create a new course with owner attribution."""
-    user = _get_or_create_default_user(db, payload.owner_id)
+    user = current_user or _get_or_create_default_user(db, payload.owner_id)
 
     # Check for existing course with same owner and title
     existing = db.query(Course).filter(
@@ -128,10 +130,14 @@ def get_course(
 def list_courses(
     limit: int = 50,
     offset: int = 0,
+    current_user: Optional[User] = Depends(get_optional_user),
     db: Session = Depends(get_db),
 ) -> List[CourseResponse]:
     """List registered courses."""
-    courses = db.query(Course).offset(offset).limit(limit).all()
+    query = db.query(Course)
+    if current_user:
+        query = query.filter(Course.owner_id == current_user.id)
+    courses = query.offset(offset).limit(limit).all()
     return [CourseResponse.model_validate(c) for c in courses]
 
 
