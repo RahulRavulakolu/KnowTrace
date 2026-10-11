@@ -200,52 +200,62 @@ export const api = {
   },
 
   async getAllCourses(): Promise<Course[]> {
-    const localCourses = getStorage<Record<string, Course>>('courses', {
-      [INITIAL_COURSE.id]: INITIAL_COURSE,
-    });
+    // Locally created / offline-enrolled courses only. The seeded demo course
+    // (INITIAL_COURSE) must never appear in the user's enrolled workspace.
+    const localCourses = getStorage<Record<string, Course>>('courses', {});
+    if (localCourses[INITIAL_COURSE.id]) {
+      delete localCourses[INITIAL_COURSE.id];
+      setStorage('courses', localCourses);
+    }
+    const localList = Object.values(localCourses).filter(
+      (c) => c.id !== INITIAL_COURSE.id
+    );
+
+    if (!getAuthToken()) {
+      // Signed out: there are no enrolled courses to show from the backend.
+      return localList;
+    }
 
     try {
+      // Authenticated: the backend returns only courses owned by this user
+      // (i.e., courses enrolled via Discover or created in this workspace).
       const res = await fetch(`${API_BASE}/courses`, {
         headers: authHeaders({ Accept: 'application/json' }),
       });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
-          const merged: Record<string, Course> = { ...localCourses };
-          for (const item of data) {
-            const cId = String(item.id);
-            if (!merged[cId]) {
-              merged[cId] = {
-                id: cId,
-                name: item.title,
-                domain: item.category || 'Computer Science',
-                examDate: item.exam_date || '',
-                hoursAvailablePerDay: item.hours_per_day || 2,
-                targetMastery: 80,
-                createdAt: item.created_at ? String(item.created_at).split('T')[0] : new Date().toISOString().split('T')[0],
-                materialsCount: 2,
-                conceptCount: 6,
-                overallMastery: 72,
-                activeMisconceptionsCount: 1,
-                source_platform: item.source_platform,
-                source_id: item.source_id,
-                source_url: item.source_url,
-                access_type: item.access_type,
-                instructor: item.instructor,
-                institution: item.institution,
-                certificate_available: Boolean(item.certificate_available ?? true),
-              };
-            }
-          }
-          setStorage('courses', merged);
-          return Object.values(merged);
+          const enrolled: Course[] = data.map((item: any) => ({
+            id: String(item.id),
+            name: item.title,
+            domain: item.category || 'Computer Science',
+            examDate: item.exam_date || '',
+            hoursAvailablePerDay: item.hours_per_day || 2,
+            targetMastery: 80,
+            createdAt: item.created_at ? String(item.created_at).split('T')[0] : new Date().toISOString().split('T')[0],
+            materialsCount: 2,
+            conceptCount: 6,
+            overallMastery: 72,
+            activeMisconceptionsCount: 1,
+            source_platform: item.source_platform,
+            source_id: item.source_id,
+            source_url: item.source_url,
+            access_type: item.access_type,
+            instructor: item.instructor,
+            institution: item.institution,
+            certificate_available: Boolean(item.certificate_available ?? true),
+          }));
+          // Cache the user's real enrolled courses for offline display
+          setStorage('enrolled_courses', enrolled);
+          return enrolled;
         }
       }
     } catch {
-      // Return local courses on network error
+      // Backend unreachable — fall through to the cached snapshot below
     }
 
-    return Object.values(localCourses);
+    // Backend unreachable: show the last known enrolled courses (never the demo mock)
+    return getStorage<Course[]>('enrolled_courses', []);
   },
 
   async createCourse(data: {
@@ -1528,9 +1538,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       });
       if (res.ok) {
         const data = await res.json();
-        const courses = getStorage<Record<string, Course>>('courses', {
-          [INITIAL_COURSE.id]: INITIAL_COURSE,
-        });
+        const courses = getStorage<Record<string, Course>>('courses', {});
         const enrolledCourse: Course = {
           id: String(data.course_id),
           name: data.title,
@@ -1572,9 +1580,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       overallMastery: 40,
       activeMisconceptionsCount: 1,
     };
-    const courses = getStorage<Record<string, Course>>('courses', {
-      [INITIAL_COURSE.id]: INITIAL_COURSE,
-    });
+    const courses = getStorage<Record<string, Course>>('courses', {});
     courses[newId] = enrolledCourse;
     setStorage('courses', courses);
 
