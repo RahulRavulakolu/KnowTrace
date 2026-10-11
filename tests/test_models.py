@@ -1,25 +1,25 @@
 """Unit and integration tests for all 15 database models and the Provenance Spine."""
 
 import uuid
-from datetime import datetime, timezone
+
 from sqlalchemy.orm import Session
 
-from database.models import (
-    User,
-    Course,
-    Source,
-    Topic,
-    Concept,
-    ContentChunk,
-    ChunkConcept,
-    Prerequisite,
-    Question,
+from backend.models.db import (
     Assessment,
     Attempt,
+    ChatTurn,
+    ChunkConcept,
+    Concept,
+    ContentChunk,
+    Course,
     LearnerMastery,
     Misconception,
-    ChatTurn,
+    Prerequisite,
+    Question,
+    Source,
     StudyPlan,
+    Topic,
+    User,
 )
 
 

@@ -1,0 +1,464 @@
+[
+  {
+    "id": "mitx-600-lec-1",
+    "module_title": "Unit 1: Computational Thinking & Python Basics",
+    "order": 1,
+    "title": "Lecture 1: What is Computation?",
+    "duration_minutes": 50,
+    "youtube_id": "nykOeWgQcHM",
+    "concept_name": "Computation, Types & Expressions",
+    "notes": [
+      "Declarative knowledge ('what is true') vs Imperative knowledge ('how-to recipe').",
+      "Fixed-program computers vs Stored-program computers (von Neumann architecture).",
+      "Python data types: int, float, bool, NoneType, and basic scalar expressions."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Welcome to 6.0001, Introduction to Computer Science and Programming in Python. I am John Guttag."
+      },
+      {
+        "seconds": 260,
+        "timestamp": "04:20",
+        "text": "Computer science is not really about computers, any more than physics is about particle accelerators."
+      },
+      {
+        "seconds": 780,
+        "timestamp": "13:00",
+        "text": "Declarative knowledge states facts. Imperative knowledge provides recipes: how to compute."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "In Python, everything is an object with a type and attributes."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 1 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec1/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-2",
+    "module_title": "Unit 1: Computational Thinking & Python Basics",
+    "order": 2,
+    "title": "Lecture 2: Branching and Iteration",
+    "duration_minutes": 52,
+    "youtube_id": "0jljZRnHwOI",
+    "concept_name": "Conditionals & Loops",
+    "notes": [
+      "Branching programs with if, elif, else.",
+      "Looping with while and for loops.",
+      "Loop invariants and guaranteed termination using decreasing counter variables."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we add control flow: branching and iteration to make programs execute selectively."
+      },
+      {
+        "seconds": 350,
+        "timestamp": "05:50",
+        "text": "Indentation in Python defines block structure and lexical scope."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Every loop must possess a decrementing function that proves termination."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 2 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec2/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-3",
+    "module_title": "Unit 1: Computational Thinking & Python Basics",
+    "order": 3,
+    "title": "Lecture 3: String Manipulation, Guess and Check, Approximations, Bisection",
+    "duration_minutes": 49,
+    "youtube_id": "SE4P7IVCunE",
+    "concept_name": "Bisection Search & Numerical Algorithms",
+    "notes": [
+      "Strings as immutable sequences: indexing and slicing s[start:stop:step].",
+      "Exhaustive enumeration (guess-and-check).",
+      "Approximation algorithms with epsilon tolerance.",
+      "Bisection search: exponential speedup cutting search space in half each step."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In Lecture 3, Dr. Ana Bell covers string manipulations and bisection search."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Exhaustive enumeration checks every candidate. Bisection search uses monotonicity to eliminate half the remaining space."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "Bisection search converges in logarithmic O(log N) iterations."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 3 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec3/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-4",
+    "module_title": "Unit 2: Functions & Data Structures",
+    "order": 4,
+    "title": "Lecture 4: Decomposition, Abstraction, and Functions",
+    "duration_minutes": 51,
+    "youtube_id": "MjbuarJ7SE0",
+    "concept_name": "Functions, Scopes & Abstraction",
+    "notes": [
+      "Decomposition: structuring monolithic code into self-contained modules.",
+      "Abstraction: treating a function as a black-box contract via docstrings and signatures.",
+      "Variable scope: local stack frames and lexical scoping."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Functions suppress implementation details so we can architect complex software systems."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "Formal parameters receive arguments passed by assignment."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Variables initialized inside a function exist strictly within its local frame stack."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 4 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec4/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-5",
+    "module_title": "Unit 2: Functions & Data Structures",
+    "order": 5,
+    "title": "Lecture 5: Tuples, Lists, Aliasing, Mutability, and Cloning",
+    "duration_minutes": 50,
+    "youtube_id": "RvRKT-jXvko",
+    "concept_name": "Mutability, Lists & References",
+    "notes": [
+      "Tuples: immutable ordered sequences of elements.",
+      "Lists: mutable sequences with append, extend, and in-place mutation.",
+      "Aliasing vs cloning: modifying an aliased list changes all referenced variables."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Lecture 5 explores compound data types: tuples and mutable lists."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "Tuples are immutable; lists are mutable objects whose internal elements can change in memory."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Aliasing occurs when two variable names point to the exact same memory address."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 5 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec5/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-6",
+    "module_title": "Unit 2: Functions & Data Structures",
+    "order": 6,
+    "title": "Lecture 6: Recursion and Dictionaries",
+    "duration_minutes": 52,
+    "youtube_id": "WPSeyjX1-4s",
+    "concept_name": "Recursion & Hash Maps",
+    "notes": [
+      "Inductive step and base cases in recursive functions.",
+      "Towers of Hanoi and Fibonacci via recursion.",
+      "Dictionaries: key-value hash maps with O(1) expected lookup and insertion."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we study recursion and Python dictionaries."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "A recursive function calls itself on smaller instances until reaching a base case."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "Dictionaries map hashable keys to arbitrary values with near-instantaneous O(1) lookup."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 6 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec6/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-7",
+    "module_title": "Unit 3: Robust Programming & OOP",
+    "order": 7,
+    "title": "Lecture 7: Testing, Debugging, Exceptions, and Assertions",
+    "duration_minutes": 48,
+    "youtube_id": "9H6muyZjms0",
+    "concept_name": "Defensive Programming & Exception Handling",
+    "notes": [
+      "Unit testing and regression testing.",
+      "Handling runtime errors gracefully using try, except, raise, and finally blocks.",
+      "Assertions as defensive preconditions."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Every programmer writes bugs. Today we discuss systematic testing, debugging, and exceptions."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Defensive programming validates assumptions early before silent corruption occurs."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Try-except blocks intercept exceptions and enable predictable error recovery."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 7 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec7/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-8",
+    "module_title": "Unit 3: Robust Programming & OOP",
+    "order": 8,
+    "title": "Lecture 8: Object Oriented Programming",
+    "duration_minutes": 50,
+    "youtube_id": "-DP1i2ZU9gk",
+    "concept_name": "Classes, Instances & Methods",
+    "notes": [
+      "Abstract Data Types (ADTs) bundle state and operations together.",
+      "Defining classes: the __init__ constructor and self parameter.",
+      "Special dunder methods: __str__, __add__, __len__."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Object-Oriented Programming (OOP) allows us to create our own custom data types."
+      },
+      {
+        "seconds": 360,
+        "timestamp": "06:00",
+        "text": "A class is a blueprint; an instance is a concrete realization in memory."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Methods are functions bound to instances, receiving self as their first argument."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 8 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec8/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-9",
+    "module_title": "Unit 3: Robust Programming & OOP",
+    "order": 9,
+    "title": "Lecture 9: Python Classes and Inheritance",
+    "duration_minutes": 51,
+    "youtube_id": "FlGjISF3l78",
+    "concept_name": "Inheritance, Subclasses & Polymorphism",
+    "notes": [
+      "Subclasses inherit attributes and methods from superclasses.",
+      "Method overriding and extending functionality via super().",
+      "Polymorphism and class hierarchies in software architecture."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In Lecture 9, we examine class inheritance and polymorphism."
+      },
+      {
+        "seconds": 420,
+        "timestamp": "07:00",
+        "text": "Inheritance enables code reuse: sub-types inherit attributes from base classes."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Overriding allows derived classes to customize behavior while honoring the parent interface."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 9 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec9/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-10",
+    "module_title": "Unit 4: Algorithmic Efficiency & Sorting",
+    "order": 10,
+    "title": "Lecture 10: Understanding Program Efficiency, Part 1",
+    "duration_minutes": 49,
+    "youtube_id": "o9nW0uBqvEo",
+    "concept_name": "Computational Complexity & Big O",
+    "notes": [
+      "Measuring program efficiency: wall-clock time vs counting primitive operations.",
+      "Asymptotic analysis: Big O notation O(f(n)).",
+      "Common complexity classes: constant O(1), logarithmic O(log n), linear O(n), polynomial O(n^c), exponential O(2^n)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "How do we reason about whether an algorithm will scale to big datasets? Big O notation."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "Big O provides an asymptotic upper bound as input size n approaches infinity."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "We ignore multiplicative constants and lower-order terms to classify the dominant growth rate."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 10 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec10/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-11",
+    "module_title": "Unit 4: Algorithmic Efficiency & Sorting",
+    "order": 11,
+    "title": "Lecture 11: Understanding Program Efficiency, Part 2",
+    "duration_minutes": 52,
+    "youtube_id": "7lQXYl_L28w",
+    "concept_name": "Complexity Analysis of Recursive Programs",
+    "notes": [
+      "Analyzing iterative and recursive algorithms.",
+      "Exponential complexity of power set generation and recursive Fibonacci.",
+      "Trade-offs between time complexity and space complexity."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Lecture 11 dives deeper into asymptotic analysis, particularly for recursive algorithms."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "When each call branches into two recursive subproblems, depth d leads to 2^d operations."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Analyzing the recursive tree allows us to calculate total operations across all call frames."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 11 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec11/"
+      }
+    ]
+  },
+  {
+    "id": "mitx-600-lec-12",
+    "module_title": "Unit 4: Algorithmic Efficiency & Sorting",
+    "order": 12,
+    "title": "Lecture 12: Searching and Sorting",
+    "duration_minutes": 50,
+    "youtube_id": "6LOwPhPDwVc",
+    "concept_name": "Search & Sort Algorithms in Python",
+    "notes": [
+      "Linear search vs binary search on sorted sequences.",
+      "Bogo sort, Bubble sort, Selection sort, and Merge sort.",
+      "Divide-and-conquer merge sort achieving O(n log n) efficiency."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "We conclude 6.0001 with search and sort algorithms."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "Binary search finds an item in sorted list in logarithmic time."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Merge sort divides the list, sorts recursively, and merges sorted sublists in linear time."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 12 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/mit6_0001f16_lec12/"
+      }
+    ]
+  }
+]

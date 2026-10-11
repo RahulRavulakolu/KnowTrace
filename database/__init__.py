@@ -1,23 +1,23 @@
 """KnowTrace Database Package."""
 
-from backend.core.database import Base, SessionLocal, engine, get_db
-from database.models import (
-    User,
-    Course,
-    Source,
-    Topic,
-    Concept,
-    ContentChunk,
-    ChunkConcept,
-    Prerequisite,
-    Question,
+from backend.core.db import Base, SessionLocal, engine, get_db
+from backend.models.db import (
     Assessment,
     Attempt,
+    ChatTurn,
+    ChunkConcept,
+    Concept,
+    ContentChunk,
+    Course,
     LearnerMastery,
     MasteryHistory,
     Misconception,
-    ChatTurn,
+    Prerequisite,
+    Question,
+    Source,
     StudyPlan,
+    Topic,
+    User,
 )
 
 __all__ = [

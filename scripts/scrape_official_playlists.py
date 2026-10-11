@@ -1,20 +1,22 @@
-import urllib.request
-import re
 import json
+import re
+import urllib.request
+from pathlib import Path
+
 
 def get_playlist_videos(playlist_id):
     url = f"https://www.youtube.com/playlist?list={playlist_id}"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0"})
     html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
-    
+
     # Try finding ytInitialData
     m = re.search(r"var ytInitialData = ({.*?});</script>", html)
     if not m:
         m = re.search(r"ytInitialData = ({.*?});", html)
-    
+
     unique = []
     seen = set()
-    
+
     if m:
         try:
             data = json.loads(m.group(1))
@@ -36,7 +38,7 @@ def get_playlist_videos(playlist_id):
             walk(data)
         except Exception as e:
             print("Error parsing ytInitialData:", e)
-            
+
     if not unique:
         # Fallback regex for videoId
         vids = re.findall(r'/watch\?v=([a-zA-Z0-9_-]{11})', html)
@@ -44,7 +46,7 @@ def get_playlist_videos(playlist_id):
             if vid not in seen and vid != "live_stream":
                 seen.add(vid)
                 unique.append((vid, f"Video {vid}"))
-                
+
     return unique
 
 def verify_oembed(vid):
@@ -61,7 +63,7 @@ print("--- 1. MIT 6.0001 Python (PLUl4u3cNGP63WbdFxL8giv4yhGDMGa57q) ---")
 python_vids = get_playlist_videos("PLUl4u3cNGP63WbdFxL8giv4yhGDMGa57q")
 print(f"Found {len(python_vids)} videos")
 verified_python = []
-for i, (vid, title) in enumerate(python_vids, 1):
+for i, (vid, _title) in enumerate(python_vids, 1):
     ok, real_title = verify_oembed(vid)
     if ok:
         print(f"  [Lec {i}] {vid} -> {real_title}")
@@ -71,7 +73,7 @@ print("\n--- 2. MIT 6.006 Algorithms (PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb) ---")
 algo_vids = get_playlist_videos("PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb")
 print(f"Found {len(algo_vids)} videos")
 verified_algo = []
-for i, (vid, title) in enumerate(algo_vids, 1):
+for i, (vid, _title) in enumerate(algo_vids, 1):
     ok, real_title = verify_oembed(vid)
     if ok:
         print(f"  [Lec {i}] {vid} -> {real_title}")
@@ -82,16 +84,20 @@ print("\n--- 3. NPTEL Machine Learning (PLbRMhDVUMngcf7bSoxxS1w5p25u08h_4x) ---"
 nptel_vids = get_playlist_videos("PLbRMhDVUMngcf7bSoxxS1w5p25u08h_4x")
 print(f"Found {len(nptel_vids)} videos")
 verified_nptel = []
-for i, (vid, title) in enumerate(nptel_vids, 1):
+for i, (vid, _title) in enumerate(nptel_vids, 1):
     ok, real_title = verify_oembed(vid)
     if ok:
         print(f"  [Lec {i}] {vid} -> {real_title}")
         verified_nptel.append({"order": i, "youtube_id": vid, "title": real_title})
 
-with open("s:/knowTrace/verified_playlists.json", "w") as f:
+out_path = Path(__file__).resolve().parent.parent / "data" / "verified_playlists.json"
+out_path.parent.mkdir(parents=True, exist_ok=True)
+with open(out_path, "w", encoding="utf-8") as f:
     json.dump({
         "mit_python": verified_python,
         "mit_algorithms": verified_algo,
         "nptel_ml": verified_nptel
     }, f, indent=2)
-print("\nSaved to s:/knowTrace/verified_playlists.json")
+print(f"\nSaved to {out_path}")
+
+

@@ -39,7 +39,7 @@ services:
   api:
     build:
       context: ..
-      dockerfile: Dockerfile.backend
+      dockerfile: docker/Dockerfile.backend
     container_name: knowtrace-api
     restart: unless-stopped
     depends_on:
@@ -47,6 +47,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
       REDIS_URL: redis://redis:6379/0
@@ -65,7 +67,7 @@ services:
   worker:
     build:
       context: ..
-      dockerfile: Dockerfile.backend
+      dockerfile: docker/Dockerfile.backend
     container_name: knowtrace-worker
     restart: unless-stopped
     command: rq worker -u redis://redis:6379/0 default ingestion assessments
@@ -74,6 +76,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-knowtrace}
       REDIS_URL: redis://redis:6379/0
@@ -98,10 +102,6 @@ services:
       NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
     ports:
       - "3000:3000"
-    volumes:
-      - ../frontend:/app
-      - /app/node_modules
-      - /app/.next
     networks:
       - knowtrace-network
 

@@ -1,0 +1,308 @@
+[
+  {
+    "id": "khan-la-lec-1",
+    "module_title": "Unit 1: Vectors & Spaces",
+    "order": 1,
+    "title": "Lecture 1: Vectors and Spaces",
+    "duration_minutes": 25,
+    "youtube_id": "fNk_zzaMoSs",
+    "concept_name": "Vectors, Physics & CS Perspectives",
+    "notes": [
+      "Three perspectives on vectors: physics (arrow with length and direction), CS (ordered list of numbers), and math (generalized vector space).",
+      "Vector addition as head-to-tail geometric displacement.",
+      "Scalar multiplication as stretching or squishing coordinate lengths."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "What is a vector? In linear algebra, vectors are both arrows in geometric space and lists of numerical features."
+      },
+      {
+        "seconds": 180,
+        "timestamp": "03:00",
+        "text": "When we add two vectors, we place them head-to-tail and draw an arrow from start to finish."
+      },
+      {
+        "seconds": 600,
+        "timestamp": "10:00",
+        "text": "Multiplying by a scalar scales the length and flips direction if negative."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Unit 1 Vectors Practice Exercises",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/vectors-spaces/vectors/e/vector-addition"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-2",
+    "module_title": "Unit 1: Vectors & Spaces",
+    "order": 2,
+    "title": "Lecture 2: Linear Combinations, Span, and Basis Vectors",
+    "duration_minutes": 28,
+    "youtube_id": "k7RM-ot2NWY",
+    "concept_name": "Span, Basis & Linear Independence",
+    "notes": [
+      "Standard basis vectors i-hat and j-hat.",
+      "Linear combinations: scaling basis vectors and adding them.",
+      "Span: the set of all possible vectors reachable by linear combinations.",
+      "Linear independence: when adding a vector increases the dimensionality of the span."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "The span of a set of vectors is the entire subspace you can reach using linear combinations."
+      },
+      {
+        "seconds": 240,
+        "timestamp": "04:00",
+        "text": "Two linearly independent 2D vectors span the entire 2D plane."
+      },
+      {
+        "seconds": 750,
+        "timestamp": "12:30",
+        "text": "Basis vectors form a minimal set that spans the space without redundancy."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Unit 1 Basis & Span Practice",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/vectors-spaces/linear-combinations/e/linear-combinations"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-3",
+    "module_title": "Unit 2: Linear Transformations & Matrices",
+    "order": 3,
+    "title": "Lecture 3: Linear Transformations and Matrices",
+    "duration_minutes": 30,
+    "youtube_id": "kYB8IZa5AuE",
+    "concept_name": "Linear Transformations & Grid Lines",
+    "notes": [
+      "A transformation is linear if grid lines remain parallel and evenly spaced, and the origin remains fixed.",
+      "A linear transformation is completely determined by where it sends the basis vectors i-hat and j-hat.",
+      "Packaging the landing coordinates of basis vectors into matrix columns."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Linear transformations are functions that take in vectors and output transformed vectors while keeping lines parallel and origin fixed."
+      },
+      {
+        "seconds": 300,
+        "timestamp": "05:00",
+        "text": "To describe any 2D linear transformation, you only need to know where i-hat and j-hat land."
+      },
+      {
+        "seconds": 850,
+        "timestamp": "14:10",
+        "text": "Those two landing points become the two columns of a 2 by 2 matrix."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Linear Transformations Practice",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/linear-transformations/e/linear-transformations"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-4",
+    "module_title": "Unit 2: Linear Transformations & Matrices",
+    "order": 4,
+    "title": "Lecture 4: Linear Transformations as Matrix-Vector Products",
+    "duration_minutes": 27,
+    "youtube_id": "PErhLkQcpZ8",
+    "concept_name": "Matrix-Vector Multiplication",
+    "notes": [
+      "Computing A * x: scaling columns of A by coordinates of x and adding.",
+      "Rotations, shears, and reflections represented as 2x2 matrices.",
+      "Geometric intuition behind matrix multiplication formulas."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Matrix-vector multiplication is simply computing a linear combination of the matrix's columns."
+      },
+      {
+        "seconds": 250,
+        "timestamp": "04:10",
+        "text": "Rotating the plane 90 degrees sends i-hat to (0, 1) and j-hat to (-1, 0)."
+      },
+      {
+        "seconds": 720,
+        "timestamp": "12:00",
+        "text": "Multiplying any vector [x, y] by this matrix yields its rotated coordinates."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Matrix-Vector Product Exercises",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/matrix-vector-products/e/matrix-vector-multiplication"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-5",
+    "module_title": "Unit 3: Matrix Multiplication & Composition",
+    "order": 5,
+    "title": "Lecture 5: Matrix Multiplication as Composition of Transformations",
+    "duration_minutes": 32,
+    "youtube_id": "4PCktDZJH8E",
+    "concept_name": "Transformation Composition & Associativity",
+    "notes": [
+      "Multiplying matrices A * B corresponds to applying transformation B first, followed by A.",
+      "Matrix multiplication is associative: A * (B * C) = (A * B) * C.",
+      "Matrix multiplication is NOT commutative: A * B != B * A in general."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Why is matrix multiplication defined the way it is? Because it represents composition of transformations."
+      },
+      {
+        "seconds": 360,
+        "timestamp": "06:00",
+        "text": "Applying a rotation followed by a shear is not the same as shearing first and rotating second."
+      },
+      {
+        "seconds": 950,
+        "timestamp": "15:50",
+        "text": "Tracking where basis vectors land after sequential transformations derives the standard row-column rule."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Matrix Composition Notes",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/composition-of-transformations/e/matrix-multiplication"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-6",
+    "module_title": "Unit 3: Matrix Multiplication & Composition",
+    "order": 6,
+    "title": "Lecture 6: Vector Transformations in 2D and 3D",
+    "duration_minutes": 29,
+    "youtube_id": "gAbadNuQEjI",
+    "concept_name": "3D Transformations & Basis Matrices",
+    "notes": [
+      "Extending linear transformations to 3D: tracked by i-hat, j-hat, and k-hat.",
+      "3x3 matrices: columns represent landing coordinates in R^3.",
+      "Projections from 3D to 2D in computer graphics camera pipelines."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Moving from 2D to 3D: three basis vectors define 3x3 matrices with 9 parameters."
+      },
+      {
+        "seconds": 300,
+        "timestamp": "05:00",
+        "text": "3D rotations along arbitrary axes and perspective projections."
+      },
+      {
+        "seconds": 800,
+        "timestamp": "13:20",
+        "text": "Computer graphics engines use 4x4 homogeneous matrices to combine linear transformations and translations."
+      }
+    ],
+    "resources": [
+      {
+        "title": "3D Transformations Guide",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/3d-transformations/e/3d-transformations"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-7",
+    "module_title": "Unit 4: Inverses, Determinants & Systems",
+    "order": 7,
+    "title": "Lecture 7: Introduction to Matrices and Systems of Equations",
+    "duration_minutes": 26,
+    "youtube_id": "yRwQ7A6jVLk",
+    "concept_name": "Linear Systems & Matrix Formulation",
+    "notes": [
+      "Translating systems of linear equations into matrix equation A * x = v.",
+      "Geometric interpretation: finding vector x that gets transformed into target v by matrix A.",
+      "Gaussian elimination and row echelon form."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Solving systems of simultaneous linear equations is equivalent to inverting a matrix transformation."
+      },
+      {
+        "seconds": 280,
+        "timestamp": "04:40",
+        "text": "In A x = v, we are looking for the original vector x that lands on target v under transformation A."
+      },
+      {
+        "seconds": 780,
+        "timestamp": "13:00",
+        "text": "If A doesn't squish space into a lower dimension, a unique inverse transformation exists."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Solving Linear Systems Practice",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/matrix-inverse/e/matrix-inverse"
+      }
+    ]
+  },
+  {
+    "id": "khan-la-lec-8",
+    "module_title": "Unit 4: Inverses, Determinants & Systems",
+    "order": 8,
+    "title": "Lecture 8: Determinants, Inverses, and Null Spaces",
+    "duration_minutes": 31,
+    "youtube_id": "xyAuNHPsq-g",
+    "concept_name": "Determinants & Area Scaling Factor",
+    "notes": [
+      "The determinant measures how much a transformation scales areas (or volumes).",
+      "Sign of determinant: positive preserves orientation; negative reverses orientation.",
+      "A determinant of zero means space is squished into lower dimensions, meaning no inverse exists.",
+      "Null space / Kernel: set of all vectors that get squished onto the origin."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "The determinant of a matrix tells you the factor by which area scales under the transformation."
+      },
+      {
+        "seconds": 320,
+        "timestamp": "05:20",
+        "text": "If det(A) = 0, the transformation squishes the entire 2D plane onto a 1D line or point."
+      },
+      {
+        "seconds": 880,
+        "timestamp": "14:40",
+        "text": "When det(A) is non-zero, A is invertible and A^(-1) undoes the transformation exactly."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Determinants and Inverses Exercises",
+        "type": "pdf",
+        "url": "https://www.khanacademy.org/math/linear-algebra/matrix-transformations/determinant-depth/e/determinant-computation"
+      }
+    ]
+  }
+]

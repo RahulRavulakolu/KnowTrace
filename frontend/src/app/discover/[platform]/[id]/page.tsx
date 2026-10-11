@@ -93,7 +93,7 @@ export default function DiscoverCourseDetailPage() {
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
           <h2 className="text-lg font-bold mb-2">Course Not Found</h2>
           <p className="text-xs text-zinc-500 mb-4">
-            Could not locate course "{id}" on platform "{platform}".
+            Could not locate course &ldquo;{id}&rdquo; on platform &ldquo;{platform}&rdquo;.
           </p>
           <Link
             href="/discover"

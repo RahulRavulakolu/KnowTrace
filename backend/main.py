@@ -39,12 +39,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
                 settings.APP_NAME, settings.APP_ENV, settings.VERSION)
 
     # In local development or SQLite environments, initialize tables
-    try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database schemas verified / tables initialized successfully.")
-    except Exception:
-        logger.exception("Database schema initialization failed.")
-        raise
+    if settings.APP_ENV in ("development", "test") or "sqlite" in settings.DATABASE_URL:
+        try:
+            Base.metadata.create_all(bind=engine)
+            logger.info("Database schemas verified / tables initialized successfully.")
+        except Exception:
+            logger.exception("Database schema initialization failed.")
+            raise
+    else:
+        logger.info("Production mode: relying on external Alembic migrations.")
 
     yield
 
@@ -66,10 +69,13 @@ def create_app() -> FastAPI:
     app.add_middleware(RequestIdMiddleware)
 
     # 2. CORS Middleware
+    origins = [str(o).rstrip("/") for o in settings.BACKEND_CORS_ORIGINS] if settings.BACKEND_CORS_ORIGINS else []
+    if settings.DEBUG:
+        origins = list(set(origins + ["http://localhost:3000", "http://127.0.0.1:3000"]))
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
+        allow_origins=origins if origins else ["*"],
+        allow_credentials=bool(origins and "*" not in origins),
         allow_methods=["*"],
         allow_headers=["*"],
     )
@@ -94,29 +100,23 @@ def create_app() -> FastAPI:
             "docs": "/docs",
         }
 
-    # 5. Include Course router at both /courses and /api/v1/courses
-    app.include_router(courses_router)
-    app.include_router(courses_router, prefix=settings.API_V1_STR)
-    app.include_router(concepts_router)
-    app.include_router(concepts_router, prefix=settings.API_V1_STR)
-    app.include_router(chat_router)
-    app.include_router(chat_router, prefix=settings.API_V1_STR)
-    app.include_router(learner_router)
-    app.include_router(learner_router, prefix=settings.API_V1_STR)
-    app.include_router(questions_router)
-    app.include_router(questions_router, prefix=settings.API_V1_STR)
-    app.include_router(assessments_router)
-    app.include_router(assessments_router, prefix=settings.API_V1_STR)
-    app.include_router(misconceptions_router)
-    app.include_router(misconceptions_router, prefix=settings.API_V1_STR)
-    app.include_router(graph_router)
-    app.include_router(graph_router, prefix=settings.API_V1_STR)
-    app.include_router(discover_router)
-    app.include_router(discover_router, prefix=settings.API_V1_STR)
-    app.include_router(sandbox_router)
-    app.include_router(sandbox_router, prefix=settings.API_V1_STR)
-    app.include_router(certificates_router)
-    app.include_router(certificates_router, prefix=settings.API_V1_STR)
+    # 5. Include feature routers at /api/v1 (and root aliases for test compatibility)
+    feature_routers = [
+        courses_router,
+        concepts_router,
+        chat_router,
+        learner_router,
+        questions_router,
+        assessments_router,
+        misconceptions_router,
+        graph_router,
+        discover_router,
+        sandbox_router,
+        certificates_router,
+    ]
+    for r in feature_routers:
+        app.include_router(r)
+        app.include_router(r, prefix=settings.API_V1_STR)
     app.include_router(system_router, prefix=settings.API_V1_STR)
 
     return app

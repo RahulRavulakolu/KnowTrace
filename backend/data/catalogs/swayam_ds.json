@@ -1,0 +1,306 @@
+[
+  {
+    "id": "swayam-ds-lec-1",
+    "module_title": "Week 1: Python Environment & Core Foundations",
+    "order": 1,
+    "title": "Lecture 1: Introduction to Python for Data Science",
+    "duration_minutes": 45,
+    "youtube_id": "KTQlA-q42LA",
+    "concept_name": "Data Science Workflow & Python Setup",
+    "notes": [
+      "Why Python for Data Science: package ecosystem (NumPy, SciPy, Pandas, Scikit-Learn).",
+      "Jupyter notebooks and interactive computing environment.",
+      "Data types, arithmetic expressions, and variable assignment."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Welcome to Python for Data Science. I am Prof. Raghunathan Rengasamy from IIT Madras."
+      },
+      {
+        "seconds": 240,
+        "timestamp": "04:00",
+        "text": "Data science combines statistical domain expertise with algorithmic computation."
+      },
+      {
+        "seconds": 1200,
+        "timestamp": "20:00",
+        "text": "We set up Python and Jupyter environments for rapid exploratory analysis."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Week 1 Lecture Notes (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/week1"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-2",
+    "module_title": "Week 1: Python Environment & Core Foundations",
+    "order": 2,
+    "title": "Lecture 2: Core Python Syntax, Sequences & Control",
+    "duration_minutes": 48,
+    "youtube_id": "Bf34I0eK47Q",
+    "concept_name": "Lists, Tuples & Loops in Data Processing",
+    "notes": [
+      "Lists, tuples, dictionaries, and sets for structured data storage.",
+      "List comprehensions for concise, vectorized-style element processing.",
+      "Conditional branching and iterative loops for batch processing."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we cover data structures: lists, dictionaries, and list comprehensions."
+      },
+      {
+        "seconds": 360,
+        "timestamp": "06:00",
+        "text": "List comprehensions offer a fast and expressive syntax for transforming data records."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Iterating over collections and applying filter criteria."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Week 1 Practice Notebook (IPYNB)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/week1-notebook"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-3",
+    "module_title": "Week 2: Numerical Computing with NumPy",
+    "order": 3,
+    "title": "Lecture 3: Introduction to NumPy & Multidimensional Arrays",
+    "duration_minutes": 50,
+    "youtube_id": "tA42nHmmEKw",
+    "concept_name": "NumPy ndarray & Vectorization",
+    "notes": [
+      "The NumPy ndarray: homogeneous contiguous memory layout for high performance.",
+      "Creating arrays: arange, linspace, zeros, ones, and eye.",
+      "Broadcasting rules in multidimensional arithmetic operations."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Week 2 introduces NumPy, the core library for scientific computing in Python."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "Python lists store pointer references, while NumPy ndarrays store raw typed bytes in contiguous memory."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Broadcasting allows arithmetic between arrays of different but compatible shapes without copying data."
+      }
+    ],
+    "resources": [
+      {
+        "title": "NumPy Reference Cheat Sheet (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/numpy-sheet"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-4",
+    "module_title": "Week 2: Numerical Computing with NumPy",
+    "order": 4,
+    "title": "Lecture 4: NumPy Array Indexing, Slicing & Operations",
+    "duration_minutes": 47,
+    "youtube_id": "c235EsGFcZs",
+    "concept_name": "Boolean Masking & Matrix Algebra",
+    "notes": [
+      "Multi-axis indexing and strides.",
+      "Boolean masking and fancy indexing for conditional subsetting.",
+      "Matrix operations: dot product, matrix inversion, and singular value decomposition."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In this lecture we demonstrate advanced slicing, boolean masks, and matrix algebra with NumPy."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Boolean masks filter rows matching criteria in a single vectorized step."
+      },
+      {
+        "seconds": 1300,
+        "timestamp": "21:40",
+        "text": "np.dot and np.linalg functions execute optimized BLAS/LAPACK routines."
+      }
+    ],
+    "resources": [
+      {
+        "title": "NumPy Operations Exercises (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/numpy-exercises"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-5",
+    "module_title": "Week 3: Tabular Data Processing with Pandas",
+    "order": 5,
+    "title": "Lecture 5: Pandas DataFrames & Data Cleaning",
+    "duration_minutes": 52,
+    "youtube_id": "psJlsGRLKyk",
+    "concept_name": "Pandas Series & DataFrames",
+    "notes": [
+      "Series and DataFrame data structures.",
+      "Reading CSV, Excel, and SQL data sources.",
+      "Handling missing data: isnull, dropna, fillna with statistical imputation."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Pandas is the primary library for data manipulation and tabular analysis in Python."
+      },
+      {
+        "seconds": 360,
+        "timestamp": "06:00",
+        "text": "A DataFrame represents a 2D table with labeled axes: row index and column names."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "Cleaning messy data: identifying nulls and imputing sensible defaults."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Pandas Data Cleaning Notes (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/pandas-cleaning"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-6",
+    "module_title": "Week 3: Tabular Data Processing with Pandas",
+    "order": 6,
+    "title": "Lecture 6: Exploratory Data Analysis & Aggregations",
+    "duration_minutes": 51,
+    "youtube_id": "ABiUtSANHUM",
+    "concept_name": "GroupBy, Pivots & Statistical Summaries",
+    "notes": [
+      "The Split-Apply-Combine strategy with groupby.",
+      "Aggregation functions: mean, median, standard deviation, and custom aggregators.",
+      "Pivot tables and multi-index hierarchical data manipulation."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Exploratory Data Analysis (EDA) reveals patterns and anomalies before model training."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "The groupby paradigm splits rows by category, computes summary metrics, and concatenates results."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Building pivot tables to cross-tabulate multi-attribute survey datasets."
+      }
+    ],
+    "resources": [
+      {
+        "title": "EDA Case Study Handout (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/eda-handout"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-7",
+    "module_title": "Week 4: Data Visualization & Applications",
+    "order": 7,
+    "title": "Lecture 7: Data Visualization with Matplotlib & Seaborn",
+    "duration_minutes": 49,
+    "youtube_id": "KTQlA-q42LA",
+    "concept_name": "Data Visualization & Plot Types",
+    "notes": [
+      "Matplotlib figure and axes object hierarchy.",
+      "Line charts, scatter plots, histograms, and box plots for distribution diagnostics.",
+      "Statistical plotting with Seaborn: heatmaps, pairplots, and regression curves."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Visualizing distributions is essential for diagnosing skewness, outliers, and collinearity."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "We construct histograms and boxplots to examine quantiles and extreme values."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Seaborn correlation heatmaps identify redundant collinear features."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Visualization Best Practices (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/viz-practices"
+      }
+    ]
+  },
+  {
+    "id": "swayam-ds-lec-8",
+    "module_title": "Week 4: Data Visualization & Applications",
+    "order": 8,
+    "title": "Lecture 8: Applied Data Science Pipeline & Case Study",
+    "duration_minutes": 53,
+    "youtube_id": "Bf34I0eK47Q",
+    "concept_name": "End-to-End Analytics Workflow",
+    "notes": [
+      "End-to-end data science project lifecycle: ingest, clean, explore, model, interpret.",
+      "Feature engineering and scaling (MinMax vs StandardScaler).",
+      "Baseline regression and classification evaluation with metrics."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In our final lecture, we assemble the complete data pipeline on a real industrial dataset."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "From raw messy CSV records to engineered features, visual diagnostics, and baseline models."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "Summary of course principles and roadmap toward advanced predictive modeling."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Course Final Project Brief (PDF)",
+        "type": "pdf",
+        "url": "https://swayam.gov.in/courses/python-data-science/final-project"
+      }
+    ]
+  }
+]

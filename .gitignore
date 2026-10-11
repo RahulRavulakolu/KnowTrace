@@ -51,24 +51,20 @@ htmlcov/
 *.db
 dump.rdb
 
-# KnowTrace data, cache, artifacts
-data/
-uploads/
-processed/
-logs/
-.temp/
-.pip_cache/
+# KnowTrace runtime data, cache, artifacts
+/data/
+/uploads/
+/processed/
+/logs/
+/.temp/
+/.pip_cache/
 
 # OS files
 .DS_Store
 Thumbs.db
 
 # Scratch and generator scripts
+scripts/generators/
 find_*.py
 scratch_*.py
-test_catalog_videos.py
-verify_*.py
-check_all_course_videos.py
-generate_mit_lectures.py
-export_mit_lectures.py
-mit_lectures_data.json
+

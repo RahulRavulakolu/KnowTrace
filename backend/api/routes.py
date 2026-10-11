@@ -1,12 +1,13 @@
 """API V1 Route Definitions for KnowTrace."""
 
-from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, status
+from datetime import UTC, datetime
+
+from fastapi import APIRouter, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from backend.core.config import settings
-from backend.core.database import get_db
+from backend.core.db import get_db
 from backend.core.logging import logger
 from backend.schemas.common import HealthResponse
 
@@ -39,7 +40,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
         app_name=settings.APP_NAME,
         app_env=settings.APP_ENV,
         version="0.1.0",
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.now(UTC),
         database=db_status,
         redis=redis_status,
     )

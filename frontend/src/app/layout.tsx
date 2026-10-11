@@ -1,26 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import QueryProvider from '@/components/providers/QueryProvider';
-
-const inter = Inter({
-  variable: '--font-sans',
-  subsets: ['latin'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
-  title: 'KnowTrace — AI-Powered Adaptive Learning & Knowledge Tracing',
+  title: 'Prisma — Creative Studio',
   description:
-    'Modern adaptive learning interface with grounded AI tutoring, source citation verification, misconception detection, and dynamic study plans.',
-  icons: {
-    icon: '/logo-icon.png',
-    apple: '/logo-icon.png',
-  },
+    'Prisma is a worldwide network of visual artists, filmmakers and storytellers bound not by place, status or labels but by passion and hunger to unlock potential through our unique perspectives.',
 };
 
 export default function RootLayout({
@@ -29,9 +13,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-        <QueryProvider>{children}</QueryProvider>
+    <html lang="en" className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-full bg-black text-[#E1E0CC] selection:bg-[#DEDBC8] selection:text-black">
+        {children}
       </body>
     </html>
   );

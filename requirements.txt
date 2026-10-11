@@ -33,6 +33,7 @@ python-pptx==0.6.21
 faster-whisper==1.1.1
 scenedetect==0.6.1
 networkx==3.2.1
+sentence-transformers==3.0.1
 
 # Testing & Dev
 pytest==7.4.3

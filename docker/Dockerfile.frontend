@@ -1,18 +1,25 @@
 # ==========================================
-# KnowTrace Frontend Dockerfile (Next.js 14)
+# KnowTrace Frontend Production Dockerfile (Next.js Standalone Runner)
 # ==========================================
-FROM node:20-alpine AS base
-
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=development \
-    NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-COPY package*.json ./
-RUN npm install
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-COPY . .
+# Copy static assets and standalone server built by Next.js
+COPY public ./public
+COPY .next/standalone ./
+COPY .next/static ./.next/static
 
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "server.js"]

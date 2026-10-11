@@ -345,7 +345,7 @@ export default function DiscoverPage() {
                 <span className="text-xs text-zinc-400 font-medium">Active Filters:</span>
                 {activeQuery && (
                   <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-semibold">
-                    <span>"{activeQuery}"</span>
+                    <span>&ldquo;{activeQuery}&rdquo;</span>
                     <button
                       type="button"
                       onClick={() => {

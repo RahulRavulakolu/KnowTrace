@@ -1,0 +1,774 @@
+[
+  {
+    "id": "nptel-ml-lec-1",
+    "module_title": "Week 1: Introduction to Machine Learning",
+    "order": 1,
+    "title": "Lecture 1: Introduction to the Course & History of ML",
+    "duration_minutes": 55,
+    "youtube_id": "w1v-uQthcXs",
+    "concept_name": "History & Foundations of Machine Learning",
+    "notes": [
+      "Machine learning: algorithms that improve their performance at task T with experience E, measured by P.",
+      "The historical evolution from symbolic AI to statistical machine learning.",
+      "Taxonomy: Supervised learning, Unsupervised learning, and Reinforcement learning."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Hello and welcome to this course on Machine Learning. I am Balaraman Ravindran from IIT Madras."
+      },
+      {
+        "seconds": 250,
+        "timestamp": "04:10",
+        "text": "Machine learning has become the defining paradigm for extracting actionable knowledge from large datasets."
+      },
+      {
+        "seconds": 800,
+        "timestamp": "13:20",
+        "text": "Tom Mitchell's classic definition: a computer program is said to learn from experience E with respect to some class of tasks T and performance measure P."
+      },
+      {
+        "seconds": 1800,
+        "timestamp": "30:00",
+        "text": "We will explore how models generalize beyond observed training points to unseen test samples."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 1 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec01.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-2",
+    "module_title": "Week 1: Introduction to Machine Learning",
+    "order": 2,
+    "title": "Lecture 2: Overview of Machine Learning Paradigms",
+    "duration_minutes": 52,
+    "youtube_id": "whSKA8aO6xQ",
+    "concept_name": "Supervised, Unsupervised & Reinforcement Learning",
+    "notes": [
+      "Supervised learning: regression (continuous outputs) and classification (categorical labels).",
+      "Unsupervised learning: clustering, dimensionality reduction, and density estimation.",
+      "The role of inductive bias in learning algorithms."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In this lecture we provide a high-level overview of the major learning paradigms."
+      },
+      {
+        "seconds": 300,
+        "timestamp": "05:00",
+        "text": "In supervised learning, every training sample comes paired with an ground truth target value."
+      },
+      {
+        "seconds": 1200,
+        "timestamp": "20:00",
+        "text": "Without an inductive bias, every unobserved input is equally likely to have any label whatsoever."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 2 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec02.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-3",
+    "module_title": "Week 2: Linear Algebra for Machine Learning",
+    "order": 3,
+    "title": "Lecture 3: Why Linear Algebra? Scalars, Vectors & Matrices",
+    "duration_minutes": 48,
+    "youtube_id": "NDq_VaZ3iSQ",
+    "concept_name": "Vectors and Feature Spaces",
+    "notes": [
+      "Why linear algebra forms the language of machine learning: data as high-dimensional feature vectors.",
+      "Vector addition, scalar multiplication, and geometric representation.",
+      "Matrix representations of multi-sample datasets."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Linear algebra is the foundational mathematical backbone of modern machine learning."
+      },
+      {
+        "seconds": 360,
+        "timestamp": "06:00",
+        "text": "Each data instance is encoded as an n-dimensional vector residing in feature space R^n."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "A dataset of m examples with n features naturally forms an m by n matrix X."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 3 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec03.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-4",
+    "module_title": "Week 2: Linear Algebra for Machine Learning",
+    "order": 4,
+    "title": "Lecture 4: Basic Operations in Linear Algebra",
+    "duration_minutes": 50,
+    "youtube_id": "zoAFy_6-k1M",
+    "concept_name": "Matrix Multiplications & Transposition",
+    "notes": [
+      "Dot products of vectors and projection interpretation.",
+      "Matrix multiplication as linear transformations.",
+      "Transpose of a matrix and symmetric matrices."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we review fundamental algebraic operations: dot products, matrix products, and transpositions."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "The inner product x^T y measures geometric similarity: ||x|| ||y|| cos(theta)."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Matrix-vector product Ax corresponds to taking a linear combination of the column vectors of A."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 4 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec04.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-5",
+    "module_title": "Week 2: Linear Algebra for Machine Learning",
+    "order": 5,
+    "title": "Lecture 5: Vector Norms and Inner Products",
+    "duration_minutes": 53,
+    "youtube_id": "af3wvva1dus",
+    "concept_name": "L1, L2 and Lp Vector Norms",
+    "notes": [
+      "Definition of vector norm: non-negativity, triangle inequality, absolute homogeneity.",
+      "L2 Euclidean norm, L1 Manhattan norm, and L_infinity maximum norm.",
+      "Norms as regularization penalties (Ridge vs Lasso)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Norms measure the length or magnitude of vectors and appear constantly in loss functions."
+      },
+      {
+        "seconds": 420,
+        "timestamp": "07:00",
+        "text": "The L2 norm is the standard Euclidean length, while the L1 norm sums absolute values."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "We will see how L1 regularization encourages sparsity in feature selection."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 5 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec05.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-6",
+    "module_title": "Week 3: Linear Spaces & Matrix Transformations",
+    "order": 6,
+    "title": "Lecture 6: Linear Combinations, Span & Linear Independence",
+    "duration_minutes": 51,
+    "youtube_id": "I4zAY8NiI_o",
+    "concept_name": "Span, Basis & Linear Independence",
+    "notes": [
+      "Linear combinations of vectors: sum of alpha_i * v_i.",
+      "Span of a set of vectors as a subspace.",
+      "Linear independence: only trivial combination yields the zero vector.",
+      "Basis and dimensionality of vector spaces."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Lecture 6 explores span, linear independence, and basis vectors."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "If a vector can be written as a combination of others, it provides no new independent dimension."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "A minimal spanning set forms a basis, and its cardinality defines the dimension."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 6 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec06.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-7",
+    "module_title": "Week 3: Linear Spaces & Matrix Transformations",
+    "order": 7,
+    "title": "Lecture 7: Matrix Operations & Special Matrices",
+    "duration_minutes": 49,
+    "youtube_id": "p_ADPkATAGA",
+    "concept_name": "Matrix Rank, Inverses & Orthogonal Matrices",
+    "notes": [
+      "Column space, row space, and null space of a matrix.",
+      "Matrix rank and full-rank matrices.",
+      "Orthogonal matrices: Q^T Q = I.",
+      "Positive semi-definite (PSD) matrices in covariance and kernel machines."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In this lecture we examine special matrix classes and the fundamental subspaces."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "The rank of a matrix equals the dimension of its column space, which matches row rank."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Orthogonal matrices preserve lengths and angles under linear transformations."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 7 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec07.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-8",
+    "module_title": "Week 4: Probability Theory & Distributions",
+    "order": 8,
+    "title": "Lecture 8: Introduction to Probability Theory & Distributions",
+    "duration_minutes": 52,
+    "youtube_id": "cp7_ZF2kNi4",
+    "concept_name": "Probability Spaces & Random Variables",
+    "notes": [
+      "Sample space, sigma-algebra, and Kolmogorov axioms of probability.",
+      "Random variables: discrete probability mass functions (PMF) and continuous density functions (PDF).",
+      "Cumulative distribution functions (CDF)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Week 4 begins our study of probability theory, the mathematical tool for reasoning under uncertainty."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "A random variable maps outcomes in a sample space to real numbers."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "For continuous random variables, probability of any single point is zero, but integrals over intervals are positive."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 8 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec08.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-9",
+    "module_title": "Week 4: Probability Theory & Distributions",
+    "order": 9,
+    "title": "Lecture 9: Conditional, Joint & Marginal Probability",
+    "duration_minutes": 50,
+    "youtube_id": "wHRUtNmPjyE",
+    "concept_name": "Joint & Marginal Distributions",
+    "notes": [
+      "Joint probability distribution P(X, Y) across multiple variables.",
+      "Marginalization: summing or integrating out nuisance variables.",
+      "Conditional probability P(X | Y) = P(X, Y) / P(Y).",
+      "Chain rule of probability."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In machine learning we frequently work with joint observations of features X and target Y."
+      },
+      {
+        "seconds": 350,
+        "timestamp": "05:50",
+        "text": "The joint distribution contains all information about how X and Y co-occur."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Marginalization recovers P(X) by summing P(X, Y) over all possible values of Y."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 9 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec09.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-10",
+    "module_title": "Week 4: Probability Theory & Distributions",
+    "order": 10,
+    "title": "Lecture 10: Bayes' Theorem & Inference Examples",
+    "duration_minutes": 54,
+    "youtube_id": "dY5xhLgfV1A",
+    "concept_name": "Bayes' Theorem & Posterior Inference",
+    "notes": [
+      "Bayes' Theorem: P(theta | D) = P(D | theta) * P(theta) / P(D).",
+      "Prior probability, likelihood, evidence, and posterior probability.",
+      "Maximum A Posteriori (MAP) vs Maximum Likelihood Estimation (MLE)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Bayes' Theorem is the fundamental engine for statistical updating in artificial intelligence."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "The prior captures our beliefs before seeing data; the likelihood measures how well parameters explain the observations."
+      },
+      {
+        "seconds": 1700,
+        "timestamp": "28:20",
+        "text": "Multiplying prior and likelihood and normalizing produces the posterior distribution."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 10 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec10.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-11",
+    "module_title": "Week 5: Statistical Independence & Moments",
+    "order": 11,
+    "title": "Lecture 11: Statistical Independence & Conditional Independence",
+    "duration_minutes": 48,
+    "youtube_id": "XtniA_N63z4",
+    "concept_name": "Conditional Independence & Naive Bayes",
+    "notes": [
+      "Statistical independence: P(X, Y) = P(X) * P(Y).",
+      "Conditional independence: P(X, Y | Z) = P(X | Z) * P(Y | Z).",
+      "The Naive Bayes assumption in text classification and spam filtering."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we dissect independence and conditional independence."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "Two events are independent if knowledge of one tells us nothing about the other."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "In Naive Bayes, features are assumed conditionally independent given the class label."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 11 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec11.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-12",
+    "module_title": "Week 5: Statistical Independence & Moments",
+    "order": 12,
+    "title": "Lecture 12: Mathematical Expectation in ML",
+    "duration_minutes": 51,
+    "youtube_id": "V4HH_Sc9EZk",
+    "concept_name": "Expected Value & Linearity of Expectation",
+    "notes": [
+      "Definition of mathematical expectation E[X] = sum(x * p(x)).",
+      "Linearity of expectation: E[aX + bY] = aE[X] + bE[Y] regardless of independence.",
+      "Expected risk and empirical risk minimization (ERM)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Expectation is the probability-weighted average of a random quantity."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Linearity of expectation is an immensely useful property that holds even when variables are correlated."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "Machine learning aims to minimize expected risk over the true data distribution."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 12 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec12.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-13",
+    "module_title": "Week 5: Statistical Independence & Moments",
+    "order": 13,
+    "title": "Lecture 13: Variance, Covariance & Covariance Matrices",
+    "duration_minutes": 53,
+    "youtube_id": "xiB6f1GdFUc",
+    "concept_name": "Variance & Covariance Matrices",
+    "notes": [
+      "Variance Var(X) = E[(X - E[X])^2] measures dispersion.",
+      "Covariance Cov(X, Y) = E[(X - mu_x)(Y - mu_y)].",
+      "Covariance matrix Sigma: positive semi-definite matrix of pairwise covariances.",
+      "Role of covariance in Principal Component Analysis (PCA)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "In this lecture we define variance, covariance, and the covariance matrix Sigma."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "Covariance indicates whether two variables tend to increase together or in opposite directions."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "The eigenvectors of the empirical covariance matrix define the principal directions of variance."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 13 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec13.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-14",
+    "module_title": "Week 5: Statistical Independence & Moments",
+    "order": 14,
+    "title": "Lecture 14: Relations for Expectation & Covariance",
+    "duration_minutes": 49,
+    "youtube_id": "BtJjkET4IoA",
+    "concept_name": "Properties of Expectation and Moments",
+    "notes": [
+      "Transformation of random variables and moments.",
+      "Var(aX + b) = a^2 Var(X).",
+      "Cauchy-Schwarz inequality for random variables: |Cov(X, Y)| <= sqrt(Var(X) Var(Y))."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Lecture 14 formalizes algebraic identities for expectations and variances under linear transformations."
+      },
+      {
+        "seconds": 380,
+        "timestamp": "06:20",
+        "text": "When we apply an affine transformation y = Ax + b, the new covariance matrix is A Sigma A^T."
+      },
+      {
+        "seconds": 1400,
+        "timestamp": "23:20",
+        "text": "Correlation coefficient rho bounds pairwise relationship strictly in [-1, +1]."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 14 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec14.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-15",
+    "module_title": "Week 6: Calculus & Numerical Representation",
+    "order": 15,
+    "title": "Lecture 15: Machine Representation of Numbers & Floating Point",
+    "duration_minutes": 50,
+    "youtube_id": "xzah5O_93ZU",
+    "concept_name": "Floating Point & Numerical Stability",
+    "notes": [
+      "IEEE 754 floating point standard: sign, exponent, mantissa.",
+      "Underflow, overflow, and numerical cancellation.",
+      "Log-sum-exp trick for stable probability computation in softmax and cross-entropy."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Computers do not work with real numbers; they work with finite-precision floating point representations."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Multiplying many small probabilities causes numerical underflow to zero."
+      },
+      {
+        "seconds": 1500,
+        "timestamp": "25:00",
+        "text": "By shifting by the maximum log-term, the log-sum-exp trick prevents underflow and overflow entirely."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 15 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec15.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-16",
+    "module_title": "Week 6: Calculus & Numerical Representation",
+    "order": 16,
+    "title": "Lecture 16: Derivatives, Gradient, Hessian & Jacobian",
+    "duration_minutes": 53,
+    "youtube_id": "fqq_UR4zhfI",
+    "concept_name": "Multivariable Calculus & Gradients",
+    "notes": [
+      "Partial derivatives and the gradient vector grad(f) pointing in steepest ascent direction.",
+      "Jacobian matrix of vector-valued functions.",
+      "Hessian matrix of second derivatives and curvature / convexity tests."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Optimization in high dimensions relies on multivariable calculus: gradients, Jacobians, and Hessians."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "The gradient vector grad f(x) contains all first partial derivatives."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "The Hessian matrix describes local curvature. If the Hessian is positive definite everywhere, f is strictly convex."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 16 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec16.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-17",
+    "module_title": "Week 6: Calculus & Numerical Representation",
+    "order": 17,
+    "title": "Lecture 17: Matrix Calculus & Optimization Foundations",
+    "duration_minutes": 52,
+    "youtube_id": "IgAr5kzza78",
+    "concept_name": "Matrix Calculus & Vector Derivatives",
+    "notes": [
+      "Numerator vs denominator layout conventions.",
+      "Derivatives of linear forms: d/dx (a^T x) = a.",
+      "Derivatives of quadratic forms: d/dx (x^T A x) = (A + A^T) x.",
+      "Deriving ordinary least squares normal equations: (X^T X) w = X^T y."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Today we master matrix calculus notation to compute derivatives with respect to weight vectors."
+      },
+      {
+        "seconds": 500,
+        "timestamp": "08:20",
+        "text": "Setting the gradient of the Mean Squared Error loss to zero directly yields the normal equations."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "If X^T X is invertible, we get the analytical solution w = (X^T X)^(-1) X^T y."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 17 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec17.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-18",
+    "module_title": "Week 7: Optimization for Machine Learning",
+    "order": 18,
+    "title": "Lecture 18: Unconstrained Optimization & Gradient Descent",
+    "duration_minutes": 54,
+    "youtube_id": "bDUDrfbZCCA",
+    "concept_name": "Gradient Descent & Convergence",
+    "notes": [
+      "Unconstrained optimization: minimizing f(w) over w in R^d.",
+      "Gradient descent update rule: w := w - alpha * grad(f(w)).",
+      "Learning rate alpha selection, oscillation, and divergence.",
+      "Convex vs non-convex optimization landscapes."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Gradient descent is the primary computational algorithm powering contemporary deep learning."
+      },
+      {
+        "seconds": 450,
+        "timestamp": "07:30",
+        "text": "We take iterative steps in the direction opposite to the gradient vector."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "For convex functions, gradient descent is guaranteed to converge to the global minimum with an appropriate step size."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 18 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec18.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-19",
+    "module_title": "Week 7: Optimization for Machine Learning",
+    "order": 19,
+    "title": "Lecture 19: Introduction to Constrained Optimization & KKT",
+    "duration_minutes": 51,
+    "youtube_id": "Dn1vmANCvvs",
+    "concept_name": "Lagrange Multipliers & KKT Conditions",
+    "notes": [
+      "Equality constraints and Lagrange multipliers.",
+      "Inequality constraints and Karush-Kuhn-Tucker (KKT) conditions.",
+      "Primal and dual optimization problems; weak and strong duality.",
+      "Application to maximum-margin hyperplanes in Support Vector Machines (SVM)."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "When optimization parameters must satisfy physical or regulatory constraints, we use Lagrange duality."
+      },
+      {
+        "seconds": 500,
+        "timestamp": "08:20",
+        "text": "The KKT conditions generalize Lagrange multipliers to inequality constraints."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "This dual formulation allows the kernel trick in Support Vector Machines."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 19 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec19.pdf"
+      }
+    ]
+  },
+  {
+    "id": "nptel-ml-lec-20",
+    "module_title": "Week 7: Optimization for Machine Learning",
+    "order": 20,
+    "title": "Lecture 20: Introduction to Numerical Optimization Algorithms",
+    "duration_minutes": 53,
+    "youtube_id": "D4zMKh3krPc",
+    "concept_name": "Stochastic Gradient Descent & Momentum",
+    "notes": [
+      "Batch Gradient Descent vs Stochastic Gradient Descent (SGD) vs Mini-batch SGD.",
+      "Momentum and acceleration methods for ravines and high-curvature surfaces.",
+      "Adaptive learning rate methods: AdaGrad, RMSprop, Adam."
+    ],
+    "transcript": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "text": "Lecture 20 concludes our foundational mathematics with practical stochastic optimization algorithms."
+      },
+      {
+        "seconds": 400,
+        "timestamp": "06:40",
+        "text": "Evaluating gradients over millions of training samples is computationally prohibitive, so SGD samples minibatches."
+      },
+      {
+        "seconds": 1600,
+        "timestamp": "26:40",
+        "text": "Momentum accumulates past velocity vectors to accelerate traversal along consistent directions and damp oscillations."
+      }
+    ],
+    "resources": [
+      {
+        "title": "Lecture 20 Slides (PDF)",
+        "type": "pdf",
+        "url": "https://nptel.ac.in/courses/106106139/lec20.pdf"
+      }
+    ]
+  }
+]
