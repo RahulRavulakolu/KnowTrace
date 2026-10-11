@@ -6,7 +6,12 @@ from pathlib import Path
 
 def get_playlist_videos(playlist_id):
     url = f"https://www.youtube.com/playlist?list={playlist_id}"
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0"})
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0"
+        },
+    )
     html = urllib.request.urlopen(req).read().decode("utf-8", errors="ignore")
 
     # Try finding ytInitialData
@@ -20,6 +25,7 @@ def get_playlist_videos(playlist_id):
     if m:
         try:
             data = json.loads(m.group(1))
+
             # Walk json to find playlistVideoRenderer
             def walk(obj):
                 if isinstance(obj, dict):
@@ -35,13 +41,14 @@ def get_playlist_videos(playlist_id):
                 elif isinstance(obj, list):
                     for item in obj:
                         walk(item)
+
             walk(data)
         except Exception as e:
             print("Error parsing ytInitialData:", e)
 
     if not unique:
         # Fallback regex for videoId
-        vids = re.findall(r'/watch\?v=([a-zA-Z0-9_-]{11})', html)
+        vids = re.findall(r"/watch\?v=([a-zA-Z0-9_-]{11})", html)
         for vid in vids:
             if vid not in seen and vid != "live_stream":
                 seen.add(vid)
@@ -49,15 +56,19 @@ def get_playlist_videos(playlist_id):
 
     return unique
 
+
 def verify_oembed(vid):
     try:
-        url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        url = (
+            f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        )
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         res = urllib.request.urlopen(req)
         d = json.loads(res.read())
         return True, d.get("title")
     except Exception as e:
         return False, str(e)
+
 
 print("--- 1. MIT 6.0001 Python (PLUl4u3cNGP63WbdFxL8giv4yhGDMGa57q) ---")
 python_vids = get_playlist_videos("PLUl4u3cNGP63WbdFxL8giv4yhGDMGa57q")
@@ -93,11 +104,13 @@ for i, (vid, _title) in enumerate(nptel_vids, 1):
 out_path = Path(__file__).resolve().parent.parent / "data" / "verified_playlists.json"
 out_path.parent.mkdir(parents=True, exist_ok=True)
 with open(out_path, "w", encoding="utf-8") as f:
-    json.dump({
-        "mit_python": verified_python,
-        "mit_algorithms": verified_algo,
-        "nptel_ml": verified_nptel
-    }, f, indent=2)
+    json.dump(
+        {
+            "mit_python": verified_python,
+            "mit_algorithms": verified_algo,
+            "nptel_ml": verified_nptel,
+        },
+        f,
+        indent=2,
+    )
 print(f"\nSaved to {out_path}")
-
-

@@ -78,10 +78,17 @@ def update(
     if read_feedback:
         weight *= 0.8
     new_p = clip(prior + weight * (posterior - prior))
-    new_half_life = min(MAX_HALF_LIFE, INITIAL_HALF_LIFE if not correct else min(MAX_HALF_LIFE, 2 * INITIAL_HALF_LIFE))
+    new_half_life = min(
+        MAX_HALF_LIFE,
+        INITIAL_HALF_LIFE if not correct else min(MAX_HALF_LIFE, 2 * INITIAL_HALF_LIFE),
+    )
     return {"p": new_p, "half_life": new_half_life, "posterior": clip(posterior), "weight": weight}
 
 
 def next_half_life(current: float, correct: bool) -> float:
     """Double the review interval on success, retaining it on failure."""
-    return min(MAX_HALF_LIFE, max(INITIAL_HALF_LIFE, current * 2.0)) if correct else max(INITIAL_HALF_LIFE, current)
+    return (
+        min(MAX_HALF_LIFE, max(INITIAL_HALF_LIFE, current * 2.0))
+        if correct
+        else max(INITIAL_HALF_LIFE, current)
+    )

@@ -17,13 +17,24 @@ def _render_slides(path: Path, output_dir: Path) -> bool:
     """Render a deck through LibreOffice when available."""
     try:
         subprocess.run(
-            ["soffice", "--headless", "--convert-to", "pdf", "--outdir", str(output_dir), str(path)],
-            check=True, capture_output=True, timeout=120,
+            [
+                "soffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(output_dir),
+                str(path),
+            ],
+            check=True,
+            capture_output=True,
+            timeout=120,
         )
         pdf_path = output_dir / f"{path.stem}.pdf"
         if not pdf_path.exists():
             return False
         import fitz
+
         document = fitz.open(str(pdf_path))
         for index, page in enumerate(document):
             page.get_pixmap(matrix=fitz.Matrix(1.5, 1.5)).save(

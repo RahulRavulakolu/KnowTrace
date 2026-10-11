@@ -41,21 +41,29 @@ def score(q: Any, learner_state: dict[str, Any]) -> float:
     else:
         if last_seen.tzinfo is None:
             last_seen = last_seen.replace(tzinfo=timezone.utc)
-        risk = 1 - math.exp(-max(0.0, (now - last_seen).total_seconds() / 86400.0) /
-                            max(float(mastery.get("half_life", 3.0)), 0.001))
+        risk = 1 - math.exp(
+            -max(0.0, (now - last_seen).total_seconds() / 86400.0)
+            / max(float(mastery.get("half_life", 3.0)), 0.001)
+        )
     served_embeddings = learner_state.get("served_embeddings", [])
-    novelty = 1 - max((cosine(_value(q, "embedding"), item) for item in served_embeddings), default=0.0)
+    novelty = 1 - max(
+        (cosine(_value(q, "embedding"), item) for item in served_embeddings), default=0.0
+    )
     served = str(_value(q, "id")) in {str(item) for item in learner_state.get("served_ids", [])}
     scope = learner_state.get("scope")
     in_scope = 1.0 if not scope or concept_id in {str(item) for item in scope} else 0.3
     penalty = 1.0 if served else 0.5 if novelty < 0.1 else 0.0
-    return in_scope * (
-        0.35 * (1 - p)
-        + 0.20 * max([1 - value for value in prereq_values], default=0.0)
-        + 0.20 * (1 - abs(predicted - 0.7))
-        + 0.15 * novelty
-        + 0.10 * risk
-    ) - penalty
+    return (
+        in_scope
+        * (
+            0.35 * (1 - p)
+            + 0.20 * max([1 - value for value in prereq_values], default=0.0)
+            + 0.20 * (1 - abs(predicted - 0.7))
+            + 0.15 * novelty
+            + 0.10 * risk
+        )
+        - penalty
+    )
 
 
 def why_selected(q: Any, learner_state: dict[str, Any]) -> str:
@@ -72,7 +80,9 @@ def why_selected(q: Any, learner_state: dict[str, Any]) -> str:
     return " · ".join(tags)
 
 
-def softmax_sample(candidates: list[Any], learner_state: dict[str, Any], temperature: float = 0.3) -> Any:
+def softmax_sample(
+    candidates: list[Any], learner_state: dict[str, Any], temperature: float = 0.3
+) -> Any:
     """Return the highest-probability candidate from a stable top-three sample."""
     ranked = sorted(candidates, key=lambda q: score(q, learner_state), reverse=True)[:3]
     if not ranked:
@@ -81,9 +91,19 @@ def softmax_sample(candidates: list[Any], learner_state: dict[str, Any], tempera
     return ranked[max(range(len(weights)), key=lambda index: weights[index])]
 
 
-def next_question(assessment_id: str, db_session: Any, user_id: str | None = None) -> dict[str, Any] | None:
+def next_question(
+    assessment_id: str, db_session: Any, user_id: str | None = None
+) -> dict[str, Any] | None:
     """Select and register the next approved question for an assessment."""
-    from backend.models.db import Assessment, Attempt, LearnerMastery, Misconception, Prerequisite, Question, UserMisconception
+    from backend.models.db import (
+        Assessment,
+        Attempt,
+        LearnerMastery,
+        Misconception,
+        Prerequisite,
+        Question,
+        UserMisconception,
+    )
 
     assessment = db_session.get(Assessment, assessment_id)
     if assessment is None:
@@ -94,19 +114,27 @@ def next_question(assessment_id: str, db_session: Any, user_id: str | None = Non
     attempts = db_session.query(Attempt).filter(Attempt.assessment_id == assessment.id).all()
     answered_ids = {str(item.question_id) for item in attempts}
     served_ids = list(dict.fromkeys([*served_ids, *answered_ids]))
-    candidates = db_session.query(Question).filter(
-        Question.status == "approved",
-        Question.id.notin_(served_ids or [""]),
-        Question.concept_id.in_(config.get("concept_ids", [])),
-    ).all()
+    candidates = (
+        db_session.query(Question)
+        .filter(
+            Question.status == "approved",
+            Question.id.notin_(served_ids or [""]),
+            Question.concept_id.in_(config.get("concept_ids", [])),
+        )
+        .all()
+    )
     if not candidates:
         return None
     mastery = {
         str(item.concept_id): {
-            "p": item.p_know, "p_eff": p_eff(item.p_know, item.half_life, item.last_practiced_at),
-            "half_life": item.half_life, "last_seen": item.last_practiced_at,
+            "p": item.p_know,
+            "p_eff": p_eff(item.p_know, item.half_life, item.last_practiced_at),
+            "half_life": item.half_life,
+            "last_seen": item.last_practiced_at,
         }
-        for item in db_session.query(LearnerMastery).filter(LearnerMastery.user_id == resolved_user).all()
+        for item in db_session.query(LearnerMastery)
+        .filter(LearnerMastery.user_id == resolved_user)
+        .all()
     }
     prerequisites: dict[str, list[str]] = {}
     for edge in db_session.query(Prerequisite).filter(Prerequisite.kind == "requires").all():
@@ -121,14 +149,25 @@ def next_question(assessment_id: str, db_session: Any, user_id: str | None = Non
         prerequisite_candidates = [q for q in candidates if str(q.concept_id) in weak_prereqs]
         if prerequisite_candidates:
             candidates = prerequisite_candidates
-    active_rows = db_session.query(UserMisconception).join(Misconception).filter(
-        UserMisconception.user_id == resolved_user, UserMisconception.status == "active",
-        UserMisconception.severity >= 2,
-    ).all()
+    active_rows = (
+        db_session.query(UserMisconception)
+        .join(Misconception)
+        .filter(
+            UserMisconception.user_id == resolved_user,
+            UserMisconception.status == "active",
+            UserMisconception.severity >= 2,
+        )
+        .all()
+    )
     active_ids = {str(row.misconception_id) for row in active_rows}
     discriminating = [
-        q for q in candidates
-        if any(str(option.get("misconception_id")) in active_ids for option in (q.options or []) if isinstance(option, dict))
+        q
+        for q in candidates
+        if any(
+            str(option.get("misconception_id")) in active_ids
+            for option in (q.options or [])
+            if isinstance(option, dict)
+        )
         or str(getattr(q, "misconception_id", "")) in active_ids
     ]
     if discriminating:
@@ -142,18 +181,31 @@ def next_question(assessment_id: str, db_session: Any, user_id: str | None = Non
     config["served_ids"] = served_ids
     assessment.config = config
     db_session.commit()
-    return {"question": selected, "why_selected": why_selected(selected, state),
-            "progress": {"current": len(attempts), "total": assessment.config.get("total", 10)},
-            "misconception_active": misconception_active}
+    return {
+        "question": selected,
+        "why_selected": why_selected(selected, state),
+        "progress": {"current": len(attempts), "total": assessment.config.get("total", 10)},
+        "misconception_active": misconception_active,
+    }
 
 
-def diagnostic_questions(candidates: list[Any], learner_state: dict[str, Any], limit: int = 10) -> list[Any]:
+def diagnostic_questions(
+    candidates: list[Any], learner_state: dict[str, Any], limit: int = 10
+) -> list[Any]:
     """Pick the most uncertain candidate from each top-level topic first."""
     selected: list[Any] = []
     topics_seen: set[str] = set()
-    ranked = sorted(candidates, key=lambda q: abs(
-        float(learner_state.get("mastery", {}).get(str(_value(q, "concept_id")), {}).get("p_eff", 0.3)) - 0.5
-    ))
+    ranked = sorted(
+        candidates,
+        key=lambda q: abs(
+            float(
+                learner_state.get("mastery", {})
+                .get(str(_value(q, "concept_id")), {})
+                .get("p_eff", 0.3)
+            )
+            - 0.5
+        ),
+    )
     for question in ranked:
         topic_id = str(_value(question, "topic_id", _value(question, "concept_id")))
         if topic_id not in topics_seen:

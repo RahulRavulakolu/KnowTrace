@@ -85,4 +85,3 @@ def test_discover_ingest_course(client: TestClient):
     assert data["status"] in ("enrolled", "existing")
     assert data["course_id"]
     assert "Machine Learning" in data["title"]
-

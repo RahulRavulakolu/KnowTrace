@@ -28,8 +28,11 @@ def _get_cache() -> diskcache.Cache:
             str(cache_dir),
             size_limit=settings.LLM_CACHE_SIZE_LIMIT,
         )
-        logger.info("LLM disk cache initialized at %s (limit=%d bytes)",
-                     cache_dir, settings.LLM_CACHE_SIZE_LIMIT)
+        logger.info(
+            "LLM disk cache initialized at %s (limit=%d bytes)",
+            cache_dir,
+            settings.LLM_CACHE_SIZE_LIMIT,
+        )
     return _cache
 
 

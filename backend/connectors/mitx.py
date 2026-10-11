@@ -49,10 +49,27 @@ _MITX_CATALOG: List[CatalogCourseData] = [
                 order=1,
                 description="Variables, types, operators, branching, iteration",
                 resources=[
-                    CourseResourceData(title="Lecture 1: What is computation?", resource_type=ResourceType.VIDEO, duration_minutes=50, order=1),
-                    CourseResourceData(title="Lecture 2: Branching and Iteration", resource_type=ResourceType.VIDEO, duration_minutes=45, order=2),
-                    CourseResourceData(title="Unit 1 Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=3),
-                    CourseResourceData(title="Problem Set 1", resource_type=ResourceType.ASSIGNMENT, order=4),
+                    CourseResourceData(
+                        title="Lecture 1: What is computation?",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=50,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 2: Branching and Iteration",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=45,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Unit 1 Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 1", resource_type=ResourceType.ASSIGNMENT, order=4
+                    ),
                 ],
             ),
             CourseModuleData(
@@ -60,10 +77,27 @@ _MITX_CATALOG: List[CatalogCourseData] = [
                 order=2,
                 description="Functions, recursion, global variables, modules",
                 resources=[
-                    CourseResourceData(title="Lecture 3: String Manipulation, Guess and Check", resource_type=ResourceType.VIDEO, duration_minutes=48, order=1),
-                    CourseResourceData(title="Lecture 4: Decomposition, Abstraction, Functions", resource_type=ResourceType.VIDEO, duration_minutes=52, order=2),
-                    CourseResourceData(title="Unit 2 Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=3),
-                    CourseResourceData(title="Problem Set 2", resource_type=ResourceType.ASSIGNMENT, order=4),
+                    CourseResourceData(
+                        title="Lecture 3: String Manipulation, Guess and Check",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=48,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 4: Decomposition, Abstraction, Functions",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=52,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Unit 2 Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 2", resource_type=ResourceType.ASSIGNMENT, order=4
+                    ),
                 ],
             ),
             CourseModuleData(
@@ -71,10 +105,27 @@ _MITX_CATALOG: List[CatalogCourseData] = [
                 order=3,
                 description="Tuples, lists, aliasing, mutability, cloning",
                 resources=[
-                    CourseResourceData(title="Lecture 5: Tuples, Lists, Aliasing", resource_type=ResourceType.VIDEO, duration_minutes=50, order=1),
-                    CourseResourceData(title="Lecture 6: Recursion, Dictionaries", resource_type=ResourceType.VIDEO, duration_minutes=55, order=2),
-                    CourseResourceData(title="Unit 3 Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=3),
-                    CourseResourceData(title="Problem Set 3", resource_type=ResourceType.ASSIGNMENT, order=4),
+                    CourseResourceData(
+                        title="Lecture 5: Tuples, Lists, Aliasing",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=50,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 6: Recursion, Dictionaries",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=55,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Unit 3 Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 3", resource_type=ResourceType.ASSIGNMENT, order=4
+                    ),
                 ],
             ),
         ],
@@ -135,16 +186,19 @@ class MITxConnector(CourseSourceConnector):
 
     platform = SourcePlatform.MITX
 
-    def search_courses(self, query: str, limit: int = 20, offset: int = 0) -> List[CatalogCourseData]:
+    def search_courses(
+        self, query: str, limit: int = 20, offset: int = 0
+    ) -> List[CatalogCourseData]:
         query_lower = query.lower()
         results = [
-            c for c in _MITX_CATALOG
+            c
+            for c in _MITX_CATALOG
             if query_lower in c.title.lower()
             or query_lower in c.description.lower()
             or query_lower in c.instructor.lower()
             or any(query_lower in tag for tag in c.tags)
         ]
-        return results[offset:offset + limit]
+        return results[offset : offset + limit]
 
     def get_course(self, source_id: str) -> Optional[CatalogCourseData]:
         return _MITX_BY_ID.get(source_id)

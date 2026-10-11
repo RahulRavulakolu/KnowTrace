@@ -26,11 +26,20 @@ def run(rows: list[dict[str, Any]], output: Path) -> dict[str, Any]:
     result = []
     for config, description in CONFIGS.items():
         metrics = {}
-        for metric in ("faithfulness", "context_recall", "context_precision", "citation_accuracy", "citation_recall"):
+        for metric in (
+            "faithfulness",
+            "context_recall",
+            "context_precision",
+            "citation_accuracy",
+            "citation_recall",
+        ):
             values = [float(row.get(config, {}).get(metric, row.get(metric, 0.0))) for row in rows]
             metrics[metric] = bootstrap_ci(values)
         result.append({"config": config, "description": description, **metrics})
-    payload = {"configs": result, "insights": "Compare confidence intervals before claiming a component improves performance."}
+    payload = {
+        "configs": result,
+        "insights": "Compare confidence intervals before claiming a component improves performance.",
+    }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return payload

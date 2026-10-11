@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 class SourcePlatform(str, enum.Enum):
     """Supported educational source platforms."""
+
     NPTEL = "nptel"
     SWAYAM = "swayam"
     MIT_OCW = "mit_ocw"
@@ -39,6 +40,7 @@ class SourcePlatform(str, enum.Enum):
 
 class AccessType(str, enum.Enum):
     """Course access classification."""
+
     FREE = "free"
     FREE_PAID_CERT = "free_paid_cert"
     AUDIT_LIMITED = "audit_limited"
@@ -63,6 +65,7 @@ class AccessType(str, enum.Enum):
 
 class ResourceType(str, enum.Enum):
     """Types of course resources."""
+
     VIDEO = "video"
     LECTURE_NOTE = "lecture_note"
     PDF = "pdf"
@@ -81,6 +84,7 @@ class ResourceType(str, enum.Enum):
 @dataclass
 class CourseResourceData:
     """A single course resource (video, PDF, assignment, etc.)."""
+
     title: str
     resource_type: ResourceType
     url: Optional[str] = None
@@ -95,6 +99,7 @@ class CourseResourceData:
 @dataclass
 class CourseModuleData:
     """A module/week/unit within a course."""
+
     title: str
     order: int
     description: Optional[str] = None
@@ -109,6 +114,7 @@ class CatalogCourseData:
     This is the unified shape returned by all connectors, regardless of origin.
     It contains only discovery-level metadata — no downloaded content.
     """
+
     source_platform: SourcePlatform
     source_id: str
     title: str
@@ -170,7 +176,9 @@ class CourseSourceConnector(ABC):
     platform: SourcePlatform
 
     @abstractmethod
-    def search_courses(self, query: str, limit: int = 20, offset: int = 0) -> List[CatalogCourseData]:
+    def search_courses(
+        self, query: str, limit: int = 20, offset: int = 0
+    ) -> List[CatalogCourseData]:
         """Search for courses matching the query string.
 
         Returns lightweight catalog entries suitable for display in search results.

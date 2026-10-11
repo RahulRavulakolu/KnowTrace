@@ -9,12 +9,14 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class PlatformInfo(BaseModel):
     """A single supported platform."""
+
     id: str
     name: str
 
 
 class CatalogCourseResponse(BaseModel):
     """Unified catalog course for search results."""
+
     source_platform: str
     source_platform_name: str
     source_id: str
@@ -43,6 +45,7 @@ class CatalogCourseResponse(BaseModel):
 
 class CourseResourceResponse(BaseModel):
     """A single resource within a module."""
+
     title: str
     resource_type: str
     url: Optional[str] = None
@@ -54,6 +57,7 @@ class CourseResourceResponse(BaseModel):
 
 class CourseModuleResponse(BaseModel):
     """A module/week within a course."""
+
     title: str
     order: int
     description: Optional[str] = None
@@ -62,11 +66,13 @@ class CourseModuleResponse(BaseModel):
 
 class CatalogCourseDetailResponse(CatalogCourseResponse):
     """Full course detail including modules and resources."""
+
     modules: List[CourseModuleResponse] = Field(default_factory=list)
 
 
 class UnifiedSearchResponse(BaseModel):
     """Response shape for unified cross-platform search."""
+
     total: int
     courses: List[CatalogCourseResponse]
     platforms_searched: List[str]
@@ -74,6 +80,7 @@ class UnifiedSearchResponse(BaseModel):
 
 class DiscoverSearchParams(BaseModel):
     """Query parameters for discovery search."""
+
     query: str = Field(..., min_length=1, max_length=500)
     platforms: Optional[List[str]] = None
     access_types: Optional[List[str]] = None
@@ -83,6 +90,7 @@ class DiscoverSearchParams(BaseModel):
 
 class IngestCourseRequest(BaseModel):
     """Payload to trigger ingestion of a catalog course into KnowTrace."""
+
     platform: str
     source_id: str
     owner_id: Optional[str] = None
@@ -90,10 +98,10 @@ class IngestCourseRequest(BaseModel):
 
 class IngestCourseResponse(BaseModel):
     """Result of enrolling/ingesting a catalog course."""
+
     course_id: str
     title: str
     source_platform: str
     source_id: str
     status: str  # enrolled, existing
     message: str
-

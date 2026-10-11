@@ -64,15 +64,21 @@ def onboarding(payload: OnboardingRequest, db: Session = Depends(get_db)) -> dic
     user_id = _default_user(db, payload.user_id)
     try:
         return post_onboarding(
-            db, user_id, payload.course_id, payload.exam_date,
-            payload.hours_per_week, payload.self_ratings,
+            db,
+            user_id,
+            payload.course_id,
+            payload.exam_date,
+            payload.hours_per_week,
+            payload.self_ratings,
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.get("/mastery")
-def mastery(course_id: str, user_id: str | None = None, db: Session = Depends(get_db)) -> list[dict[str, Any]]:
+def mastery(
+    course_id: str, user_id: str | None = None, db: Session = Depends(get_db)
+) -> list[dict[str, Any]]:
     return get_mastery(db, _default_user(db, user_id), course_id)
 
 
@@ -80,17 +86,28 @@ def mastery(course_id: str, user_id: str | None = None, db: Session = Depends(ge
 def attempt(payload: AttemptRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
     try:
         return record_attempt(
-            db, payload.user_id, payload.question_id, payload.response,
-            payload.correct, payload.hint_used, payload.time_ms,
-            payload.confidence, payload.read_feedback,
+            db,
+            payload.user_id,
+            payload.question_id,
+            payload.response,
+            payload.correct,
+            payload.hint_used,
+            payload.time_ms,
+            payload.confidence,
+            payload.read_feedback,
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.post("/record-conversation")
-def conversation(payload: ConversationRequest, db: Session = Depends(get_db)) -> list[dict[str, Any]]:
+def conversation(
+    payload: ConversationRequest, db: Session = Depends(get_db)
+) -> list[dict[str, Any]]:
     return record_conversation_evidence(
-        db, payload.user_id, payload.message,
-        payload.tutor_cited_concepts, payload.tutor_answer,
+        db,
+        payload.user_id,
+        payload.message,
+        payload.tutor_cited_concepts,
+        payload.tutor_answer,
     )

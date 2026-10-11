@@ -20,38 +20,46 @@ def chunk_text(
     for paragraph in paragraphs:
         words = paragraph.split()
         if current and current_words + len(words) > max_tokens:
-            chunks.append({
-                "text": " ".join(current),
-                "page": page_num,
-                "modality": modality,
-                "extraction_confidence": extraction_confidence,
-            })
-            current, current_words = [], 0
-        if len(words) > max_tokens:
-            for start in range(0, len(words), max_tokens):
-                segment = words[start:start + max_tokens]
-                if current:
-                    chunks.append({
-                        "text": " ".join(current),
-                        "page": page_num,
-                        "modality": modality,
-                        "extraction_confidence": extraction_confidence,
-                    })
-                    current, current_words = [], 0
-                chunks.append({
-                    "text": " ".join(segment),
+            chunks.append(
+                {
+                    "text": " ".join(current),
                     "page": page_num,
                     "modality": modality,
                     "extraction_confidence": extraction_confidence,
-                })
+                }
+            )
+            current, current_words = [], 0
+        if len(words) > max_tokens:
+            for start in range(0, len(words), max_tokens):
+                segment = words[start : start + max_tokens]
+                if current:
+                    chunks.append(
+                        {
+                            "text": " ".join(current),
+                            "page": page_num,
+                            "modality": modality,
+                            "extraction_confidence": extraction_confidence,
+                        }
+                    )
+                    current, current_words = [], 0
+                chunks.append(
+                    {
+                        "text": " ".join(segment),
+                        "page": page_num,
+                        "modality": modality,
+                        "extraction_confidence": extraction_confidence,
+                    }
+                )
         else:
             current.append(paragraph)
             current_words += len(words)
     if current:
-        chunks.append({
-            "text": " ".join(current),
-            "page": page_num,
-            "modality": modality,
-            "extraction_confidence": extraction_confidence,
-        })
+        chunks.append(
+            {
+                "text": " ".join(current),
+                "page": page_num,
+                "modality": modality,
+                "extraction_confidence": extraction_confidence,
+            }
+        )
     return chunks

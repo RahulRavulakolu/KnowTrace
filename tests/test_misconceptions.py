@@ -27,11 +27,15 @@ def test_severity_thresholds_and_confidence(db_session) -> None:
     course = Course(owner=user, title="Misconception course")
     topic = Topic(course=course, name="Topic")
     concept = Concept(topic=topic, name="Concept")
-    misconception = Misconception(concept=concept, course_id=course.id, label="Confusion", description="Mixes concepts")
+    misconception = Misconception(
+        concept=concept, course_id=course.id, label="Confusion", description="Mixes concepts"
+    )
     db_session.add_all([user, course, topic, concept, misconception])
     db_session.commit()
     update_misconception_severity(db_session, user.id, misconception.id, "wrong_answer", "a1", 0.9)
-    row = update_misconception_severity(db_session, user.id, misconception.id, "wrong_answer", "a2", 0.9)
+    row = update_misconception_severity(
+        db_session, user.id, misconception.id, "wrong_answer", "a2", 0.9
+    )
     assert row.severity == 2.6
     assert row.status == "active"
     assert is_misconception_active(db_session, user.id, misconception.id)
@@ -46,11 +50,17 @@ def test_active_dashboard_rows(db_session) -> None:
     course = Course(owner=user, title="Dashboard course")
     topic = Topic(course=course, name="Topic")
     concept = Concept(topic=topic, name="Concept")
-    misconception = Misconception(concept=concept, course_id=course.id, label="Confusion", description="Mixes concepts")
+    misconception = Misconception(
+        concept=concept, course_id=course.id, label="Confusion", description="Mixes concepts"
+    )
     db_session.add_all([user, course, topic, concept, misconception])
     db_session.commit()
-    update_misconception_severity(db_session, user.id, misconception.id, "wrong_answer", "attempt-1", 0.5)
-    update_misconception_severity(db_session, user.id, misconception.id, "wrong_answer", "attempt-2", 0.5)
+    update_misconception_severity(
+        db_session, user.id, misconception.id, "wrong_answer", "attempt-1", 0.5
+    )
+    update_misconception_severity(
+        db_session, user.id, misconception.id, "wrong_answer", "attempt-2", 0.5
+    )
     rows = get_active_misconceptions(db_session, user.id, course.id)
     assert rows[0]["misconception_id"] == misconception.id
     assert rows[0]["evidence"] == ["attempt-1", "attempt-2"]

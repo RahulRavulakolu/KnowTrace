@@ -32,22 +32,26 @@ from backend.utils.cache import cache_get, cache_set, make_cache_key
 
 class LLMError(Exception):
     """Base exception for LLM provider errors."""
+
     pass
 
 
 class LLMConfigurationError(LLMError):
     """Raised when an LLM provider is misconfigured or lacks API keys."""
+
     pass
 
 
 class LLMValidationError(LLMError):
     """Raised when structured JSON output does not match expected schema."""
+
     pass
 
 
 @dataclass
 class LLMResponse:
     """Standardized response from any LLM provider."""
+
     content: str
     vendor: str
     model: str
@@ -184,6 +188,7 @@ def _call_gemini(
     if not is_placeholder:
         try:
             import google.generativeai as genai
+
             genai.configure(api_key=api_key)
             model_name = settings.GEMINI_MODEL
             model = genai.GenerativeModel(model_name)
@@ -202,10 +207,13 @@ def _call_gemini(
                 for img in images:
                     if isinstance(img, (str, Path)) and os.path.exists(str(img)):
                         import PIL.Image
+
                         contents.append(PIL.Image.open(img))
                     elif isinstance(img, bytes):
                         import io
+
                         import PIL.Image
+
                         contents.append(PIL.Image.open(io.BytesIO(img)))
 
             try:
@@ -259,6 +267,7 @@ def _call_groq_or_claude(
     if has_valid_groq and not prefer_claude:
         try:
             from groq import Groq
+
             client = Groq(api_key=groq_key)
             model_name = settings.GROQ_MODEL
 
@@ -271,12 +280,15 @@ def _call_groq_or_claude(
                     schema_hint = json.dumps(json_schema, indent=2)
                 full_prompt += f"\n\nReturn strict JSON adhering to schema:\n{schema_hint}"
 
-            chat_completion = client.chat.completions.create(
-                messages=[{"role": "user", "content": full_prompt}],
-                model=model_name,
-                temperature=temperature,
-                response_format={"type": "json_object"} if json_schema else None,
-            )
+            req_kwargs: dict[str, Any] = {
+                "messages": [{"role": "user", "content": full_prompt}],
+                "model": model_name,
+                "temperature": temperature,
+            }
+            if json_schema:
+                req_kwargs["response_format"] = {"type": "json_object"}
+
+            chat_completion = client.chat.completions.create(**req_kwargs)
 
             content = chat_completion.choices[0].message.content or ""
             validated_data = _parse_and_validate(content, json_schema)
@@ -391,8 +403,13 @@ def call_llm(
                 metadata={"cached": True, "latency_ms": latency_ms},
             )
 
-    logger.info("LLM [CALL] vendor=%s, prompt_len=%d, has_schema=%s, has_images=%s",
-                vendor, len(prompt), json_schema is not None, bool(images))
+    logger.info(
+        "LLM [CALL] vendor=%s, prompt_len=%d, has_schema=%s, has_images=%s",
+        vendor,
+        len(prompt),
+        json_schema is not None,
+        bool(images),
+    )
 
     response = _execute_vendor_call(
         vendor=vendor,

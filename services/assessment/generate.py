@@ -25,14 +25,19 @@ def generate_question(
     owns_session = db_session is None
     if owns_session:
         from backend.core.db import SessionLocal
+
         db_session = SessionLocal()
     try:
         concept = db_session.get(Concept, concept_id)
         if concept is None:
             raise ValueError("Concept not found")
-        chunk = db_session.query(ContentChunk).join(ChunkConcept).filter(
-            ChunkConcept.concept_id == concept_id
-        ).order_by(ChunkConcept.relevance.desc()).first()
+        chunk = (
+            db_session.query(ContentChunk)
+            .join(ChunkConcept)
+            .filter(ChunkConcept.concept_id == concept_id)
+            .order_by(ChunkConcept.relevance.desc())
+            .first()
+        )
         if chunk is None:
             raise ValueError("No source chunk is linked to this concept")
         prompt = (

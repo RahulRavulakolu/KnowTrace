@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from evaluation.ablations import CONFIGS
+from evaluation.ablations import run as run_ablations
 from evaluation.metrics import (
     bootstrap_ci,
     citation_accuracy,
@@ -11,8 +13,6 @@ from evaluation.metrics import (
     refusal_metrics,
 )
 from scripts.annotation_agreement import agreement
-from evaluation.ablations import CONFIGS, run as run_ablations
-
 
 ROOT = Path(__file__).parents[1]
 
@@ -20,10 +20,22 @@ ROOT = Path(__file__).parents[1]
 def test_benchmark_coverage() -> None:
     benchmark = json.loads((ROOT / "evaluation" / "benchmark.json").read_text(encoding="utf-8"))
     assert len(benchmark) == 100
-    counts = {category: sum(item["category"] == category for item in benchmark)
-              for category in ("direct", "reasoning", "multimodal", "cross_source", "unsupported")}
-    assert counts == {"direct": 25, "reasoning": 25, "multimodal": 20, "cross_source": 15, "unsupported": 15}
-    assert all(set(item) >= {"id", "category", "question", "reference_answer", "gold_locations", "answerable"} for item in benchmark)
+    counts = {
+        category: sum(item["category"] == category for item in benchmark)
+        for category in ("direct", "reasoning", "multimodal", "cross_source", "unsupported")
+    }
+    assert counts == {
+        "direct": 25,
+        "reasoning": 25,
+        "multimodal": 20,
+        "cross_source": 15,
+        "unsupported": 15,
+    }
+    assert all(
+        set(item)
+        >= {"id", "category", "question", "reference_answer", "gold_locations", "answerable"}
+        for item in benchmark
+    )
     assert all(item["gold_locations"] for item in benchmark if item["answerable"])
     assert all(not item["gold_locations"] for item in benchmark if not item["answerable"])
 
@@ -37,7 +49,9 @@ def test_annotation_agreement() -> None:
 def test_location_matching() -> None:
     assert location_match({"source": "book.pdf", "page": 4}, {"source": "book.pdf", "page": 4})
     assert not location_match({"source": "book.pdf", "page": 5}, {"source": "book.pdf", "page": 4})
-    assert location_match({"source": "lecture.mp4", "ts": (100, 120)}, {"source": "lecture.mp4", "ts": [105, 115]})
+    assert location_match(
+        {"source": "lecture.mp4", "ts": (100, 120)}, {"source": "lecture.mp4", "ts": [105, 115]}
+    )
 
 
 def test_retrieval_metrics() -> None:
@@ -77,4 +91,6 @@ def test_ablations_complete(tmp_path: Path) -> None:
     ]
     result = run_ablations(rows, tmp_path / "ablations.json")
     assert {item["config"] for item in result["configs"]} == set(CONFIGS)
-    assert all("faithfulness" in item and "mean" in item["faithfulness"] for item in result["configs"])
+    assert all(
+        "faithfulness" in item and "mean" in item["faithfulness"] for item in result["configs"]
+    )

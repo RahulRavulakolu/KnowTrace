@@ -1,7 +1,7 @@
 """Add explicit BKT state and mastery history."""
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 revision = "learner_mastery_history"
 down_revision = None
@@ -10,13 +10,27 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.add_column("learner_mastery", sa.Column("n_obs", sa.Integer(), nullable=False, server_default="0"))
-    op.add_column("learner_mastery", sa.Column("half_life", sa.Float(), nullable=False, server_default="3.0"))
+    op.add_column(
+        "learner_mastery", sa.Column("n_obs", sa.Integer(), nullable=False, server_default="0")
+    )
+    op.add_column(
+        "learner_mastery", sa.Column("half_life", sa.Float(), nullable=False, server_default="3.0")
+    )
     op.create_table(
         "mastery_history",
         sa.Column("id", sa.String(length=36), primary_key=True),
-        sa.Column("user_id", sa.String(length=36), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
-        sa.Column("concept_id", sa.String(length=36), sa.ForeignKey("concepts.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "user_id",
+            sa.String(length=36),
+            sa.ForeignKey("users.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
+        sa.Column(
+            "concept_id",
+            sa.String(length=36),
+            sa.ForeignKey("concepts.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("p_before", sa.Float(), nullable=False),
         sa.Column("p_after", sa.Float(), nullable=False),
         sa.Column("p_eff", sa.Float(), nullable=False),

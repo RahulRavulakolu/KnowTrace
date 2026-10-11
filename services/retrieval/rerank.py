@@ -16,13 +16,14 @@ def rerank(query: str, chunks: list[Any], top_k: int = 6) -> list[Any]:
     try:
         if _model is None:
             from sentence_transformers import CrossEncoder
+
             _model = CrossEncoder(settings.RERANKER_MODEL)
         scores = _model.predict([(query, chunk.text) for chunk in chunks])
         ranked = sorted(zip(chunks, scores), key=lambda item: float(item[1]), reverse=True)
     except Exception as exc:
         logger.warning("Reranker unavailable; using RRF order: %s", exc)
         ranked = [(chunk, float(getattr(chunk, "_retrieval_score", 0.0))) for chunk in chunks]
-    selected = []
+    selected: list[Any] = []
     sources: set[str] = set()
     for chunk, score in ranked:
         setattr(chunk, "_rerank_score", max(0.0, float(score)))

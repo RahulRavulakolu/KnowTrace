@@ -23,8 +23,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     with open(args.benchmark, encoding="utf-8") as handle:
         rows = json.load(handle)
-    best = max(((metrics(rows, round(index / 20, 2)), round(index / 20, 2))
-                for index in range(2, 17)), key=lambda item: item[0][2])
+    best = max(
+        ((metrics(rows, round(index / 20, 2)), round(index / 20, 2)) for index in range(2, 17)),
+        key=lambda item: item[0][2],
+    )
     for index in range(2, 17):
         tau = round(index / 20, 2)
         print(tau, metrics(rows, tau))

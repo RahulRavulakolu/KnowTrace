@@ -18,6 +18,9 @@ def get_concept_dependents(concept_id: str, db_session: Session) -> list[str]:
 
 def get_concept_sources(concept_id: str, db_session: Session) -> list[ContentChunk]:
     """Return source chunks associated with a concept."""
-    return [association.chunk for association in db_session.query(ChunkConcept).filter(
-        ChunkConcept.concept_id == concept_id
-    ).all()]
+    return [
+        association.chunk
+        for association in db_session.query(ChunkConcept)
+        .filter(ChunkConcept.concept_id == concept_id)
+        .all()
+    ]

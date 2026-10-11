@@ -3,12 +3,18 @@
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
-from services.assessment.select import diagnostic_questions, mock_exam_questions, score, why_selected
+from services.assessment.select import (
+    diagnostic_questions,
+    mock_exam_questions,
+    score,
+    why_selected,
+)
 
 
 def question(concept: str, difficulty: float = 0.5, ident: str = "q") -> SimpleNamespace:
-    return SimpleNamespace(id=ident, concept_id=concept, difficulty=difficulty,
-                           question_type="mcq", embedding=None)
+    return SimpleNamespace(
+        id=ident, concept_id=concept, difficulty=difficulty, question_type="mcq", embedding=None
+    )
 
 
 def test_selector_scores_weak_concepts_high() -> None:
@@ -43,9 +49,10 @@ def test_diagnostic_quiz() -> None:
 
 
 def test_mock_exam_mix() -> None:
-    candidates = [question("c", difficulty, str(index)) for index, difficulty in enumerate(
-        [0.2] * 5 + [0.5] * 8 + [0.8] * 4
-    )]
+    candidates = [
+        question("c", difficulty, str(index))
+        for index, difficulty in enumerate([0.2] * 5 + [0.5] * 8 + [0.8] * 4)
+    ]
     selected = mock_exam_questions(candidates, total=10)
     assert sum(item.difficulty < 0.4 for item in selected) == 3
     assert sum(0.4 <= item.difficulty < 0.65 for item in selected) == 5

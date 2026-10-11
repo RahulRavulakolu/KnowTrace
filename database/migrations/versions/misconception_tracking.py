@@ -7,14 +7,21 @@ depends_on = None
 
 
 def upgrade() -> None:
-    from alembic import op
     import sqlalchemy as sa
+    from alembic import op
 
     op.create_table(
         "user_misconceptions",
         sa.Column("id", sa.String(36), primary_key=True),
-        sa.Column("user_id", sa.String(36), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
-        sa.Column("misconception_id", sa.String(36), sa.ForeignKey("misconceptions.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "user_id", sa.String(36), sa.ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+        ),
+        sa.Column(
+            "misconception_id",
+            sa.String(36),
+            sa.ForeignKey("misconceptions.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("severity", sa.Float(), nullable=False, server_default="0"),
         sa.Column("status", sa.String(20), nullable=False, server_default="resolved"),
         sa.Column("evidence_attempt_ids", sa.JSON(), nullable=False, server_default="[]"),
@@ -26,4 +33,5 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     from alembic import op
+
     op.drop_table("user_misconceptions")

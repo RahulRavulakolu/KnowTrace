@@ -1,0 +1,387 @@
+/**
+ * Pre-seeded mock data for multi-platform course discovery.
+ * Provides offline fallback and instant demo experience for:
+ * NPTEL, SWAYAM, MIT OCW, MITx, Khan Academy, edX, and Coursera.
+ */
+
+import { CatalogCourse, CatalogCourseDetail, SourcePlatform } from '@/types/discover';
+
+export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
+  // 1. NPTEL - Machine Learning
+  {
+    source_platform: 'nptel',
+    source_platform_name: 'NPTEL',
+    source_id: 'nptel-ml-106106139',
+    title: 'Machine Learning',
+    description:
+      'Comprehensive machine learning curriculum from IIT Madras covering supervised and unsupervised learning, Bayesian decision theory, parameter estimation, support vector machines, neural networks, and reinforcement learning.',
+    instructor: 'Prof. Balaraman Ravindran',
+    institution: 'IIT Madras',
+    category: 'Computer Science & Engineering',
+    language: 'English',
+    duration: '12 weeks',
+    source_url: 'https://nptel.ac.in/courses/106106139',
+    access_type: 'free',
+    access_type_label: 'Free',
+    is_free_learning: true,
+    certificate_available: true,
+    thumbnail_url: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=600&q=80',
+    tags: ['machine learning', 'artificial intelligence', 'IIT Madras', 'pattern recognition', 'neural networks'],
+    start_date: '2026-07-20',
+    video_count: 40,
+    lecture_note_count: 40,
+    assignment_count: 12,
+    quiz_count: 12,
+    exam_count: 1,
+    resource_summary: ['40 Lecture Videos', '40 PDF Notes', '12 Weekly Assignments', 'Proctored Certification'],
+    modules: [
+      {
+        title: 'Week 1: Introduction & Inductive Learning',
+        order: 1,
+        description: 'Paradigms of machine learning, supervised learning framework, hypothesis spaces, and inductive bias.',
+        resources: [
+          { title: 'Lecture 01: Introduction to Machine Learning', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/1', description: 'Overview of learning types and course syllabus', duration_minutes: 52, downloadable: true, order: 1 },
+          { title: 'Lecture 02: Supervised Learning & Hypotheses', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/2', description: 'Concept learning and Version Space', duration_minutes: 48, downloadable: true, order: 2 },
+          { title: 'Week 1 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes1.pdf', description: 'Handouts covering inductive learning principles', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Assignment 1: Hypothesis Spaces & Inductive Bias', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass1', description: 'Self-assessment questions for week 1', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Week 2: Linear Regression & Optimization',
+        order: 2,
+        description: 'Least squares estimation, gradient descent, batch vs stochastic, and convexity.',
+        resources: [
+          { title: 'Lecture 03: Linear Regression Formulation', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/3', description: 'Analytical solution and geometric interpretation', duration_minutes: 50, downloadable: true, order: 1 },
+          { title: 'Lecture 04: Gradient Descent Variants', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/4', description: 'Convergence rates and step size selection', duration_minutes: 55, downloadable: true, order: 2 },
+          { title: 'Week 2 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes2.pdf', description: 'Detailed derivations of normal equations', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Assignment 2: Regression Implementation', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass2', description: 'Practice with normal equations and gradient descent', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Week 3: Regularization & Overfitting (L1 & L2)',
+        order: 3,
+        description: 'Bias-variance tradeoff, Ridge (L2) and Lasso (L1) penalties, sparsity, and validation strategies.',
+        resources: [
+          { title: 'Lecture 05: Bias-Variance Decomposition', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/5', description: 'Mathematical breakdown of expected generalization error', duration_minutes: 51, downloadable: true, order: 1 },
+          { title: 'Lecture 06: Ridge and Lasso Regularization', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/6', description: 'Geometric explanation of diamond vs circle constraint regions', duration_minutes: 58, downloadable: true, order: 2 },
+          { title: 'Week 3 Notes: Regularization & Shrinkage', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes3.pdf', description: 'Full derivations of L1 sparsity properties', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Assignment 3: Regularization & Cross-Validation', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass3', description: 'Diagnostic exercises on L1 vs L2 regularization', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Week 4: Classification & Logistic Regression',
+        order: 4,
+        description: 'Logistic sigmoid, maximum likelihood estimation, ROC curves, precision-recall trade-offs.',
+        resources: [
+          { title: 'Lecture 07: Logistic Regression Model', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/7', description: 'Odds ratio and Bernoulli likelihood maximization', duration_minutes: 54, downloadable: true, order: 1 },
+          { title: 'Lecture 08: Model Evaluation Metrics', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/8', description: 'Precision, Recall, F1, and threshold selection', duration_minutes: 49, downloadable: true, order: 2 },
+          { title: 'Week 4 Notes: Classification Metrics', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes4.pdf', description: 'Handout on confusion matrices and ROC analysis', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Assignment 4: Binary Classification Problem Set', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass4', description: 'Evaluation metric problems and threshold sensitivity', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+    ],
+  },
+
+  // 2. MIT OpenCourseWare - Mathematics for Computer Science
+  {
+    source_platform: 'mit_ocw',
+    source_platform_name: 'MIT OpenCourseWare',
+    source_id: 'mit-ocw-6-042j',
+    title: 'Mathematics for Computer Science',
+    description:
+      'MIT course 6.042J covers elementary discrete mathematics for computer science and engineering: mathematical reasoning, induction, graph theory, state machines, number theory, counting, and probability.',
+    instructor: 'Prof. Albert R. Meyer & Prof. Ronitt Rubinfeld',
+    institution: 'MIT',
+    category: 'Mathematics & Computer Science',
+    language: 'English',
+    duration: '14 weeks',
+    source_url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/',
+    access_type: 'free',
+    access_type_label: 'Free (CC BY-NC-SA)',
+    is_free_learning: true,
+    certificate_available: false,
+    thumbnail_url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80',
+    tags: ['discrete math', 'graph theory', 'proofs', 'probability', 'MIT OCW', 'algorithms'],
+    start_date: null,
+    video_count: 36,
+    lecture_note_count: 24,
+    assignment_count: 12,
+    quiz_count: 4,
+    exam_count: 2,
+    resource_summary: ['36 Video Lectures', 'Free Textbook (PDF)', '12 Problem Sets + Solutions', 'Midterm & Final Exams'],
+    modules: [
+      {
+        title: 'Unit 1: Proofs and Mathematical Reasoning',
+        order: 1,
+        description: 'Propositions, predicates, logical deductions, proof methods, and mathematical induction.',
+        resources: [
+          { title: 'Lecture 01: Introduction & Proof Methods', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-1', description: 'Direct proofs, proof by contradiction, and cases', duration_minutes: 50, downloadable: true, order: 1 },
+          { title: 'Lecture 02: Well Ordering Principle', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-2', description: 'Using WOP to prove correctness and non-existence', duration_minutes: 52, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 1: Proofs (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch1.pdf', description: 'Comprehensive open textbook chapter', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 1: Induction & WOP', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps1.pdf', description: 'Rigorous proof exercises with solutions', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Unit 2: Structures, Graph Theory & Trees',
+        order: 2,
+        description: 'Simple graphs, isomorphism, connectivity, trees, Eulerian and Hamiltonian paths, coloring.',
+        resources: [
+          { title: 'Lecture 06: Graph Basics & Isomorphism', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-6', description: 'Vertices, degrees, handshaking lemma', duration_minutes: 51, downloadable: true, order: 1 },
+          { title: 'Lecture 07: Trees and Spanning Forests', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-7', description: 'Tree characterizations and minimum spanning trees', duration_minutes: 48, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 5: Graph Theory (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch5.pdf', description: 'Open course textbook chapter on graphs', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 4: Graph Proofs & Coloring', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps4.pdf', description: '4-color theorem insights and bipartiteness proofs', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+      {
+        title: 'Unit 3: Counting & Discrete Probability',
+        order: 3,
+        description: 'Combinatorics, inclusion-exclusion, conditional probability, Bayes rule, and random variables.',
+        resources: [
+          { title: 'Lecture 15: Combinatorics & Bijections', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-15', description: 'Permutations, combinations, pigeonhole principle', duration_minutes: 53, downloadable: true, order: 1 },
+          { title: 'Lecture 18: Conditional Probability & Bayes', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-18', description: 'Monty Hall problem, false positive paradox, independence', duration_minutes: 55, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 8: Probability (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch8.pdf', description: 'Rigorous sample spaces and probability laws', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 7: Probability Calculations', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps7.pdf', description: 'Expectation and variance problems', duration_minutes: null, downloadable: true, order: 4 },
+        ],
+      },
+    ],
+  },
+
+  // 3. MITx - Introduction to Computer Science using Python
+  {
+    source_platform: 'mitx',
+    source_platform_name: 'MITx',
+    source_id: 'mitx-6-00-1x',
+    title: 'Introduction to Computer Science and Programming Using Python',
+    description:
+      'MITx 6.00.1x is an introduction to computer science as a tool to solve real-world analytical problems using Python 3.5. Covers algorithms, computational complexity, object-oriented programming, and search/sorting.',
+    instructor: 'Prof. John Guttag',
+    institution: 'MIT',
+    category: 'Computer Science',
+    language: 'English',
+    duration: '9 weeks',
+    source_url: 'https://www.edx.org/learn/computer-science/massachusetts-institute-of-technology-introduction-to-computer-science-and-programming-using-python',
+    access_type: 'free_paid_cert',
+    access_type_label: 'Free Learning (Optional Paid Certificate)',
+    is_free_learning: true,
+    certificate_available: true,
+    thumbnail_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80',
+    tags: ['python', 'algorithms', 'programming', 'computational thinking', 'MITx', 'data structures'],
+    start_date: '2026-09-01',
+    video_count: 55,
+    lecture_note_count: 18,
+    assignment_count: 7,
+    quiz_count: 6,
+    exam_count: 2,
+    resource_summary: ['55 Micro-Lecture Videos', 'Finger Exercises in Python', '7 Graded Problem Sets', 'Midterm & Final Exams'],
+    modules: [
+      {
+        title: 'Week 1: Python Basics & Computational Thinking',
+        order: 1,
+        description: 'Variables, expressions, control flow, strings, and branching.',
+        resources: [
+          { title: 'Lecture 1: Computational Thinking & Python Objects', resource_type: 'video', url: null, description: 'Bits, types, operators, and interpreter basics', duration_minutes: 42, downloadable: false, order: 1 },
+          { title: 'Lecture 2: Branching, Loops, and Conditionals', resource_type: 'video', url: null, description: 'While and For loops, string manipulation', duration_minutes: 46, downloadable: false, order: 2 },
+          { title: 'Problem Set 1: String Searching in Python', resource_type: 'assignment', url: null, description: 'Counting vowels and finding alphabetical substrings', duration_minutes: null, downloadable: true, order: 3 },
+        ],
+      },
+      {
+        title: 'Week 2: Simple Algorithms, Functions & Recursion',
+        order: 2,
+        description: 'Bisection search, floating-point approximations, scoping, and recursion.',
+        resources: [
+          { title: 'Lecture 3: Bisection Search & Approximations', resource_type: 'video', url: null, description: 'Logarithmic search time and epsilon tolerances', duration_minutes: 50, downloadable: false, order: 1 },
+          { title: 'Lecture 4: Functions, Abstraction & Scope', resource_type: 'video', url: null, description: 'Formal parameters, local scopes, docstrings', duration_minutes: 45, downloadable: false, order: 2 },
+          { title: 'Problem Set 2: Paying Debt Off Using Bisection Search', resource_type: 'assignment', url: null, description: 'Calculating minimum monthly payments using bisection', duration_minutes: null, downloadable: true, order: 3 },
+        ],
+      },
+      {
+        title: 'Week 3: Structured Types, Mutation & Testing',
+        order: 3,
+        description: 'Tuples, lists, aliasing, cloning, dictionaries, and black-box testing.',
+        resources: [
+          { title: 'Lecture 5: Tuples, Lists, and Mutability', resource_type: 'video', url: null, description: 'Deep vs shallow copies and reference semantics', duration_minutes: 48, downloadable: false, order: 1 },
+          { title: 'Lecture 6: Dictionaries as Hash Maps', resource_type: 'video', url: null, description: 'Key-value lookups, counting frequencies', duration_minutes: 52, downloadable: false, order: 2 },
+          { title: 'Problem Set 3: Word Game Implementation', resource_type: 'assignment', url: null, description: 'Full Scrabble-like interactive word game project', duration_minutes: null, downloadable: true, order: 3 },
+        ],
+      },
+    ],
+  },
+
+  // 4. SWAYAM - Python for Data Science
+  {
+    source_platform: 'swayam',
+    source_platform_name: 'SWAYAM',
+    source_id: 'swayam-ds-python',
+    title: 'Python for Data Science',
+    description:
+      'National SWAYAM course delivered by IIT Madras focusing on Python programming for data science applications, NumPy array manipulation, Pandas dataframes, Matplotlib/Seaborn visualization, and scikit-learn basics.',
+    instructor: 'Prof. Ragunathan Rengasamy',
+    institution: 'IIT Madras (SWAYAM)',
+    category: 'Data Science & AI',
+    language: 'English',
+    duration: '4 weeks',
+    source_url: 'https://swayam.gov.in/explorer?category=Computer_Science',
+    access_type: 'free',
+    access_type_label: 'Free',
+    is_free_learning: true,
+    certificate_available: true,
+    thumbnail_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+    tags: ['python', 'data science', 'SWAYAM', 'IIT Madras', 'pandas', 'numpy'],
+    start_date: '2026-08-10',
+    video_count: 20,
+    lecture_note_count: 16,
+    assignment_count: 4,
+    quiz_count: 4,
+    exam_count: 1,
+    resource_summary: ['20 High-Quality Video Lectures', '16 Downloadable Slide Decks', '4 Weekly Practical Coding Assignments', 'SWAYAM Certificate Available'],
+    modules: [
+      {
+        title: 'Week 1: Python Fundamentals for Data Analysis',
+        order: 1,
+        description: 'Variables, sequences, control structures, and functional utilities in Python.',
+        resources: [
+          { title: 'Lecture 1: Basics of Python Programming', resource_type: 'video', url: null, description: 'Core Python syntax and data types', duration_minutes: 45, downloadable: true, order: 1 },
+          { title: 'Week 1 Slides (PDF)', resource_type: 'lecture_note', url: null, description: 'Downloadable slide summary', duration_minutes: null, downloadable: true, order: 2 },
+        ],
+      },
+      {
+        title: 'Week 2: Numerical Computing with NumPy',
+        order: 2,
+        description: 'N-dimensional arrays, vectorization, broadcasting, linear algebra operations.',
+        resources: [
+          { title: 'Lecture 2: NumPy Array Operations & Indexing', resource_type: 'video', url: null, description: 'Broadcasting rules and array slicing', duration_minutes: 50, downloadable: true, order: 1 },
+          { title: 'Week 2 Hands-on Jupyter Notebooks', resource_type: 'lecture_note', url: null, description: 'Interactive notebooks', duration_minutes: null, downloadable: true, order: 2 },
+        ],
+      },
+    ],
+  },
+
+  // 5. Khan Academy - Linear Algebra
+  {
+    source_platform: 'khan_academy',
+    source_platform_name: 'Khan Academy',
+    source_id: 'khan-linear-algebra',
+    title: 'Linear Algebra',
+    description:
+      'Intuitive, visual guide to vectors, spaces, matrices, matrix transformations, alternate coordinate systems, eigenvalues, and eigenvectors with hundreds of practice exercises.',
+    instructor: 'Sal Khan',
+    institution: 'Khan Academy',
+    category: 'Mathematics',
+    language: 'English',
+    duration: 'Self-paced',
+    source_url: 'https://www.khanacademy.org/math/linear-algebra',
+    access_type: 'free',
+    access_type_label: 'Free',
+    is_free_learning: true,
+    certificate_available: false,
+    thumbnail_url: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80',
+    tags: ['linear algebra', 'vectors', 'matrices', 'eigenvalues', 'Khan Academy', 'math intuition'],
+    start_date: null,
+    video_count: 65,
+    lecture_note_count: 0,
+    assignment_count: 0,
+    quiz_count: 24,
+    exam_count: 4,
+    resource_summary: ['65 Bite-Sized Conceptual Videos', '24 Interactive Skill Quizzes', '4 Unit Mastery Challenges', '100% Free Forever'],
+    modules: [
+      {
+        title: 'Vectors and Spaces',
+        order: 1,
+        description: 'Vectors, linear combinations, span, linear independence, subspaces, and basis.',
+        resources: [
+          { title: 'Vector Dot Product and Cauchy-Schwarz', resource_type: 'video', url: null, description: 'Geometric and algebraic intuition', duration_minutes: 14, downloadable: false, order: 1 },
+          { title: 'Linear Independence Check Quiz', resource_type: 'quiz', url: null, description: 'Self-check exercise', duration_minutes: null, downloadable: false, order: 2 },
+        ],
+      },
+      {
+        title: 'Matrix Transformations',
+        order: 2,
+        description: 'Matrices as linear mappings, matrix multiplication, invertibility, and determinant.',
+        resources: [
+          { title: 'Determinant as Area Scaling Factor', resource_type: 'video', url: null, description: 'Visual intuition of 2D/3D transformations', duration_minutes: 18, downloadable: false, order: 1 },
+          { title: 'Matrix Inverse Practice', resource_type: 'quiz', url: null, description: 'Step-by-step matrix inversion check', duration_minutes: null, downloadable: false, order: 2 },
+        ],
+      },
+    ],
+  },
+
+  // 6. edX - CS50 Introduction to Computer Science (Harvard)
+  {
+    source_platform: 'edx',
+    source_platform_name: 'edX',
+    source_id: 'edx-harvard-cs50',
+    title: 'CS50: Introduction to Computer Science',
+    description:
+      'Harvard University introduction to the intellectual enterprises of computer science and the art of programming. Covers C, Python, SQL, HTML/CSS/JavaScript, algorithms, and data structures.',
+    instructor: 'David J. Malan',
+    institution: 'Harvard University',
+    category: 'Computer Science',
+    language: 'English',
+    duration: '12 weeks',
+    source_url: 'https://www.edx.org/learn/computer-science/harvard-university-cs50-s-introduction-to-computer-science',
+    access_type: 'free_paid_cert',
+    access_type_label: 'Free Audit (Optional Certificate)',
+    is_free_learning: true,
+    certificate_available: true,
+    thumbnail_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80',
+    tags: ['harvard', 'cs50', 'c', 'python', 'sql', 'algorithms', 'web development'],
+    start_date: null,
+    video_count: 24,
+    lecture_note_count: 12,
+    assignment_count: 10,
+    quiz_count: 10,
+    exam_count: 0,
+    resource_summary: ['24 Theatrical Studio Lectures', '12 Comprehensive Lecture Notes', '10 Challenging Problem Sets', 'Final Capstone Project'],
+    modules: [
+      {
+        title: 'Week 0: Computational Thinking & Scratch',
+        order: 1,
+        description: 'Binary numbers, ASCII, algorithms, loops, conditions, and visual programming.',
+        resources: [
+          { title: 'Lecture 0: Computational Thinking', resource_type: 'video', url: null, description: 'Sander Hall lecture on binary and algorithms', duration_minutes: 110, downloadable: false, order: 1 },
+          { title: 'Week 0 Notes (PDF)', resource_type: 'lecture_note', url: null, description: 'Summary notes for week 0', duration_minutes: null, downloadable: true, order: 2 },
+        ],
+      },
+    ],
+  },
+
+  // 7. Coursera - Algorithms, Part I (Princeton)
+  {
+    source_platform: 'coursera',
+    source_platform_name: 'Coursera',
+    source_id: 'coursera-princeton-algo-1',
+    title: 'Algorithms, Part I',
+    description:
+      'Princeton University course covering elementary data structures, sorting algorithms, priority queues, and union-find. Fully free to access on Coursera.',
+    instructor: 'Robert Sedgewick & Kevin Wayne',
+    institution: 'Princeton University',
+    category: 'Computer Science',
+    language: 'English',
+    duration: '6 weeks',
+    source_url: 'https://www.coursera.org/learn/algorithms-part1',
+    access_type: 'free',
+    access_type_label: 'Free (Full Access)',
+    is_free_learning: true,
+    certificate_available: false,
+    thumbnail_url: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=600&q=80',
+    tags: ['algorithms', 'data structures', 'java', 'princeton', 'sorting', 'binary trees'],
+    start_date: null,
+    video_count: 30,
+    lecture_note_count: 12,
+    assignment_count: 5,
+    quiz_count: 5,
+    exam_count: 0,
+    resource_summary: ['30 In-Depth Algorithm Lectures', '12 Lecture Slides', '5 Autograded Java Assignments', '100% Free Access'],
+    modules: [
+      {
+        title: 'Week 1: Union-Find & Analysis of Algorithms',
+        order: 1,
+        description: 'Dynamic connectivity problem, quick-find, quick-union, weighted quick-union with path compression, tilde notation, order-of-growth.',
+        resources: [
+          { title: 'Lecture 1: Dynamic Connectivity', resource_type: 'video', url: null, description: 'Union-find data structure design and improvements', duration_minutes: 65, downloadable: false, order: 1 },
+          { title: 'Assignment 1: Percolation Simulation', resource_type: 'assignment', url: null, description: 'Estimate percolation threshold using Monte Carlo', duration_minutes: null, downloadable: true, order: 2 },
+        ],
+      },
+    ],
+  },
+];

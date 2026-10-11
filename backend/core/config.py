@@ -5,6 +5,7 @@ Validates required configuration on import.
 """
 
 from typing import List
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 

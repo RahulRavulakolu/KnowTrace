@@ -15,12 +15,18 @@ def test_priority_calculation() -> None:
 
 
 def test_topological_order() -> None:
-    result = topological_priority_order(["dependent", "prereq"], [("dependent", "prereq")], {"dependent": 10, "prereq": 1})
+    result = topological_priority_order(
+        ["dependent", "prereq"], [("dependent", "prereq")], {"dependent": 10, "prereq": 1}
+    )
     assert result.index("prereq") < result.index("dependent")
 
 
 def test_retrievability_decay() -> None:
-    value = retrievability("c1", {"last_seen": "2026-01-01T00:00:00+00:00", "half_life": 3}, __import__("datetime").datetime(2026, 1, 4, tzinfo=__import__("datetime").timezone.utc))
+    value = retrievability(
+        "c1",
+        {"last_seen": "2026-01-01T00:00:00+00:00", "half_life": 3},
+        __import__("datetime").datetime(2026, 1, 4, tzinfo=__import__("datetime").timezone.utc),
+    )
     assert 0.35 < value < 0.38
 
 
@@ -32,8 +38,12 @@ def test_budget_respected_and_weak_first(db_session) -> None:
     strong = Concept(topic=topic, name="Strong", importance=1)
     db_session.add_all([user, course, topic, weak, strong])
     db_session.commit()
-    db_session.add(LearnerMastery(user_id=user.id, concept_id=weak.id, p_know=0.1, n_obs=3, half_life=3))
-    db_session.add(LearnerMastery(user_id=user.id, concept_id=strong.id, p_know=0.9, n_obs=3, half_life=3))
+    db_session.add(
+        LearnerMastery(user_id=user.id, concept_id=weak.id, p_know=0.1, n_obs=3, half_life=3)
+    )
+    db_session.add(
+        LearnerMastery(user_id=user.id, concept_id=strong.id, p_know=0.9, n_obs=3, half_life=3)
+    )
     db_session.commit()
     plan = build_plan(db_session, user.id, course.id, date(2026, 1, 6), date(2026, 1, 1))
     total = sum(block["minutes"] for day in plan["days"] for block in day["blocks"])

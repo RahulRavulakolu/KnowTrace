@@ -1,8 +1,9 @@
 """Unit tests for Settings and Request-ID Logging."""
 
 import logging
+
 from backend.core.config import Settings
-from backend.core.logging import get_request_id, set_request_id, setup_logging, RequestIdFilter
+from backend.core.logging import RequestIdFilter, get_request_id, set_request_id, setup_logging
 
 
 def test_settings_initialization():

@@ -25,9 +25,7 @@ def kappa(labels_a: list[str], labels_b: list[str]) -> float:
 def agreement(first: list[dict[str, Any]], second: list[dict[str, Any]]) -> dict[str, float]:
     by_id = {item["id"]: item for item in second}
     pairs = [
-        (item["category"], by_id[item["id"]]["category"])
-        for item in first
-        if item["id"] in by_id
+        (item["category"], by_id[item["id"]]["category"]) for item in first if item["id"] in by_id
     ]
     overall_a = [a for a, _ in pairs]
     overall_b = [b for _, b in pairs]
@@ -51,13 +49,15 @@ def consensus(first: list[dict[str, Any]], second: list[dict[str, Any]]) -> dict
         if other is None:
             continue
         label_a, label_b = item["category"], other["category"]
-        rows.append({
-            "id": item["id"],
-            "annotator_one": label_a,
-            "annotator_two": label_b,
-            "consensus": label_a if label_a == label_b else None,
-            "disagreement": label_a != label_b,
-        })
+        rows.append(
+            {
+                "id": item["id"],
+                "annotator_one": label_a,
+                "annotator_two": label_b,
+                "consensus": label_a if label_a == label_b else None,
+                "disagreement": label_a != label_b,
+            }
+        )
     return {"rows": rows, "disagreements": [row for row in rows if row["disagreement"]]}
 
 
@@ -68,7 +68,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     first = json.loads(args.annotator_one.read_text(encoding="utf-8"))
     second = json.loads(args.annotator_two.read_text(encoding="utf-8"))
-    print(json.dumps({
-        "agreement": agreement(first, second),
-        "consensus": consensus(first, second),
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "agreement": agreement(first, second),
+                "consensus": consensus(first, second),
+            },
+            indent=2,
+        )
+    )

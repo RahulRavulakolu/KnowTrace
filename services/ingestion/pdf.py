@@ -15,14 +15,19 @@ from services.ingestion.prompts import FIGURE_PROMPT, OCR_PROMPT
 def _vision_data(prompt: str, image_path: Path) -> dict[str, Any]:
     """Call the vision gateway and return a safe metadata dictionary."""
     try:
-        response = call_llm("A", prompt, json_schema={
-            "type": "object",
-            "properties": {
-                "caption": {"type": "string"},
-                "description": {"type": "string"},
-                "structured_data": {"type": "object"},
+        response = call_llm(
+            "A",
+            prompt,
+            json_schema={
+                "type": "object",
+                "properties": {
+                    "caption": {"type": "string"},
+                    "description": {"type": "string"},
+                    "structured_data": {"type": "object"},
+                },
             },
-        }, images=[image_path])
+            images=[image_path],
+        )
         return response.data if isinstance(response.data, dict) else {}
     except Exception as exc:
         logger.warning("Vision extraction failed for %s: %s", image_path, exc)
@@ -41,9 +46,7 @@ def extract_text_and_images(
             page_number = page_index + 1
             try:
                 blocks = page.get_text("blocks")
-                text = "\n".join(
-                    str(block[4]).strip() for block in blocks if str(block[4]).strip()
-                )
+                text = "\n".join(str(block[4]).strip() for block in blocks if str(block[4]).strip())
                 confidence = 0.95
                 if len(text) < 50:
                     try:
@@ -56,7 +59,9 @@ def extract_text_and_images(
                     except Exception as exc:
                         logger.warning("OCR failed on PDF page %d: %s", page_number, exc)
                 for chunk in chunk_text(
-                    text, page_number, max_tokens=settings.CHUNK_SIZE,
+                    text,
+                    page_number,
+                    max_tokens=settings.CHUNK_SIZE,
                     extraction_confidence=confidence,
                 ):
                     chunk.update({"course_id": course_id, "source_id": source_id})

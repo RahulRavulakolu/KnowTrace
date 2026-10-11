@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+
 from sqlalchemy.orm import Session
 
 from backend.models.db import Concept, Course, Topic, User
@@ -119,7 +120,9 @@ def get_platform_certification_info(platform: str, title: str, institution: str)
     }
 
 
-def get_course_certificate_data(course_id: str, db: Session, user_id: Optional[str] = None) -> Dict[str, Any]:
+def get_course_certificate_data(
+    course_id: str, db: Session, user_id: Optional[str] = None
+) -> Dict[str, Any]:
     """Compile comprehensive certificate details, eligibility checklists, and credentials."""
     course = db.get(Course, course_id)
     if not course:
@@ -210,12 +213,21 @@ def get_course_certificate_data(course_id: str, db: Session, user_id: Optional[s
     credential_id = f"KT-{platform.upper()[:4]}-{course_id[:6].upper()}-2026"
 
     platform_info = get_platform_certification_info(platform, course_title, institution)
-    platform_info["exam_type"] = platform_info.get("official_certificate_name") or "In-Person Proctored Examination (Designated TCS iON Centers)"
-    platform_info["exam_registration_window"] = platform_info.get("registration_window") or "Open for semester registration"
+    platform_info["exam_type"] = (
+        platform_info.get("official_certificate_name")
+        or "In-Person Proctored Examination (Designated TCS iON Centers)"
+    )
+    platform_info["exam_registration_window"] = (
+        platform_info.get("registration_window") or "Open for semester registration"
+    )
     platform_info["fee"] = platform_info.get("exam_fee") or "₹1,000 per course"
-    platform_info["eligibility_rule"] = platform_info.get("passing_criteria") or "Pass weekly assignments & proctored exam."
+    platform_info["eligibility_rule"] = (
+        platform_info.get("passing_criteria") or "Pass weekly assignments & proctored exam."
+    )
     platform_info["portal_url"] = platform_info.get("exam_portal_url") or "https://swayam.gov.in"
-    platform_info["credit_transfer"] = platform_info.get("credit_eligibility") or "AICTE & UGC approved academic credit transfer."
+    platform_info["credit_transfer"] = (
+        platform_info.get("credit_eligibility") or "AICTE & UGC approved academic credit transfer."
+    )
 
     criteria_dict = {
         "concept_mastery": {

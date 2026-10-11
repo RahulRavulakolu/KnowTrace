@@ -1,27 +1,28 @@
 """Unit tests ensuring all prompt templates adhere to Rule 4."""
 
 import pytest
-from services.ingestion.prompts import (
-    FIGURE_CAPTIONING_SYSTEM_PROMPT,
-    TRANSCRIPT_CLEANING_SYSTEM_PROMPT,
-    CHUNK_CONCEPT_EXTRACTION_PROMPT,
-)
-from services.retrieval.prompts import (
-    QUERY_EXPANSION_PROMPT,
-    TUTOR_SYSTEM_PROMPT,
-    TUTOR_USER_PROMPT,
-)
+
 from services.assessment.prompts import (
     QUESTION_GENERATION_PROMPT,
     QUESTION_VALIDATION_PROMPT,
+)
+from services.graph.prompts import (
+    CONCEPT_HIERARCHY_EXTRACTION_PROMPT,
+    PREREQUISITE_IDENTIFICATION_PROMPT,
+)
+from services.ingestion.prompts import (
+    CHUNK_CONCEPT_EXTRACTION_PROMPT,
+    FIGURE_CAPTIONING_SYSTEM_PROMPT,
+    TRANSCRIPT_CLEANING_SYSTEM_PROMPT,
 )
 from services.learner_model.prompts import (
     MISCONCEPTION_DIAGNOSIS_PROMPT,
     REMEDIATION_PLAN_PROMPT,
 )
-from services.graph.prompts import (
-    CONCEPT_HIERARCHY_EXTRACTION_PROMPT,
-    PREREQUISITE_IDENTIFICATION_PROMPT,
+from services.retrieval.prompts import (
+    QUERY_EXPANSION_PROMPT,
+    TUTOR_SYSTEM_PROMPT,
+    TUTOR_USER_PROMPT,
 )
 
 
@@ -43,7 +44,7 @@ def test_retrieval_prompts_and_rule_5_refusal():
 
 def test_assessment_prompts_and_rule_6():
     """Verify assessment prompts enforce Rule 6 approved status check and anchoring."""
-    assert "status = \"approved\"" in QUESTION_VALIDATION_PROMPT
+    assert 'status = "approved"' in QUESTION_VALIDATION_PROMPT
     assert "source_id" in QUESTION_GENERATION_PROMPT
 
 

@@ -9,12 +9,12 @@ from backend.models.db import ContentChunk, Source
 from services.ingestion.embed import embed_chunks
 from services.ingestion.pdf import extract_text_and_images as extract_pdf
 from services.ingestion.pptx import extract_text_and_images as extract_pptx
-from services.ingestion.video import ingest_video
 from services.ingestion.tagging import (
     build_course_taxonomy,
     build_prerequisites,
     tag_chunks_constrained,
 )
+from services.ingestion.video import ingest_video
 
 
 def _maybe_tag_course(db, course_id: str) -> None:

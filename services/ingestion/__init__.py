@@ -1,9 +1,9 @@
 """Ingestion Service Package."""
 
 from services.ingestion.prompts import (
+    CHUNK_CONCEPT_EXTRACTION_PROMPT,
     FIGURE_CAPTIONING_SYSTEM_PROMPT,
     TRANSCRIPT_CLEANING_SYSTEM_PROMPT,
-    CHUNK_CONCEPT_EXTRACTION_PROMPT,
 )
 
 __all__ = [

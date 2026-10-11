@@ -112,15 +112,18 @@ class KhanAcademyConnector(CourseSourceConnector):
 
     platform = SourcePlatform.KHAN_ACADEMY
 
-    def search_courses(self, query: str, limit: int = 20, offset: int = 0) -> List[CatalogCourseData]:
+    def search_courses(
+        self, query: str, limit: int = 20, offset: int = 0
+    ) -> List[CatalogCourseData]:
         query_lower = query.lower()
         results = [
-            c for c in _KHAN_CATALOG
+            c
+            for c in _KHAN_CATALOG
             if query_lower in c.title.lower()
             or query_lower in c.description.lower()
             or any(query_lower in tag for tag in c.tags)
         ]
-        return results[offset:offset + limit]
+        return results[offset : offset + limit]
 
     def get_course(self, source_id: str) -> Optional[CatalogCourseData]:
         return _KHAN_BY_ID.get(source_id)

@@ -43,9 +43,20 @@ def _duration(video_path: Path) -> float | None:
     """Return media duration using ffprobe when available."""
     try:
         result = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
-             "-of", "default=noprint_wrappers=1:nokey=1", str(video_path)],
-            check=True, capture_output=True, text=True, timeout=30,
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "default=noprint_wrappers=1:nokey=1",
+                str(video_path),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         return float(result.stdout.strip())
     except (OSError, ValueError, subprocess.SubprocessError):
@@ -70,21 +81,25 @@ def _transcript_windows(segments: Iterable[Any]) -> list[dict[str, Any]]:
             for word in segment_words:
                 text = str(_value(word, "word", "")).strip()
                 if text:
-                    words.append((
-                        float(_value(word, "start", _value(segment, "start", 0.0))),
-                        float(_value(word, "end", _value(segment, "end", 0.0))),
-                        text,
-                        _word_confidence(word, segment),
-                    ))
+                    words.append(
+                        (
+                            float(_value(word, "start", _value(segment, "start", 0.0))),
+                            float(_value(word, "end", _value(segment, "end", 0.0))),
+                            text,
+                            _word_confidence(word, segment),
+                        )
+                    )
         else:
             text = str(_value(segment, "text", "")).strip()
             if text:
-                words.append((
-                    float(_value(segment, "start", 0.0)),
-                    float(_value(segment, "end", 0.0)),
-                    text,
-                    _word_confidence(segment, segment),
-                ))
+                words.append(
+                    (
+                        float(_value(segment, "start", 0.0)),
+                        float(_value(segment, "end", 0.0)),
+                        text,
+                        _word_confidence(segment, segment),
+                    )
+                )
 
     windows: list[dict[str, Any]] = []
     current: list[tuple[float, float, str, float]] = []
@@ -132,13 +147,25 @@ def extract_audio_transcript(
     with tempfile.TemporaryDirectory(prefix="knowtrace-audio-") as directory:
         wav_path = Path(directory) / "audio.wav"
         subprocess.run(
-            ["ffmpeg", "-y", "-i", str(path), "-vn", "-ac", "1", "-ar", "16000",
-             "-c:a", "pcm_s16le", str(wav_path)],
-            check=True, capture_output=True, timeout=600,
+            [
+                "ffmpeg",
+                "-y",
+                "-i",
+                str(path),
+                "-vn",
+                "-ac",
+                "1",
+                "-ar",
+                "16000",
+                "-c:a",
+                "pcm_s16le",
+                str(wav_path),
+            ],
+            check=True,
+            capture_output=True,
+            timeout=600,
         )
-        segments, _ = _model().transcribe(
-            str(wav_path), word_timestamps=True, vad_filter=True
-        )
+        segments, _ = _model().transcribe(str(wav_path), word_timestamps=True, vad_filter=True)
         return _transcript_windows(segments)
 
 
@@ -162,17 +189,31 @@ def extract_keyframes(
         timestamps = [0.0]
     if len(timestamps) > max_frames:
         step = len(timestamps) / max_frames
-        timestamps = [timestamps[min(int(index * step), len(timestamps) - 1)]
-                      for index in range(max_frames)]
+        timestamps = [
+            timestamps[min(int(index * step), len(timestamps) - 1)] for index in range(max_frames)
+        ]
 
     frames: list[tuple[float, str]] = []
     for index, timestamp in enumerate(timestamps, start=1):
         frame_path = output_dir / f"frame_{index}_{timestamp:.3f}.jpg"
         try:
             subprocess.run(
-                ["ffmpeg", "-y", "-ss", f"{timestamp:.3f}", "-i", str(path),
-                 "-frames:v", "1", "-q:v", "2", str(frame_path)],
-                check=True, capture_output=True, timeout=120,
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-ss",
+                    f"{timestamp:.3f}",
+                    "-i",
+                    str(path),
+                    "-frames:v",
+                    "1",
+                    "-q:v",
+                    "2",
+                    str(frame_path),
+                ],
+                check=True,
+                capture_output=True,
+                timeout=120,
             )
             frames.append((timestamp, str(frame_path)))
         except (OSError, subprocess.SubprocessError) as exc:
@@ -200,17 +241,24 @@ def process_keyframes(
     figures: list[dict[str, Any]] = []
     for timestamp, frame_path in keyframes:
         window = next(
-            (item for item in transcript_chunks
-             if item.get("ts_start", 0.0) <= timestamp <= item.get("ts_end", 0.0)),
-            min(transcript_chunks, key=lambda item: abs(
-                float(item.get("ts_start", 0.0)) - timestamp
-            ), default={}),
+            (
+                item
+                for item in transcript_chunks
+                if item.get("ts_start", 0.0) <= timestamp <= item.get("ts_end", 0.0)
+            ),
+            min(
+                transcript_chunks,
+                key=lambda item: abs(float(item.get("ts_start", 0.0)) - timestamp),
+                default={},
+            ),
         )
         speech = str(window.get("text", ""))
         try:
             response = call_llm(
-                "A", f"{P3_VIDEO_PROMPT}\nTimestamp: {timestamp:.3f}\nSpeech: {speech}",
-                json_schema=schema, images=[frame_path],
+                "A",
+                f"{P3_VIDEO_PROMPT}\nTimestamp: {timestamp:.3f}\nSpeech: {speech}",
+                json_schema=schema,
+                images=[frame_path],
             )
             visual = response.data if isinstance(response.data, dict) else {}
         except Exception as exc:
@@ -220,17 +268,21 @@ def process_keyframes(
             continue
         description = str(visual.get("description") or "")
         visible_text = str(visual.get("visible_text") or "")
-        figures.append({
-            "course_id": course_id,
-            "source_id": source_id,
-            "text": " ".join(part for part in (description, visible_text, speech) if part).strip(),
-            "modality": "figure",
-            "ts_start": timestamp,
-            "ts_end": float(window.get("ts_end", timestamp)),
-            "visual": {**visual, "image_uri": frame_path, "timestamp": timestamp},
-            "extraction_confidence": 0.85,
-            "meta": {},
-        })
+        figures.append(
+            {
+                "course_id": course_id,
+                "source_id": source_id,
+                "text": " ".join(
+                    part for part in (description, visible_text, speech) if part
+                ).strip(),
+                "modality": "figure",
+                "ts_start": timestamp,
+                "ts_end": float(window.get("ts_end", timestamp)),
+                "visual": {**visual, "image_uri": frame_path, "timestamp": timestamp},
+                "extraction_confidence": 0.85,
+                "meta": {},
+            }
+        )
     return figures
 
 

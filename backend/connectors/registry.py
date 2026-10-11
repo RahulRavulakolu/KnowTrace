@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class UnifiedSearchResult:
     """Result container for unified cross-platform search."""
+
     total: int
     courses: List[Dict[str, Any]]
     platforms_searched: List[str]
@@ -45,17 +46,24 @@ class ConnectorRegistry:
 
     def _register_builtins(self) -> None:
         """Register all built-in connectors."""
-        from backend.connectors.nptel import NPTELConnector
-        from backend.connectors.swayam import SWAYAMConnector
+        from backend.connectors.coursera import CourseraConnector
+        from backend.connectors.edx import EdXConnector
+        from backend.connectors.khan_academy import KhanAcademyConnector
         from backend.connectors.mit_ocw import MITOCWConnector
         from backend.connectors.mitx import MITxConnector
-        from backend.connectors.khan_academy import KhanAcademyConnector
-        from backend.connectors.edx import EdXConnector
-        from backend.connectors.coursera import CourseraConnector
+        from backend.connectors.nptel import NPTELConnector
+        from backend.connectors.swayam import SWAYAMConnector
 
-        for cls in [NPTELConnector, SWAYAMConnector, MITOCWConnector,
-                     MITxConnector, KhanAcademyConnector, EdXConnector, CourseraConnector]:
-            connector = cls()
+        for cls in [
+            NPTELConnector,
+            SWAYAMConnector,
+            MITOCWConnector,
+            MITxConnector,
+            KhanAcademyConnector,
+            EdXConnector,
+            CourseraConnector,
+        ]:
+            connector = cls()  # type: ignore[abstract]
             self._connectors[connector.platform] = connector
 
     def register(self, connector: CourseSourceConnector) -> None:
@@ -68,10 +76,7 @@ class ConnectorRegistry:
 
     def list_platforms(self) -> List[Dict[str, str]]:
         """List all registered platforms with their display names."""
-        return [
-            {"id": p.value, "name": p.display_name}
-            for p in self._connectors
-        ]
+        return [{"id": p.value, "name": p.display_name} for p in self._connectors]
 
     def search_all(
         self,
@@ -110,16 +115,14 @@ class ConnectorRegistry:
 
         # Apply access type filter
         if access_types:
-            all_results = [
-                c for c in all_results
-                if c.access_type.value in access_types
-            ]
+            all_results = [c for c in all_results if c.access_type.value in access_types]
 
         # Apply category filter
         if categories:
             categories_lower = {cat.lower() for cat in categories}
             all_results = [
-                c for c in all_results
+                c
+                for c in all_results
                 if c.category.lower() in categories_lower
                 or any(tag.lower() in categories_lower for tag in c.tags)
             ]
@@ -143,9 +146,7 @@ class ConnectorRegistry:
             platforms_searched=platforms_searched,
         )
 
-    def get_course_detail(
-        self, platform: str, source_id: str
-    ) -> Optional[Dict[str, Any]]:
+    def get_course_detail(self, platform: str, source_id: str) -> Optional[Dict[str, Any]]:
         """Get detailed course info from a specific platform."""
         try:
             plat = SourcePlatform(platform)

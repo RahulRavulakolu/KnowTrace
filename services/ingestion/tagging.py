@@ -32,9 +32,12 @@ def _data(response: Any) -> dict[str, Any]:
 
 def _taxonomy_digest(db_session: Session, course_id: str, limit: int = 2000) -> str:
     """Build a compact digest from headings, slide titles, and transcript samples."""
-    chunks = db_session.query(ContentChunk).filter(
-        ContentChunk.course_id == course_id
-    ).order_by(ContentChunk.created_at).all()
+    chunks = (
+        db_session.query(ContentChunk)
+        .filter(ContentChunk.course_id == course_id)
+        .order_by(ContentChunk.created_at)
+        .all()
+    )
     lines: list[str] = []
     for index, chunk in enumerate(chunks):
         visual = chunk.visual or {}
@@ -69,7 +72,8 @@ def _valid_taxonomy(payload: dict[str, Any]) -> list[dict[str, Any]]:
             if len(raw_concepts) < 2:
                 continue
             concepts = [
-                concept for concept in raw_concepts[:8]
+                concept
+                for concept in raw_concepts[:8]
                 if isinstance(concept, dict) and concept.get("name")
             ]
             if concepts:
@@ -82,9 +86,11 @@ def _valid_taxonomy(payload: dict[str, Any]) -> list[dict[str, Any]]:
 def build_course_taxonomy(course_id: str, db_session: Session) -> dict[str, list[str]]:
     """Build and persist a bounded topic/subtopic/concept hierarchy."""
     digest = _taxonomy_digest(db_session, course_id)
-    response = call_llm("A", f"{P4_TAXONOMY_PROMPT}\n\nDigest:\n{digest}", json_schema={
-        "type": "object", "properties": {"topics": {"type": "array"}}
-    })
+    response = call_llm(
+        "A",
+        f"{P4_TAXONOMY_PROMPT}\n\nDigest:\n{digest}",
+        json_schema={"type": "object", "properties": {"topics": {"type": "array"}}},
+    )
     taxonomy = _valid_taxonomy(_data(response))
     if not taxonomy:
         return {"topic_ids": [], "concept_ids": []}
@@ -116,21 +122,26 @@ def build_course_taxonomy(course_id: str, db_session: Session) -> dict[str, list
 
 def tag_chunks_constrained(course_id: str, db_session: Session) -> dict[str, Any]:
     """Tag every untagged chunk using only concepts belonging to the course."""
-    chunks = db_session.query(ContentChunk).filter(
-        ContentChunk.course_id == course_id,
-        ~ContentChunk.concept_associations.any(),
-    ).all()
+    chunks = (
+        db_session.query(ContentChunk)
+        .filter(
+            ContentChunk.course_id == course_id,
+            ~ContentChunk.concept_associations.any(),
+        )
+        .all()
+    )
     concepts = db_session.query(Concept).join(Topic).filter(Topic.course_id == course_id).all()
     concept_map = {str(concept.id): concept for concept in concepts}
     tagged = 0
     unassigned = 0
     for offset in range(0, len(chunks), 10):
-        batch = chunks[offset:offset + 10]
+        batch = chunks[offset : offset + 10]
         compact = [{"chunk_id": str(chunk.id), "text": chunk.text[:2000]} for chunk in batch]
         taxonomy = [{"id": key, "name": value.name} for key, value in concept_map.items()]
         try:
             response = call_llm(
-                "A", f"{P5_TAGGING_PROMPT}\nConcepts: {taxonomy}\nChunks: {compact}",
+                "A",
+                f"{P5_TAGGING_PROMPT}\nConcepts: {taxonomy}\nChunks: {compact}",
                 json_schema={"type": "object", "properties": {"tags": {"type": "array"}}},
             )
             tags = _data(response).get("tags", [])
@@ -151,12 +162,14 @@ def tag_chunks_constrained(course_id: str, db_session: Session) -> dict[str, Any
                 unassigned += 1
                 continue
             for tag in valid_tags:
-                db_session.add(ChunkConcept(
-                    chunk_id=chunk.id,
-                    concept_id=str(tag["concept_id"]),
-                    relevance=max(0.0, min(1.0, float(tag.get("relevance", 1.0)))),
-                    role=str(tag.get("role", "primary")),
-                ))
+                db_session.add(
+                    ChunkConcept(
+                        chunk_id=chunk.id,
+                        concept_id=str(tag["concept_id"]),
+                        relevance=max(0.0, min(1.0, float(tag.get("relevance", 1.0)))),
+                        role=str(tag.get("role", "primary")),
+                    )
+                )
             tagged += 1
     db_session.commit()
     return {
@@ -169,16 +182,22 @@ def tag_chunks_constrained(course_id: str, db_session: Session) -> dict[str, Any
 
 def build_prerequisites(course_id: str, db_session: Session) -> dict[str, Any]:
     """Persist prerequisite and confusable relationships returned by the LLM."""
-    concepts = db_session.query(Concept).join(Topic).filter(
-        Topic.course_id == course_id
-    ).order_by(Concept.created_at).all()
+    concepts = (
+        db_session.query(Concept)
+        .join(Topic)
+        .filter(Topic.course_id == course_id)
+        .order_by(Concept.created_at)
+        .all()
+    )
     ids = {str(concept.id) for concept in concepts}
     payload = [{"id": str(concept.id), "name": concept.name} for concept in concepts]
     response = call_llm(
-        "A", f"{P6_PREREQUISITE_PROMPT}\nConcepts: {payload}",
-        json_schema={"type": "object", "properties": {
-            "prerequisites": {"type": "array"}, "confusables": {"type": "array"}
-        }},
+        "A",
+        f"{P6_PREREQUISITE_PROMPT}\nConcepts: {payload}",
+        json_schema={
+            "type": "object",
+            "properties": {"prerequisites": {"type": "array"}, "confusables": {"type": "array"}},
+        },
     )
     data = _data(response)
     edge_count = 0
@@ -187,14 +206,16 @@ def build_prerequisites(course_id: str, db_session: Session) -> dict[str, Any]:
             continue
         if str(edge.get("concept_id")) not in ids or str(edge.get("prerequisite_id")) not in ids:
             continue
-        db_session.add(Prerequisite(
-            concept_id=str(edge["concept_id"]),
-            prerequisite_id=str(edge["prerequisite_id"]),
-            kind="requires",
-            confidence=float(edge.get("confidence", 1.0)),
-            weight=float(edge.get("confidence", 1.0)),
-            rationale=edge.get("rationale"),
-        ))
+        db_session.add(
+            Prerequisite(
+                concept_id=str(edge["concept_id"]),
+                prerequisite_id=str(edge["prerequisite_id"]),
+                kind="requires",
+                confidence=float(edge.get("confidence", 1.0)),
+                weight=float(edge.get("confidence", 1.0)),
+                rationale=edge.get("rationale"),
+            )
+        )
         edge_count += 1
     confusable_count = 0
     for pair in data.get("confusables", []):
@@ -203,17 +224,27 @@ def build_prerequisites(course_id: str, db_session: Session) -> dict[str, Any]:
         left, right = str(pair.get("concept_id")), str(pair.get("related_concept_id"))
         if left not in ids or right not in ids or left == right:
             continue
-        db_session.add(Prerequisite(
-            concept_id=left, prerequisite_id=right, kind="confusable",
-            confidence=float(pair.get("confidence", 1.0)),
-            weight=float(pair.get("confidence", 1.0)),
-            rationale=pair.get("description"),
-        ))
-        db_session.add(Misconception(
-            concept_id=left,
-            label=str(pair.get("label", "Confusable concepts")),
-            description=str(pair.get("description", "These concepts are commonly confused.")),
-        ))
+        db_session.add(
+            Prerequisite(
+                concept_id=left,
+                prerequisite_id=right,
+                kind="confusable",
+                confidence=float(pair.get("confidence", 1.0)),
+                weight=float(pair.get("confidence", 1.0)),
+                rationale=pair.get("description"),
+            )
+        )
+        db_session.add(
+            Misconception(
+                concept_id=left,
+                label=str(pair.get("label", "Confusable concepts")),
+                description=str(pair.get("description", "These concepts are commonly confused.")),
+            )
+        )
         confusable_count += 1
     db_session.commit()
-    return {"edges_count": edge_count, "confusable_pairs_count": confusable_count, "cycles_found": 0}
+    return {
+        "edges_count": edge_count,
+        "confusable_pairs_count": confusable_count,
+        "cycles_found": 0,
+    }

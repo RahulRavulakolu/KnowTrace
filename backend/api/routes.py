@@ -28,6 +28,7 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
     if settings.REDIS_URL:
         try:
             import redis
+
             r = redis.from_url(settings.REDIS_URL, socket_connect_timeout=1)
             r.ping()
             redis_status = "connected"

@@ -10,23 +10,23 @@ from fastapi.responses import Response
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from backend.api.deps import get_optional_user
 from backend.core.config import settings
 from backend.core.db import get_db
 from backend.core.logging import logger
-from backend.api.deps import get_optional_user
 from backend.models.db import (
+    ChunkConcept,
     Concept,
     ContentChunk,
     Course,
-    ChunkConcept,
     Prerequisite,
     Source,
     Topic,
     User,
 )
 from backend.schemas.course import CourseCreate, CourseCreateResponse, CourseResponse
-from services.ingestion.classifier import detect_file_type
 from services.graph.dag import cyclic_dag
+from services.ingestion.classifier import detect_file_type
 from services.ingestion.tagging import (
     build_course_taxonomy,
     build_prerequisites,
@@ -82,10 +82,14 @@ def create_course(
     user = current_user or _get_or_create_default_user(db, payload.owner_id)
 
     # Check for existing course with same owner and title
-    existing = db.query(Course).filter(
-        Course.owner_id == user.id,
-        Course.title == payload.title,
-    ).first()
+    existing = (
+        db.query(Course)
+        .filter(
+            Course.owner_id == user.id,
+            Course.title == payload.title,
+        )
+        .first()
+    )
     if existing:
         logger.info("Found existing course id=%s for title='%s'", existing.id, payload.title)
         return CourseCreateResponse(course_id=str(existing.id))
@@ -141,10 +145,13 @@ def list_courses(
     return [CourseResponse.model_validate(c) for c in courses]
 
 
-@router.get("/{course_id}/lectures", summary="Get recorded video lectures and transcripts for course")
+@router.get(
+    "/{course_id}/lectures", summary="Get recorded video lectures and transcripts for course"
+)
 def course_lectures(course_id: str, db: Session = Depends(get_db)) -> dict:
     """Return all recorded video lectures, modules, transcripts, and notes for this course."""
     from backend.services.lectures import get_course_lectures
+
     return get_course_lectures(course_id, db)
 
 
@@ -156,30 +163,32 @@ def course_graph(course_id: str, db: Session = Depends(get_db)) -> dict:
     topics = db.query(Topic).filter(Topic.course_id == course_id).all()
     concepts = db.query(Concept).join(Topic).filter(Topic.course_id == course_id).all()
     concept_ids = {str(concept.id) for concept in concepts}
-    nodes = [
-        {"id": str(topic.id), "name": topic.name, "type": "topic"}
-        for topic in topics
-    ] + [
-        {"id": str(concept.id), "name": concept.name, "type": "concept"}
-        for concept in concepts
+    nodes = [{"id": str(topic.id), "name": topic.name, "type": "topic"} for topic in topics] + [
+        {"id": str(concept.id), "name": concept.name, "type": "concept"} for concept in concepts
     ]
     edges: list[dict] = [
-        {"source": str(topic.parent_id), "target": str(topic.id), "kind": "contains", "confidence": 1.0}
-        for topic in topics if topic.parent_id
+        {
+            "source": str(topic.parent_id),
+            "target": str(topic.id),
+            "kind": "contains",
+            "confidence": 1.0,
+        }
+        for topic in topics
+        if topic.parent_id
     ]
-    relationships = db.query(Prerequisite).filter(
-        Prerequisite.concept_id.in_(concept_ids)
-    ).all()
+    relationships = db.query(Prerequisite).filter(Prerequisite.concept_id.in_(concept_ids)).all()
     graph = cyclic_dag(course_id, db)
     dag_edges = {(str(source), str(target)) for source, target in graph.edges}
-    edges.extend({
-        "source": str(edge.prerequisite_id),
-        "target": str(edge.concept_id),
-        "kind": edge.kind,
-        "confidence": edge.confidence,
-    } for edge in relationships if edge.kind != "requires" or (
-        str(edge.prerequisite_id), str(edge.concept_id)
-    ) in dag_edges)
+    edges.extend(
+        {
+            "source": str(edge.prerequisite_id),
+            "target": str(edge.concept_id),
+            "kind": edge.kind,
+            "confidence": edge.confidence,
+        }
+        for edge in relationships
+        if edge.kind != "requires" or (str(edge.prerequisite_id), str(edge.concept_id)) in dag_edges
+    )
     return {"nodes": nodes, "edges": edges}
 
 
@@ -227,9 +236,11 @@ async def upload_sources(
         except ValueError as exc:
             raise HTTPException(status_code=415, detail=str(exc)) from exc
         digest = hashlib.sha256(content).hexdigest()
-        existing = db.query(Source).filter(
-            Source.course_id == course_id, Source.file_hash == digest
-        ).first()
+        existing = (
+            db.query(Source)
+            .filter(Source.course_id == course_id, Source.file_hash == digest)
+            .first()
+        )
         if existing:
             source_ids.append(str(existing.id))
             continue
@@ -250,9 +261,11 @@ async def upload_sources(
         source_ids.append(str(source.id))
         db.commit()
         try:
-            from backend.worker import ingest
             from redis import Redis
             from rq import Queue
+
+            from backend.worker import ingest
+
             Queue("ingestion", connection=Redis.from_url(settings.REDIS_URL)).enqueue(
                 ingest, str(source.id)
             )
@@ -273,9 +286,10 @@ def processing_status(course_id: str, db: Session = Depends(get_db)) -> dict:
                 "id": str(source.id),
                 "stage": source.stage,
                 "progress": source.progress,
-                "chunks_created": db.query(func.count(ContentChunk.id)).filter(
-                    ContentChunk.source_id == source.id
-                ).scalar() or 0,
+                "chunks_created": db.query(func.count(ContentChunk.id))
+                .filter(ContentChunk.source_id == source.id)
+                .scalar()
+                or 0,
             }
             for source in sources
         ]
@@ -283,9 +297,7 @@ def processing_status(course_id: str, db: Session = Depends(get_db)) -> dict:
 
 
 @router.get("/sources/{source_id}/file")
-def download_source(
-    source_id: str, request: Request, db: Session = Depends(get_db)
-) -> Response:
+def download_source(source_id: str, request: Request, db: Session = Depends(get_db)) -> Response:
     """Stream a source file with single-range HTTP support."""
     source = db.get(Source, source_id)
     if source is None or not source.uri or not Path(source.uri).exists():

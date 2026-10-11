@@ -21,9 +21,9 @@ from sqlalchemy.pool import StaticPool
 # Ensure root directory is accessible for imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.core.db import Base, get_db
 # Import all models to register them on Base.metadata
 import backend.models.db  # noqa: F401
+from backend.core.db import Base, get_db
 from backend.main import create_app
 from backend.utils.cache import cache_clear
 

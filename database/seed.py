@@ -57,7 +57,11 @@ def seed_database() -> None:
         # =====================================================================
         # Course A: Legacy CS 101 (Algorithms & Data Structures)
         # =====================================================================
-        course_cs101 = session.query(Course).filter_by(owner_id=user.id, title="CS 101: Algorithms & Data Structures").first()
+        course_cs101 = (
+            session.query(Course)
+            .filter_by(owner_id=user.id, title="CS 101: Algorithms & Data Structures")
+            .first()
+        )
         if not course_cs101:
             course_cs101 = Course(
                 owner_id=user.id,
@@ -69,7 +73,11 @@ def seed_database() -> None:
             session.add(course_cs101)
             session.flush()
 
-        src_trees = session.query(Source).filter_by(course_id=course_cs101.id, filename="lecture_03_trees.pdf").first()
+        src_trees = (
+            session.query(Source)
+            .filter_by(course_id=course_cs101.id, filename="lecture_03_trees.pdf")
+            .first()
+        )
         if not src_trees:
             src_trees = Source(
                 course_id=course_cs101.id,
@@ -83,13 +91,21 @@ def seed_database() -> None:
             session.add(src_trees)
             session.flush()
 
-        top_trees = session.query(Topic).filter_by(course_id=course_cs101.id, name="Trees and Search Structures").first()
+        top_trees = (
+            session.query(Topic)
+            .filter_by(course_id=course_cs101.id, name="Trees and Search Structures")
+            .first()
+        )
         if not top_trees:
             top_trees = Topic(course_id=course_cs101.id, name="Trees and Search Structures")
             session.add(top_trees)
             session.flush()
 
-        c_bst = session.query(Concept).filter_by(topic_id=top_trees.id, name="Binary Search Tree Property").first()
+        c_bst = (
+            session.query(Concept)
+            .filter_by(topic_id=top_trees.id, name="Binary Search Tree Property")
+            .first()
+        )
         if not c_bst:
             c_bst = Concept(
                 topic_id=top_trees.id,
@@ -153,7 +169,11 @@ def seed_database() -> None:
         # =====================================================================
         # Course 1: NPTEL — Machine Learning (Prof. Balaraman Ravindran, IIT Madras)
         # =====================================================================
-        course_nptel = session.query(Course).filter_by(source_platform="nptel", source_id="nptel-ml-106106139").first()
+        course_nptel = (
+            session.query(Course)
+            .filter_by(source_platform="nptel", source_id="nptel-ml-106106139")
+            .first()
+        )
         if not course_nptel:
             course_nptel = Course(
                 owner_id=user.id,
@@ -177,7 +197,11 @@ def seed_database() -> None:
             session.flush()
             logger.info("Created NPTEL course: id=%s", course_nptel.id)
 
-        src_nptel_pdf = session.query(Source).filter_by(course_id=course_nptel.id, filename="Lecture_04_Regularization.pdf").first()
+        src_nptel_pdf = (
+            session.query(Source)
+            .filter_by(course_id=course_nptel.id, filename="Lecture_04_Regularization.pdf")
+            .first()
+        )
         if not src_nptel_pdf:
             src_nptel_pdf = Source(
                 course_id=course_nptel.id,
@@ -191,7 +215,11 @@ def seed_database() -> None:
             session.add(src_nptel_pdf)
             session.flush()
 
-        src_nptel_vid = session.query(Source).filter_by(course_id=course_nptel.id, filename="Lecture_05_Model_Evaluation.mp4").first()
+        src_nptel_vid = (
+            session.query(Source)
+            .filter_by(course_id=course_nptel.id, filename="Lecture_05_Model_Evaluation.mp4")
+            .first()
+        )
         if not src_nptel_vid:
             src_nptel_vid = Source(
                 course_id=course_nptel.id,
@@ -205,13 +233,21 @@ def seed_database() -> None:
             session.add(src_nptel_vid)
             session.flush()
 
-        top_reg = session.query(Topic).filter_by(course_id=course_nptel.id, name="Regularization & Model Selection").first()
+        top_reg = (
+            session.query(Topic)
+            .filter_by(course_id=course_nptel.id, name="Regularization & Model Selection")
+            .first()
+        )
         if not top_reg:
             top_reg = Topic(course_id=course_nptel.id, name="Regularization & Model Selection")
             session.add(top_reg)
             session.flush()
 
-        c_l1_l2 = session.query(Concept).filter_by(topic_id=top_reg.id, name="L1 vs L2 Regularization").first()
+        c_l1_l2 = (
+            session.query(Concept)
+            .filter_by(topic_id=top_reg.id, name="L1 vs L2 Regularization")
+            .first()
+        )
         if not c_l1_l2:
             c_l1_l2 = Concept(
                 topic_id=top_reg.id,
@@ -222,7 +258,11 @@ def seed_database() -> None:
             session.add(c_l1_l2)
             session.flush()
 
-        c_pr = session.query(Concept).filter_by(topic_id=top_reg.id, name="Precision vs Recall Trade-off").first()
+        c_pr = (
+            session.query(Concept)
+            .filter_by(topic_id=top_reg.id, name="Precision vs Recall Trade-off")
+            .first()
+        )
         if not c_pr:
             c_pr = Concept(
                 topic_id=top_reg.id,
@@ -233,7 +273,9 @@ def seed_database() -> None:
             session.add(c_pr)
             session.flush()
 
-        chunk_l1 = session.query(ContentChunk).filter_by(source_id=src_nptel_pdf.id, page=42).first()
+        chunk_l1 = (
+            session.query(ContentChunk).filter_by(source_id=src_nptel_pdf.id, page=42).first()
+        )
         if not chunk_l1:
             chunk_l1 = ContentChunk(
                 course_id=course_nptel.id,
@@ -250,7 +292,11 @@ def seed_database() -> None:
             session.flush()
             session.add(ChunkConcept(chunk_id=chunk_l1.id, concept_id=c_l1_l2.id, relevance=1.0))
 
-        chunk_pr = session.query(ContentChunk).filter_by(source_id=src_nptel_vid.id, ts_start=1112.0).first()
+        chunk_pr = (
+            session.query(ContentChunk)
+            .filter_by(source_id=src_nptel_vid.id, ts_start=1112.0)
+            .first()
+        )
         if not chunk_pr:
             chunk_pr = ContentChunk(
                 course_id=course_nptel.id,
@@ -276,10 +322,26 @@ def seed_database() -> None:
                 question_text="Why does L1 regularization (Lasso) induce exact sparsity in feature weights, whereas L2 regularization (Ridge) does not?",
                 question_type="mcq",
                 options=[
-                    {"key": "A", "text": "L1 norm has a higher derivative than L2 norm everywhere", "is_correct": False},
-                    {"key": "B", "text": "The L1 constraint boundary is a polytope whose sharp vertices touch loss contours at coordinates where w_i = 0", "is_correct": True},
-                    {"key": "C", "text": "L1 regularization forces the Hessian matrix eigenvalues to be strictly negative", "is_correct": False},
-                    {"key": "D", "text": "L2 regularization is mathematically incompatible with convex loss functions", "is_correct": False},
+                    {
+                        "key": "A",
+                        "text": "L1 norm has a higher derivative than L2 norm everywhere",
+                        "is_correct": False,
+                    },
+                    {
+                        "key": "B",
+                        "text": "The L1 constraint boundary is a polytope whose sharp vertices touch loss contours at coordinates where w_i = 0",
+                        "is_correct": True,
+                    },
+                    {
+                        "key": "C",
+                        "text": "L1 regularization forces the Hessian matrix eigenvalues to be strictly negative",
+                        "is_correct": False,
+                    },
+                    {
+                        "key": "D",
+                        "text": "L2 regularization is mathematically incompatible with convex loss functions",
+                        "is_correct": False,
+                    },
                 ],
                 correct_answer="B",
                 explanation="In 2D or higher, the L1 constraint region is diamond-shaped with corners lying on the coordinate axes. Expanding loss contours typically touch these sharp vertices first, driving coordinates directly to zero.",
@@ -298,10 +360,26 @@ def seed_database() -> None:
                 question_text="In binary classification, what happens to Precision and Recall when you increase the decision threshold from 0.5 to 0.85?",
                 question_type="mcq",
                 options=[
-                    {"key": "A", "text": "Precision increases, Recall decreases", "is_correct": True},
-                    {"key": "B", "text": "Precision decreases, Recall increases", "is_correct": False},
-                    {"key": "C", "text": "Both Precision and Recall increase simultaneously", "is_correct": False},
-                    {"key": "D", "text": "Neither metric changes because model parameters are frozen", "is_correct": False},
+                    {
+                        "key": "A",
+                        "text": "Precision increases, Recall decreases",
+                        "is_correct": True,
+                    },
+                    {
+                        "key": "B",
+                        "text": "Precision decreases, Recall increases",
+                        "is_correct": False,
+                    },
+                    {
+                        "key": "C",
+                        "text": "Both Precision and Recall increase simultaneously",
+                        "is_correct": False,
+                    },
+                    {
+                        "key": "D",
+                        "text": "Neither metric changes because model parameters are frozen",
+                        "is_correct": False,
+                    },
                 ],
                 correct_answer="A",
                 explanation="A stricter threshold classifies fewer samples as positive, eliminating borderline false alarms (fewer false positives -> higher precision) at the expense of missing genuine positive cases (more false negatives -> lower recall).",
@@ -312,7 +390,9 @@ def seed_database() -> None:
             )
             session.add(q_pr)
 
-        plan_nptel = session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_nptel.id).first()
+        plan_nptel = (
+            session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_nptel.id).first()
+        )
         if not plan_nptel:
             plan_nptel = StudyPlan(
                 user_id=user.id,
@@ -328,7 +408,11 @@ def seed_database() -> None:
         # =====================================================================
         # Course 2: MIT OpenCourseWare — Mathematics for Computer Science
         # =====================================================================
-        course_mit = session.query(Course).filter_by(source_platform="mit_ocw", source_id="mit-ocw-6-042j").first()
+        course_mit = (
+            session.query(Course)
+            .filter_by(source_platform="mit_ocw", source_id="mit-ocw-6-042j")
+            .first()
+        )
         if not course_mit:
             course_mit = Course(
                 owner_id=user.id,
@@ -352,7 +436,11 @@ def seed_database() -> None:
             session.flush()
             logger.info("Created MIT OCW course: id=%s", course_mit.id)
 
-        src_mit_pdf = session.query(Source).filter_by(course_id=course_mit.id, filename="Unit_01_Proofs_and_Induction.pdf").first()
+        src_mit_pdf = (
+            session.query(Source)
+            .filter_by(course_id=course_mit.id, filename="Unit_01_Proofs_and_Induction.pdf")
+            .first()
+        )
         if not src_mit_pdf:
             src_mit_pdf = Source(
                 course_id=course_mit.id,
@@ -366,13 +454,21 @@ def seed_database() -> None:
             session.add(src_mit_pdf)
             session.flush()
 
-        top_proofs = session.query(Topic).filter_by(course_id=course_mit.id, name="Formal Proofs & Well Ordering").first()
+        top_proofs = (
+            session.query(Topic)
+            .filter_by(course_id=course_mit.id, name="Formal Proofs & Well Ordering")
+            .first()
+        )
         if not top_proofs:
             top_proofs = Topic(course_id=course_mit.id, name="Formal Proofs & Well Ordering")
             session.add(top_proofs)
             session.flush()
 
-        c_wop = session.query(Concept).filter_by(topic_id=top_proofs.id, name="Well Ordering Principle").first()
+        c_wop = (
+            session.query(Concept)
+            .filter_by(topic_id=top_proofs.id, name="Well Ordering Principle")
+            .first()
+        )
         if not c_wop:
             c_wop = Concept(
                 topic_id=top_proofs.id,
@@ -409,8 +505,16 @@ def seed_database() -> None:
                 question_type="mcq",
                 options=[
                     {"key": "A", "text": "Any bounded set of real numbers", "is_correct": False},
-                    {"key": "B", "text": "Any non-empty set of non-negative integers", "is_correct": True},
-                    {"key": "C", "text": "Any non-empty set of integers that contains zero", "is_correct": False},
+                    {
+                        "key": "B",
+                        "text": "Any non-empty set of non-negative integers",
+                        "is_correct": True,
+                    },
+                    {
+                        "key": "C",
+                        "text": "Any non-empty set of integers that contains zero",
+                        "is_correct": False,
+                    },
                     {"key": "D", "text": "Any continuous interval [a, b]", "is_correct": False},
                 ],
                 correct_answer="B",
@@ -422,7 +526,9 @@ def seed_database() -> None:
             )
             session.add(q_wop)
 
-        plan_mit = session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_mit.id).first()
+        plan_mit = (
+            session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_mit.id).first()
+        )
         if not plan_mit:
             plan_mit = StudyPlan(
                 user_id=user.id,
@@ -438,7 +544,11 @@ def seed_database() -> None:
         # =====================================================================
         # Course 3: MITx — Introduction to Computer Science and Programming Using Python
         # =====================================================================
-        course_mitx = session.query(Course).filter_by(source_platform="mitx", source_id="mitx-6-00-1x").first()
+        course_mitx = (
+            session.query(Course)
+            .filter_by(source_platform="mitx", source_id="mitx-6-00-1x")
+            .first()
+        )
         if not course_mitx:
             course_mitx = Course(
                 owner_id=user.id,
@@ -462,7 +572,11 @@ def seed_database() -> None:
             session.flush()
             logger.info("Created MITx course: id=%s", course_mitx.id)
 
-        src_mitx_pdf = session.query(Source).filter_by(course_id=course_mitx.id, filename="Unit_02_Recursion_and_Dictionaries.pdf").first()
+        src_mitx_pdf = (
+            session.query(Source)
+            .filter_by(course_id=course_mitx.id, filename="Unit_02_Recursion_and_Dictionaries.pdf")
+            .first()
+        )
         if not src_mitx_pdf:
             src_mitx_pdf = Source(
                 course_id=course_mitx.id,
@@ -476,13 +590,21 @@ def seed_database() -> None:
             session.add(src_mitx_pdf)
             session.flush()
 
-        top_recursion = session.query(Topic).filter_by(course_id=course_mitx.id, name="Recursion & Dictionaries").first()
+        top_recursion = (
+            session.query(Topic)
+            .filter_by(course_id=course_mitx.id, name="Recursion & Dictionaries")
+            .first()
+        )
         if not top_recursion:
             top_recursion = Topic(course_id=course_mitx.id, name="Recursion & Dictionaries")
             session.add(top_recursion)
             session.flush()
 
-        c_rec = session.query(Concept).filter_by(topic_id=top_recursion.id, name="Recursion Base Case Design").first()
+        c_rec = (
+            session.query(Concept)
+            .filter_by(topic_id=top_recursion.id, name="Recursion Base Case Design")
+            .first()
+        )
         if not c_rec:
             c_rec = Concept(
                 topic_id=top_recursion.id,
@@ -493,7 +615,9 @@ def seed_database() -> None:
             session.add(c_rec)
             session.flush()
 
-        chunk_rec = session.query(ContentChunk).filter_by(source_id=src_mitx_pdf.id, page=18).first()
+        chunk_rec = (
+            session.query(ContentChunk).filter_by(source_id=src_mitx_pdf.id, page=18).first()
+        )
         if not chunk_rec:
             chunk_rec = ContentChunk(
                 course_id=course_mitx.id,
@@ -518,10 +642,22 @@ def seed_database() -> None:
                 question_text="What happens in Python when a recursive function fails to hit its base case?",
                 question_type="mcq",
                 options=[
-                    {"key": "A", "text": "It raises a RecursionError after exceeding maximum recursion depth", "is_correct": True},
+                    {
+                        "key": "A",
+                        "text": "It raises a RecursionError after exceeding maximum recursion depth",
+                        "is_correct": True,
+                    },
                     {"key": "B", "text": "It returns None automatically", "is_correct": False},
-                    {"key": "C", "text": "The Python interpreter allocates disk swap space to continue executing", "is_correct": False},
-                    {"key": "D", "text": "The function converts silently to a while loop", "is_correct": False},
+                    {
+                        "key": "C",
+                        "text": "The Python interpreter allocates disk swap space to continue executing",
+                        "is_correct": False,
+                    },
+                    {
+                        "key": "D",
+                        "text": "The function converts silently to a while loop",
+                        "is_correct": False,
+                    },
                 ],
                 correct_answer="A",
                 explanation="Without hitting a base case, recursion continues adding stack frames until Python reaches sys.getrecursionlimit(), raising RecursionError (maximum recursion depth exceeded).",
@@ -532,7 +668,9 @@ def seed_database() -> None:
             )
             session.add(q_rec)
 
-        plan_mitx = session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_mitx.id).first()
+        plan_mitx = (
+            session.query(StudyPlan).filter_by(user_id=user.id, course_id=course_mitx.id).first()
+        )
         if not plan_mitx:
             plan_mitx = StudyPlan(
                 user_id=user.id,
@@ -546,7 +684,9 @@ def seed_database() -> None:
             session.add(plan_mitx)
 
         session.commit()
-        logger.info("Database seeding completed successfully for all 3 demonstration courses + CS 101.")
+        logger.info(
+            "Database seeding completed successfully for all 3 demonstration courses + CS 101."
+        )
     except Exception as exc:
         session.rollback()
         logger.error("Database seeding failed: %s", exc, exc_info=True)

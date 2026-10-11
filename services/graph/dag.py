@@ -15,7 +15,8 @@ def detect_cycles(concept_ids: list[str], edges: list[dict[str, Any]]) -> list[l
     graph.add_nodes_from(concept_ids)
     graph.add_edges_from(
         (str(edge["prerequisite_id"]), str(edge["concept_id"]))
-        for edge in edges if edge.get("kind", "requires") == "requires"
+        for edge in edges
+        if edge.get("kind", "requires") == "requires"
     )
     return [list(cycle) for cycle in nx.simple_cycles(graph)]
 
@@ -32,7 +33,8 @@ def break_cycles(edges: list[dict[str, Any]]) -> list[dict[str, Any]]:
             return remaining
         cycle = set(cycles[0])
         candidates = [
-            edge for edge in remaining
+            edge
+            for edge in remaining
             if edge.get("kind", "requires") == "requires"
             and str(edge["concept_id"]) in cycle
             and str(edge["prerequisite_id"]) in cycle
@@ -46,16 +48,23 @@ def cyclic_dag(course_id: str, db_session: Session) -> nx.DiGraph:
     """Load a course prerequisite graph and return a cycle-free DAG."""
     concepts = db_session.query(Concept).join(Topic).filter(Topic.course_id == course_id).all()
     concept_ids = [str(concept.id) for concept in concepts]
-    prerequisites = db_session.query(Prerequisite).filter(
-        Prerequisite.concept_id.in_(concept_ids),
-        Prerequisite.kind == "requires",
-    ).all()
-    edges = [{
-        "concept_id": edge.concept_id,
-        "prerequisite_id": edge.prerequisite_id,
-        "kind": edge.kind,
-        "confidence": edge.confidence,
-    } for edge in prerequisites]
+    prerequisites = (
+        db_session.query(Prerequisite)
+        .filter(
+            Prerequisite.concept_id.in_(concept_ids),
+            Prerequisite.kind == "requires",
+        )
+        .all()
+    )
+    edges = [
+        {
+            "concept_id": edge.concept_id,
+            "prerequisite_id": edge.prerequisite_id,
+            "kind": edge.kind,
+            "confidence": edge.confidence,
+        }
+        for edge in prerequisites
+    ]
     graph = nx.DiGraph()
     graph.add_nodes_from(concept_ids)
     graph.add_edges_from(

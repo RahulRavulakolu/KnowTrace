@@ -1,5 +1,5 @@
-from pathlib import Path
 import random
+from pathlib import Path
 
 from evaluation.simulator import SimQuestion, SimStudent, run_experiment
 
@@ -27,8 +27,13 @@ def test_forgetting_decay() -> None:
 
 def test_misconception_confusion() -> None:
     student = SimStudent("D", ["precision"], random.Random(11))
-    question = SimQuestion("q", "precision", difficulty=0.5, misconception_id="precision-recall",
-                           confusable_pair="precision-recall")
+    question = SimQuestion(
+        "q",
+        "precision",
+        difficulty=0.5,
+        misconception_id="precision-recall",
+        confusable_pair="precision-recall",
+    )
     wrong = 0
     confused = 0
     for _ in range(1000):

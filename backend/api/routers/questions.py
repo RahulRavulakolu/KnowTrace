@@ -30,8 +30,11 @@ class GradeRequest(BaseModel):
 def generate(payload: GenerateRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
     try:
         draft = generate_question(
-            payload.concept_id, payload.type, payload.target_difficulty,
-            payload.confusables, db,
+            payload.concept_id,
+            payload.type,
+            payload.target_difficulty,
+            payload.confusables,
+            db,
         )
         question = Question(
             concept_id=payload.concept_id,

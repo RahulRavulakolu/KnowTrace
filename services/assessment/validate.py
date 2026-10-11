@@ -9,7 +9,12 @@ from typing import Any
 
 from backend.core.llm import call_llm
 from backend.core.logging import logger
-from services.assessment.prompts import P15_BLIND_SOLVER, P16_AMBIGUITY_JUDGE, P17_TOPIC_RECLASSIFIER
+from backend.models.db import Question
+from services.assessment.prompts import (
+    P15_BLIND_SOLVER,
+    P16_AMBIGUITY_JUDGE,
+    P17_TOPIC_RECLASSIFIER,
+)
 
 
 def _data(response: Any) -> dict[str, Any]:
@@ -32,7 +37,10 @@ def span_check(support_span: str, chunk_text: str) -> bool:
     source_words = chunk_text.lower().split()
     width = len(span_words)
     return any(
-        SequenceMatcher(None, support_span.lower(), " ".join(source_words[index:index + width])).ratio() >= 0.9
+        SequenceMatcher(
+            None, support_span.lower(), " ".join(source_words[index : index + width])
+        ).ratio()
+        >= 0.9
         for index in range(max(1, len(source_words) - width + 1))
     )
 
@@ -41,23 +49,31 @@ def blind_solver(question: dict[str, Any], solver: Any = None) -> bool:
     if solver is not None:
         answer = solver(question)
     else:
-        answer = _data(call_llm(
-            "B",
-            f"{P15_BLIND_SOLVER}\nType: {question.get('type')}\nStem: {question.get('stem')}\n"
-            f"Options: {question.get('options', [])}",
-            json_schema={"type": "object"},
-        ))
+        answer = _data(
+            call_llm(
+                "B",
+                f"{P15_BLIND_SOLVER}\nType: {question.get('type')}\nStem: {question.get('stem')}\n"
+                f"Options: {question.get('options', [])}",
+                json_schema={"type": "object"},
+            )
+        )
     proposed = str(question.get("answer", "")).strip().lower()
-    solved = str(answer.get("answer", answer) if isinstance(answer, dict) else answer).strip().lower()
+    solved = (
+        str(answer.get("answer", answer) if isinstance(answer, dict) else answer).strip().lower()
+    )
     return solved == proposed or solved.rstrip(".") == proposed.rstrip(".")
 
 
 def mcq_structure(options: list[dict[str, Any]]) -> bool:
     if len(options) != 4:
         return False
-    correct = [item for item in options if item.get("is_correct") is True or item.get("correct") is True]
+    correct = [
+        item for item in options if item.get("is_correct") is True or item.get("correct") is True
+    ]
     return len(correct) == 1 and all(
-        item.get("is_correct") is True or item.get("correct") is True or bool(item.get("misconception"))
+        item.get("is_correct") is True
+        or item.get("correct") is True
+        or bool(item.get("misconception"))
         for item in options
     )
 
@@ -82,10 +98,14 @@ def _cosine(left: list[float], right: list[float]) -> float:
 def is_duplicate(stem: str, existing: list[Any], embedding: list[float] | None = None) -> bool:
     normalized = normalize_stem(stem)
     for item in existing:
-        other_stem = item.get("stem", "") if isinstance(item, dict) else getattr(item, "question_text", "")
+        other_stem = (
+            item.get("stem", "") if isinstance(item, dict) else getattr(item, "question_text", "")
+        )
         if normalized and normalized == normalize_stem(other_stem):
             return True
-        other_embedding = item.get("embedding") if isinstance(item, dict) else getattr(item, "embedding", None)
+        other_embedding = (
+            item.get("embedding") if isinstance(item, dict) else getattr(item, "embedding", None)
+        )
         if embedding and other_embedding and _cosine(embedding, other_embedding) > 0.88:
             return True
     return False
@@ -109,28 +129,38 @@ def validate_question(
         "duplicate": False,
         "rejection_reason": None,
     }
+    report["solver_agrees"] = blind_solver(question, solver)
     if not report["span_ok"]:
         report["rejection_reason"] = "span_check"
-    elif not (report.__setitem__("solver_agrees", blind_solver(question, solver)) or report["solver_agrees"]):
+    elif not report["solver_agrees"]:
         report["rejection_reason"] = "blind_solver"
     elif question.get("type") == "mcq" and not mcq_structure(question.get("options", [])):
         report["structure_ok"] = False
         report["rejection_reason"] = "mcq_structure"
-    elif question.get("type") == "numerical" and not numerical_code_valid(question.get("numerical_python")):
+    elif question.get("type") == "numerical" and not numerical_code_valid(
+        question.get("numerical_python")
+    ):
         report["rejection_reason"] = "numerical_code"
     else:
-        ambiguity = _data(call_llm(
-            "B", f"{P16_AMBIGUITY_JUDGE}\nStem: {question.get('stem')}\nOptions: {question.get('options', [])}",
-            json_schema={"type": "object"},
-        ))
+        ambiguity = _data(
+            call_llm(
+                "B",
+                f"{P16_AMBIGUITY_JUDGE}\nStem: {question.get('stem')}\nOptions: {question.get('options', [])}",
+                json_schema={"type": "object"},
+            )
+        )
         report["ambiguous"] = bool(ambiguity.get("ambiguous") or ambiguity.get("multiple_correct"))
         if report["ambiguous"]:
             report["rejection_reason"] = "ambiguity"
         else:
-            topic = _data(call_llm(
-                "B", f"{P17_TOPIC_RECLASSIFIER}\nTarget concept: {concept.id} {concept.name}\n"
-                f"Question: {question.get('stem')}", json_schema={"type": "object"},
-            ))
+            topic = _data(
+                call_llm(
+                    "B",
+                    f"{P17_TOPIC_RECLASSIFIER}\nTarget concept: {concept.id} {concept.name}\n"
+                    f"Question: {question.get('stem')}",
+                    json_schema={"type": "object"},
+                )
+            )
             report["topic_mismatch"] = (
                 str(topic.get("concept_id", concept.id)) != str(concept.id)
                 and float(topic.get("confidence", 0.0)) > 0.7
@@ -146,10 +176,14 @@ def validate_question(
     return {"status": status, "validation_report": report}
 
 
-def validate_and_persist(question: Question, chunk: Any, concept: Any, db_session: Any) -> dict[str, Any]:
+def validate_and_persist(
+    question: Question, chunk: Any, concept: Any, db_session: Any
+) -> dict[str, Any]:
     draft = {
-        "type": question.question_type, "stem": question.question_text,
-        "options": question.options or [], "answer": question.correct_answer,
+        "type": question.question_type,
+        "stem": question.question_text,
+        "options": question.options or [],
+        "answer": question.correct_answer,
         "support_span": question.support_span or "",
     }
     result = validate_question(draft, chunk, concept, db_session)

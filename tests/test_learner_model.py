@@ -53,7 +53,9 @@ def test_cold_start_priors(db_session) -> None:
     db_session.commit()
     result = post_onboarding(db_session, user.id, course.id, None, 10, {topic.id: 5})
     assert result["concepts_initialized"] == 1
-    mastery = db_session.query(LearnerMastery).filter_by(user_id=user.id, concept_id=concept.id).one()
+    mastery = (
+        db_session.query(LearnerMastery).filter_by(user_id=user.id, concept_id=concept.id).one()
+    )
     assert abs(mastery.p_know - 0.6) < 1e-6
     assert mastery.n_obs == 0
 
@@ -64,8 +66,14 @@ def test_diagnostic_selection(db_session) -> None:
     topics = [Topic(course=course, name=f"T{i}") for i in range(3)]
     concepts = [Concept(topic=topic, name=f"C{i}") for i, topic in enumerate(topics)]
     questions = [
-        Question(concept=concept, question_text=f"Q{i}", question_type="mcq",
-                 correct_answer="a", explanation="x", difficulty=0.5)
+        Question(
+            concept=concept,
+            question_text=f"Q{i}",
+            question_type="mcq",
+            correct_answer="a",
+            explanation="x",
+            difficulty=0.5,
+        )
         for i, concept in enumerate(concepts)
     ]
     db_session.add_all([user, course, *topics, *concepts, *questions])
@@ -78,8 +86,14 @@ def test_record_attempt_persists_mastery(db_session) -> None:
     course = Course(owner=user, title="Attempt course")
     topic = Topic(course=course, name="Topic")
     concept = Concept(topic=topic, name="Concept")
-    question = Question(concept=concept, question_text="Q", question_type="mcq",
-                        correct_answer="a", explanation="x", difficulty=0.5)
+    question = Question(
+        concept=concept,
+        question_text="Q",
+        question_type="mcq",
+        correct_answer="a",
+        explanation="x",
+        difficulty=0.5,
+    )
     db_session.add_all([user, course, topic, concept, question])
     db_session.commit()
     result = record_attempt(db_session, user.id, question.id, "a", True)
@@ -96,10 +110,18 @@ def test_conversation_evidence(monkeypatch, db_session) -> None:
     db_session.commit()
 
     class Response:
-        data = [{"concept_id": concept.id, "signal": "confusion", "evidence": "asks for clarification"}]
+        data = [
+            {"concept_id": concept.id, "signal": "confusion", "evidence": "asks for clarification"}
+        ]
 
-    monkeypatch.setattr("services.learner_model.service.call_llm", lambda *args, **kwargs: Response())
-    evidence = record_conversation_evidence(db_session, user.id, "I do not understand", [concept.id])
+    monkeypatch.setattr(
+        "services.learner_model.service.call_llm", lambda *args, **kwargs: Response()
+    )
+    evidence = record_conversation_evidence(
+        db_session, user.id, "I do not understand", [concept.id]
+    )
     assert evidence[0]["signal"] == "confusion"
-    mastery = db_session.query(LearnerMastery).filter_by(user_id=user.id, concept_id=concept.id).one()
+    mastery = (
+        db_session.query(LearnerMastery).filter_by(user_id=user.id, concept_id=concept.id).one()
+    )
     assert mastery.p_know < 0.3

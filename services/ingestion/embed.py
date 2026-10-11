@@ -22,6 +22,7 @@ def _get_model() -> Any:
     global _model
     if _model is None:
         from sentence_transformers import SentenceTransformer
+
         _model = SentenceTransformer(settings.BGE_MODEL)
     return _model
 

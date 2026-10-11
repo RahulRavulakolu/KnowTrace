@@ -17,8 +17,12 @@ def test_citation_resolver_supports_all_modalities() -> None:
     """PDF, slide, and video provenance produce deep links."""
     chunks = [
         SimpleNamespace(id="p", source_id="s1", page=3, slide=None, ts_start=None, text="one two"),
-        SimpleNamespace(id="s", source_id="s2", page=None, slide=4, ts_start=None, text="slide text"),
-        SimpleNamespace(id="v", source_id="s3", page=None, slide=None, ts_start=12.5, text="video words"),
+        SimpleNamespace(
+            id="s", source_id="s2", page=None, slide=4, ts_start=None, text="slide text"
+        ),
+        SimpleNamespace(
+            id="v", source_id="s3", page=None, slide=None, ts_start=12.5, text="video words"
+        ),
     ]
     citations = citation_resolver(chunks)
     assert citations[0]["link"] == "/view/s1?page=3"

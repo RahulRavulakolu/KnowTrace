@@ -3,8 +3,8 @@
 import uuid
 
 from services.ingestion.chunking import chunk_text
-from services.ingestion.embed import embed_chunks
 from services.ingestion.classifier import detect_file_type
+from services.ingestion.embed import embed_chunks
 
 
 def test_classifier_and_chunking() -> None:

@@ -6,7 +6,7 @@ from typing import Literal
 try:
     import magic
 except ImportError:  # pragma: no cover - Docker installs python-magic
-    magic = None
+    magic = None  # type: ignore[assignment]
 
 FileType = Literal["pdf", "pptx", "video", "image"]
 
@@ -36,8 +36,10 @@ def detect_file_type(file_bytes: bytes, filename: str | None = None) -> FileType
         return "pdf"
     if (
         mime
-        in {"application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            "application/zip"}
+        in {
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "application/zip",
+        }
         and extension_type == "pptx"
     ):
         return "pptx"

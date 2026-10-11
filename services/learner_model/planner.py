@@ -34,9 +34,8 @@ def priority(
     retrievability_value: float = 1.0,
 ) -> float:
     """Apply the documented priority formula."""
-    return (
-        (1 - p_eff_value) * importance * (1 + 0.5 * weak_dependents)
-        + (0.3 if retrievability_value < 0.8 else 0.0)
+    return (1 - p_eff_value) * importance * (1 + 0.5 * weak_dependents) + (
+        0.3 if retrievability_value < 0.8 else 0.0
     )
 
 
@@ -75,7 +74,8 @@ def _mastery_payload(db: Session, user_id: str, concept: Concept) -> dict[str, A
         return {"p_eff": 0.3, "half_life": 3.0, "last_seen": None, "n_obs": 0}
     return {
         "p_eff": p_eff(record.p_know, record.half_life, record.last_practiced_at),
-        "half_life": record.half_life, "last_seen": record.last_practiced_at,
+        "half_life": record.half_life,
+        "last_seen": record.last_practiced_at,
         "n_obs": record.n_obs,
     }
 
@@ -102,23 +102,28 @@ def build_plan(
     exam_date = exam_date or course.exam_date or (today + timedelta(days=14))
     concepts = db.query(Concept).join(Topic).filter(Topic.course_id == course_id).all()
     concept_ids = [str(item.id) for item in concepts]
-    edges = db.query(Prerequisite).filter(
-        Prerequisite.concept_id.in_(concept_ids), Prerequisite.kind == "requires"
-    ).all()
-    dependents = defaultdict(int)
+    edges = (
+        db.query(Prerequisite)
+        .filter(Prerequisite.concept_id.in_(concept_ids), Prerequisite.kind == "requires")
+        .all()
+    )
+    dependents: dict[str, int] = defaultdict(int)
     for edge in edges:
         dependents[str(edge.prerequisite_id)] += 1
     payloads = {str(concept.id): _mastery_payload(db, user_id, concept) for concept in concepts}
     priorities = {
         str(concept.id): priority(
-            payloads[str(concept.id)]["p_eff"], concept.importance,
+            payloads[str(concept.id)]["p_eff"],
+            concept.importance,
             dependents[str(concept.id)],
             retrievability(str(concept.id), payloads[str(concept.id)]),
         )
         for concept in concepts
     }
     order = topological_priority_order(
-        concept_ids, [(str(edge.concept_id), str(edge.prerequisite_id)) for edge in edges], priorities
+        concept_ids,
+        [(str(edge.concept_id), str(edge.prerequisite_id)) for edge in edges],
+        priorities,
     )
     by_id = {str(concept.id): concept for concept in concepts}
     blocks_by_concept: dict[str, list[dict[str, Any]]] = {}
@@ -128,9 +133,24 @@ def build_plan(
         practice = round(minutes * 0.3)
         revise = max(1, minutes - study - practice)
         blocks_by_concept[concept_id] = [
-            {"type": "study", "concept_id": concept_id, "minutes": study, "source_link": _source_link(by_id[concept_id])},
-            {"type": "practice", "concept_id": concept_id, "minutes": practice, "source_link": None},
-            {"type": "revise", "concept_id": concept_id, "minutes": revise, "source_link": _source_link(by_id[concept_id])},
+            {
+                "type": "study",
+                "concept_id": concept_id,
+                "minutes": study,
+                "source_link": _source_link(by_id[concept_id]),
+            },
+            {
+                "type": "practice",
+                "concept_id": concept_id,
+                "minutes": practice,
+                "source_link": None,
+            },
+            {
+                "type": "revise",
+                "concept_id": concept_id,
+                "minutes": revise,
+                "source_link": _source_link(by_id[concept_id]),
+            },
         ]
     days_available = max(0, (exam_date - today).days - 2)
     budget = round(days_available * float(course.hours_per_day) * 60)
@@ -161,12 +181,30 @@ def build_plan(
             else:
                 blocks[0] = {**block, "minutes": block["minutes"] - take}
         days.append({"date": (today + timedelta(days=index)).isoformat(), "blocks": day_blocks})
-    plan = {"days": days, "budget_minutes": budget, "rationale": "Prioritizes weak, important concepts and reviews at-risk memories."}
-    previous = db.query(StudyPlan).filter_by(user_id=user_id, course_id=course_id, status="active").order_by(StudyPlan.created_at.desc()).first()
+    plan = {
+        "days": days,
+        "budget_minutes": budget,
+        "rationale": "Prioritizes weak, important concepts and reviews at-risk memories.",
+    }
+    previous = (
+        db.query(StudyPlan)
+        .filter_by(user_id=user_id, course_id=course_id, status="active")
+        .order_by(StudyPlan.created_at.desc())
+        .first()
+    )
     diff = compute_diff((previous.plan_data if previous else {}).get("days", []), days)
     if previous:
         previous.status = "superseded"
-    db.add(StudyPlan(user_id=user_id, course_id=course_id, title="Adaptive study plan", target_date=exam_date, topics_priority=order, plan_data={**plan, "diff": diff}))
+    db.add(
+        StudyPlan(
+            user_id=user_id,
+            course_id=course_id,
+            title="Adaptive study plan",
+            target_date=exam_date,
+            topics_priority=order,
+            plan_data={**plan, "diff": diff},
+        )
+    )
     db.commit()
     return {**plan, "diff": diff}
 
@@ -181,10 +219,15 @@ def _positions(days: list[dict[str, Any]]) -> dict[str, int]:
 
 def compute_diff(previous: list[dict[str, Any]], current: list[dict[str, Any]]) -> dict[str, Any]:
     old, new = _positions(previous), _positions(current)
-    moved_up = [concept_id for concept_id in new if concept_id in old and new[concept_id] < old[concept_id]]
-    moved_down = [concept_id for concept_id in new if concept_id in old and new[concept_id] > old[concept_id]]
+    moved_up = [
+        concept_id for concept_id in new if concept_id in old and new[concept_id] < old[concept_id]
+    ]
+    moved_down = [
+        concept_id for concept_id in new if concept_id in old and new[concept_id] > old[concept_id]
+    ]
     return {
-        "moved_up": moved_up, "moved_down": moved_down,
+        "moved_up": moved_up,
+        "moved_down": moved_down,
         "added": [item for item in new if item not in old],
         "removed": [item for item in old if item not in new],
     }

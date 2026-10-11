@@ -7,18 +7,18 @@ for enrolled courses across NPTEL, MIT OCW, MITx, SWAYAM, Khan Academy, and loca
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
+
 from sqlalchemy.orm import Session
 
 from backend.models.db import Concept, Course, Source, Topic
-from backend.services.mit_ocw_lectures import MIT_OCW_LECTURES
 from backend.services.catalog_lectures import (
-    MIT_6006_ALGORITHMS_LECTURES,
-    NPTEL_ML_LECTURES,
-    MITX_PYTHON_LECTURES,
-    SWAYAM_DS_LECTURES,
     KHAN_ACADEMY_LA_LECTURES,
+    MIT_6006_ALGORITHMS_LECTURES,
+    MITX_PYTHON_LECTURES,
+    NPTEL_ML_LECTURES,
+    SWAYAM_DS_LECTURES,
 )
-
+from backend.services.mit_ocw_lectures import MIT_OCW_LECTURES
 
 # Complete curated catalog with 100% verified playable YouTube embeds
 _PLATFORM_LECTURE_METADATA: Dict[str, List[Dict[str, Any]]] = {
@@ -109,51 +109,80 @@ def get_course_lectures(course_id: str, db: Session) -> Dict[str, Any]:
         lec_id = raw.get("id", f"{course_id}-lec-{idx + 1}")
 
         embed_url = (
-            f"https://www.youtube.com/embed/{yt_id}?autoplay=1&enablejsapi=1"
-            if yt_id
-            else ""
+            f"https://www.youtube.com/embed/{yt_id}?autoplay=1&enablejsapi=1" if yt_id else ""
         )
         mod_title = raw.get("module_title", f"Unit {(idx // 5) + 1}")
         concept_nm = raw.get("concept_name", f"Concept {idx + 1}")
 
-        lectures.append({
-            "id": lec_id,
-            "course_id": course_id,
-            "courseId": course_id,
-            "module_id": f"mod-{mod_title.replace(' ', '-').lower()}",
-            "moduleId": f"mod-{mod_title.replace(' ', '-').lower()}",
-            "module_title": mod_title,
-            "moduleTitle": mod_title,
-            "order": raw.get("order", idx + 1),
-            "title": raw.get("title", f"Lecture {idx + 1}"),
-            "duration_minutes": duration,
-            "durationMinutes": duration,
-            "instructor": instructor_display,
-            "platform": platform_display,
-            "youtube_id": yt_id,
-            "youtubeId": yt_id,
-            "video_url": embed_url,
-            "videoUrl": embed_url,
-            "download_url": f"/api/v1/courses/sources/{lec_id}/file",
-            "downloadUrl": f"/api/v1/courses/sources/{lec_id}/file",
-            "thumbnail_url": f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg" if yt_id else "",
-            "thumbnailUrl": f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg" if yt_id else "",
-            "concept_name": concept_nm,
-            "conceptName": concept_nm,
-            "notes": raw.get("notes", [
-                "Fundamental definitions and structural principles.",
-                "Step-by-step mathematical derivation and proofs.",
-                "Practical algorithmic application and common edge cases.",
-            ]),
-            "transcript": raw.get("transcript", [
-                {"seconds": 0, "timestamp": "00:00", "text": f"Welcome to {raw.get('title', 'Lecture')}. Today we explore foundational principles."},
-                {"seconds": 300, "timestamp": "05:00", "text": "Reviewing core mathematical formulations and contextual background."},
-                {"seconds": 1200, "timestamp": "20:00", "text": "Analyzing the key theorem and working through practical problems."},
-            ]),
-            "resources": raw.get("resources", [
-                {"title": f"{raw.get('title', 'Lecture')} Notes (PDF)", "type": "pdf", "url": "#"},
-            ]),
-        })
+        lectures.append(
+            {
+                "id": lec_id,
+                "course_id": course_id,
+                "courseId": course_id,
+                "module_id": f"mod-{mod_title.replace(' ', '-').lower()}",
+                "moduleId": f"mod-{mod_title.replace(' ', '-').lower()}",
+                "module_title": mod_title,
+                "moduleTitle": mod_title,
+                "order": raw.get("order", idx + 1),
+                "title": raw.get("title", f"Lecture {idx + 1}"),
+                "duration_minutes": duration,
+                "durationMinutes": duration,
+                "instructor": instructor_display,
+                "platform": platform_display,
+                "youtube_id": yt_id,
+                "youtubeId": yt_id,
+                "video_url": embed_url,
+                "videoUrl": embed_url,
+                "download_url": f"/api/v1/courses/sources/{lec_id}/file",
+                "downloadUrl": f"/api/v1/courses/sources/{lec_id}/file",
+                "thumbnail_url": f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
+                if yt_id
+                else "",
+                "thumbnailUrl": f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
+                if yt_id
+                else "",
+                "concept_name": concept_nm,
+                "conceptName": concept_nm,
+                "notes": raw.get(
+                    "notes",
+                    [
+                        "Fundamental definitions and structural principles.",
+                        "Step-by-step mathematical derivation and proofs.",
+                        "Practical algorithmic application and common edge cases.",
+                    ],
+                ),
+                "transcript": raw.get(
+                    "transcript",
+                    [
+                        {
+                            "seconds": 0,
+                            "timestamp": "00:00",
+                            "text": f"Welcome to {raw.get('title', 'Lecture')}. Today we explore foundational principles.",
+                        },
+                        {
+                            "seconds": 300,
+                            "timestamp": "05:00",
+                            "text": "Reviewing core mathematical formulations and contextual background.",
+                        },
+                        {
+                            "seconds": 1200,
+                            "timestamp": "20:00",
+                            "text": "Analyzing the key theorem and working through practical problems.",
+                        },
+                    ],
+                ),
+                "resources": raw.get(
+                    "resources",
+                    [
+                        {
+                            "title": f"{raw.get('title', 'Lecture')} Notes (PDF)",
+                            "type": "pdf",
+                            "url": "#",
+                        },
+                    ],
+                ),
+            }
+        )
 
     return {
         "course_id": course_id,

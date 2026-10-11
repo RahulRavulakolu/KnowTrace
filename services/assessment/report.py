@@ -17,34 +17,49 @@ def generate_report(assessment_id: str, db_session: Any) -> dict[str, Any]:
     attempts = db_session.query(Attempt).filter(Attempt.assessment_id == assessment_id).all()
     question_ids = [item.question_id for item in attempts]
     concept_ids = {
-        str(concept_id) for (concept_id,) in db_session.query(Question.concept_id).filter(
-            Question.id.in_(question_ids or [""])
-        ).all()
+        str(concept_id)
+        for (concept_id,) in db_session.query(Question.concept_id)
+        .filter(Question.id.in_(question_ids or [""]))
+        .all()
     }
     if not concept_ids:
         concept_ids = {
-            str(concept_id) for (concept_id,) in db_session.query(Question.concept_id).join(
-                Concept
-            ).join(Topic).filter(Topic.course_id == assessment.course_id).all()
+            str(concept_id)
+            for (concept_id,) in db_session.query(Question.concept_id)
+            .join(Concept)
+            .join(Topic)
+            .filter(Topic.course_id == assessment.course_id)
+            .all()
         }
     weak = []
     for concept in db_session.query(Concept).filter(Concept.id.in_(concept_ids or [""])).all():
-        mastery = db_session.query(LearnerMastery).filter_by(
-            user_id=assessment.user_id, concept_id=concept.id
-        ).first()
+        mastery = (
+            db_session.query(LearnerMastery)
+            .filter_by(user_id=assessment.user_id, concept_id=concept.id)
+            .first()
+        )
         if mastery:
-            weak.append({
-                "concept_id": str(concept.id), "concept": concept.name,
-                "p_after": p_eff(mastery.p_know, mastery.half_life, mastery.last_practiced_at),
-            })
+            weak.append(
+                {
+                    "concept_id": str(concept.id),
+                    "concept": concept.name,
+                    "p_after": p_eff(mastery.p_know, mastery.half_life, mastery.last_practiced_at),
+                }
+            )
     weak.sort(key=lambda item: item["p_after"])
-    payload = [{
-        "question_id": str(item.question_id), "response": item.user_answer,
-        "correct": item.is_correct, "misconception_id": item.misconception_id,
-    } for item in attempts]
+    payload = [
+        {
+            "question_id": str(item.question_id),
+            "response": item.user_answer,
+            "correct": item.is_correct,
+            "misconception_id": item.misconception_id,
+        }
+        for item in attempts
+    ]
     try:
         response = call_llm(
-            "A", f"{P19_REPORT_GENERATION}\nAttempts: {payload}\nWeak concepts: {weak}",
+            "A",
+            f"{P19_REPORT_GENERATION}\nAttempts: {payload}\nWeak concepts: {weak}",
             json_schema={"type": "object"},
         )
         data = getattr(response, "data", response)

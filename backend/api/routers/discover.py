@@ -14,9 +14,9 @@ from typing import List, Optional, Set
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from backend.core.db import get_db
 from backend.api.deps import get_optional_user
 from backend.connectors.registry import get_registry
+from backend.core.db import get_db
 from backend.models.db import Course, Source, User
 from backend.schemas.discover import (
     CatalogCourseDetailResponse,
@@ -28,7 +28,6 @@ from backend.schemas.discover import (
 )
 
 router = APIRouter(prefix="/discover", tags=["Discovery"])
-
 
 
 @router.get(
@@ -219,8 +218,9 @@ def ingest_catalog_course(
     db.flush()
 
     # Add Source, Topic, Concept, Chunk, and StudyPlan records from module structure
-    from backend.models.db import ChunkConcept, Concept, ContentChunk, StudyPlan, Topic
     from datetime import date, timedelta
+
+    from backend.models.db import ChunkConcept, Concept, ContentChunk, StudyPlan, Topic
 
     module_topic_ids: list[str] = []
     first_chunk_id: str | None = None
@@ -252,7 +252,8 @@ def ingest_catalog_course(
                 course_id=new_course.id,
                 filename=res_title,
                 type=source_type,
-                uri=res.get("url") or f"https://knowtrace.ai/resources/{request.source_id}/{res_title}",
+                uri=res.get("url")
+                or f"https://knowtrace.ai/resources/{request.source_id}/{res_title}",
                 status="done",
                 stage="embed",
                 progress=1.0,
@@ -310,4 +311,3 @@ def ingest_catalog_course(
         status="enrolled",
         message=f"Course successfully enrolled from {detail.get('source_platform_name', request.platform)} into KnowTrace.",
     )
-

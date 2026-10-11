@@ -48,20 +48,54 @@ _SWAYAM_CATALOG: List[CatalogCourseData] = [
                 order=1,
                 description="What is ML, history, types of learning",
                 resources=[
-                    CourseResourceData(title="Introduction to ML", resource_type=ResourceType.VIDEO, duration_minutes=40, order=1),
-                    CourseResourceData(title="Types of ML", resource_type=ResourceType.VIDEO, duration_minutes=35, order=2),
-                    CourseResourceData(title="Week 1 Reading Material", resource_type=ResourceType.READING, downloadable=True, order=3),
-                    CourseResourceData(title="Self-Assessment Quiz 1", resource_type=ResourceType.QUIZ, order=4),
+                    CourseResourceData(
+                        title="Introduction to ML",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=40,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Types of ML",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=35,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Week 1 Reading Material",
+                        resource_type=ResourceType.READING,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Self-Assessment Quiz 1", resource_type=ResourceType.QUIZ, order=4
+                    ),
                 ],
             ),
             CourseModuleData(
                 title="Week 2: Data Preprocessing & Feature Engineering",
                 order=2,
                 resources=[
-                    CourseResourceData(title="Data Cleaning Techniques", resource_type=ResourceType.VIDEO, duration_minutes=45, order=1),
-                    CourseResourceData(title="Feature Selection", resource_type=ResourceType.VIDEO, duration_minutes=38, order=2),
-                    CourseResourceData(title="Week 2 Reading Material", resource_type=ResourceType.READING, downloadable=True, order=3),
-                    CourseResourceData(title="Self-Assessment Quiz 2", resource_type=ResourceType.QUIZ, order=4),
+                    CourseResourceData(
+                        title="Data Cleaning Techniques",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=45,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Feature Selection",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=38,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Week 2 Reading Material",
+                        resource_type=ResourceType.READING,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Self-Assessment Quiz 2", resource_type=ResourceType.QUIZ, order=4
+                    ),
                 ],
             ),
         ],
@@ -141,16 +175,19 @@ class SWAYAMConnector(CourseSourceConnector):
 
     platform = SourcePlatform.SWAYAM
 
-    def search_courses(self, query: str, limit: int = 20, offset: int = 0) -> List[CatalogCourseData]:
+    def search_courses(
+        self, query: str, limit: int = 20, offset: int = 0
+    ) -> List[CatalogCourseData]:
         query_lower = query.lower()
         results = [
-            c for c in _SWAYAM_CATALOG
+            c
+            for c in _SWAYAM_CATALOG
             if query_lower in c.title.lower()
             or query_lower in c.description.lower()
             or query_lower in c.instructor.lower()
             or any(query_lower in tag for tag in c.tags)
         ]
-        return results[offset:offset + limit]
+        return results[offset : offset + limit]
 
     def get_course(self, source_id: str) -> Optional[CatalogCourseData]:
         return _SWAYAM_BY_ID.get(source_id)

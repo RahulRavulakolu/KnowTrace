@@ -34,24 +34,32 @@ def test_mcq_structure() -> None:
 def test_ambiguity_detection(monkeypatch) -> None:
     monkeypatch.setattr(
         "services.assessment.validate.call_llm",
-        lambda *args, **kwargs: SimpleNamespace(data={"ambiguous": True, "multiple_correct": False}),
+        lambda *args, **kwargs: SimpleNamespace(
+            data={"ambiguous": True, "multiple_correct": False}
+        ),
     )
     chunk = SimpleNamespace(text="Evidence span")
     concept = SimpleNamespace(id="c1", name="Concept")
     result = validate_question(
         {"type": "short", "stem": "Question", "answer": "yes", "support_span": "Evidence span"},
-        chunk, concept, solver=lambda _: {"answer": "yes"},
+        chunk,
+        concept,
+        solver=lambda _: {"answer": "yes"},
     )
     assert result["status"] == "rejected"
     assert result["validation_report"]["rejection_reason"] == "ambiguity"
 
 
 def test_topic_recheck(monkeypatch) -> None:
-    responses = iter([
-        SimpleNamespace(data={"ambiguous": False, "multiple_correct": False}),
-        SimpleNamespace(data={"concept_id": "other", "confidence": 0.9}),
-    ])
-    monkeypatch.setattr("services.assessment.validate.call_llm", lambda *args, **kwargs: next(responses))
+    responses = iter(
+        [
+            SimpleNamespace(data={"ambiguous": False, "multiple_correct": False}),
+            SimpleNamespace(data={"concept_id": "other", "confidence": 0.9}),
+        ]
+    )
+    monkeypatch.setattr(
+        "services.assessment.validate.call_llm", lambda *args, **kwargs: next(responses)
+    )
     result = validate_question(
         {"type": "short", "stem": "Question", "answer": "yes", "support_span": "Evidence span"},
         SimpleNamespace(text="Evidence span"),

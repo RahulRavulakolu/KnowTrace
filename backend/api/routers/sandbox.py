@@ -29,8 +29,12 @@ class CodeTestCase(BaseModel):
 class CodeRunRequest(BaseModel):
     code: str = Field(..., description="Python source code to execute")
     language: str = Field(default="python", description="Programming language (python)")
-    test_cases: Optional[List[Dict[str, Any]]] = Field(default=None, description="Optional test cases to verify")
-    timeout_seconds: float = Field(default=5.0, ge=0.5, le=10.0, description="Max execution duration in seconds")
+    test_cases: Optional[List[Dict[str, Any]]] = Field(
+        default=None, description="Optional test cases to verify"
+    )
+    timeout_seconds: float = Field(
+        default=5.0, ge=0.5, le=10.0, description="Max execution duration in seconds"
+    )
 
 
 class TestResult(BaseModel):
@@ -79,8 +83,12 @@ def run_code(payload: CodeRunRequest) -> CodeRunResponse:
 
     # Basic safety checks against system destruction commands
     disallowed_patterns = [
-        "os.system('rm", "os.system('del", "shutil.rmtree",
-        "format C:", "mkfs", "forkbomb",
+        "os.system('rm",
+        "os.system('del",
+        "shutil.rmtree",
+        "format C:",
+        "mkfs",
+        "forkbomb",
     ]
     for pat in disallowed_patterns:
         if pat in user_code:
@@ -96,6 +104,7 @@ def run_code(payload: CodeRunRequest) -> CodeRunResponse:
     start_time = time.perf_counter()
     try:
         import os
+
         sub_env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
         process = subprocess.run(
             [sys.executable, "-c", user_code],
@@ -114,7 +123,11 @@ def run_code(payload: CodeRunRequest) -> CodeRunResponse:
         stderr_capped = process.stderr[:max_chars]
 
         success = process.returncode == 0
-        message = "Execution completed successfully." if success else "Execution encountered runtime errors."
+        message = (
+            "Execution completed successfully."
+            if success
+            else "Execution encountered runtime errors."
+        )
 
         return CodeRunResponse(
             stdout=stdout_capped,

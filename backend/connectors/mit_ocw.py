@@ -48,13 +48,39 @@ _MIT_OCW_CATALOG: List[CatalogCourseData] = [
                 order=1,
                 description="Propositional logic, proof methods, well ordering, induction",
                 resources=[
-                    CourseResourceData(title="Lecture 1: Introduction and Proofs", resource_type=ResourceType.VIDEO, duration_minutes=80, order=1,
-                                       url="https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-1-introduction-and-proofs/"),
-                    CourseResourceData(title="Lecture 2: Induction", resource_type=ResourceType.VIDEO, duration_minutes=75, order=2),
-                    CourseResourceData(title="Lecture 3: Strong Induction", resource_type=ResourceType.VIDEO, duration_minutes=78, order=3),
-                    CourseResourceData(title="Unit 1 Lecture Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=4),
-                    CourseResourceData(title="Problem Set 1", resource_type=ResourceType.ASSIGNMENT, order=5),
-                    CourseResourceData(title="Problem Set 1 Solutions", resource_type=ResourceType.SOLUTION, order=6),
+                    CourseResourceData(
+                        title="Lecture 1: Introduction and Proofs",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=80,
+                        order=1,
+                        url="https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-1-introduction-and-proofs/",
+                    ),
+                    CourseResourceData(
+                        title="Lecture 2: Induction",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=75,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 3: Strong Induction",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=78,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Unit 1 Lecture Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=4,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 1", resource_type=ResourceType.ASSIGNMENT, order=5
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 1 Solutions",
+                        resource_type=ResourceType.SOLUTION,
+                        order=6,
+                    ),
                 ],
             ),
             CourseModuleData(
@@ -62,11 +88,33 @@ _MIT_OCW_CATALOG: List[CatalogCourseData] = [
                 order=2,
                 description="GCDs, modular arithmetic, RSA, graphs, trees",
                 resources=[
-                    CourseResourceData(title="Lecture 4: Number Theory I", resource_type=ResourceType.VIDEO, duration_minutes=82, order=1),
-                    CourseResourceData(title="Lecture 5: Number Theory II", resource_type=ResourceType.VIDEO, duration_minutes=78, order=2),
-                    CourseResourceData(title="Lecture 6: Graph Theory I", resource_type=ResourceType.VIDEO, duration_minutes=80, order=3),
-                    CourseResourceData(title="Unit 2 Lecture Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=4),
-                    CourseResourceData(title="Problem Set 2", resource_type=ResourceType.ASSIGNMENT, order=5),
+                    CourseResourceData(
+                        title="Lecture 4: Number Theory I",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=82,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 5: Number Theory II",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=78,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 6: Graph Theory I",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=80,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Unit 2 Lecture Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=4,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 2", resource_type=ResourceType.ASSIGNMENT, order=5
+                    ),
                 ],
             ),
             CourseModuleData(
@@ -74,10 +122,27 @@ _MIT_OCW_CATALOG: List[CatalogCourseData] = [
                 order=3,
                 description="Sums, products, permutations, combinations, generating functions",
                 resources=[
-                    CourseResourceData(title="Lecture 10: Counting Rules", resource_type=ResourceType.VIDEO, duration_minutes=76, order=1),
-                    CourseResourceData(title="Lecture 11: Generating Functions", resource_type=ResourceType.VIDEO, duration_minutes=80, order=2),
-                    CourseResourceData(title="Unit 3 Lecture Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=3),
-                    CourseResourceData(title="Problem Set 5", resource_type=ResourceType.ASSIGNMENT, order=4),
+                    CourseResourceData(
+                        title="Lecture 10: Counting Rules",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=76,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 11: Generating Functions",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=80,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Unit 3 Lecture Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 5", resource_type=ResourceType.ASSIGNMENT, order=4
+                    ),
                 ],
             ),
             CourseModuleData(
@@ -85,13 +150,39 @@ _MIT_OCW_CATALOG: List[CatalogCourseData] = [
                 order=4,
                 description="Conditional probability, independence, random variables, expectation",
                 resources=[
-                    CourseResourceData(title="Lecture 18: Probability Introduction", resource_type=ResourceType.VIDEO, duration_minutes=82, order=1),
-                    CourseResourceData(title="Lecture 19: Conditional Probability", resource_type=ResourceType.VIDEO, duration_minutes=78, order=2),
-                    CourseResourceData(title="Lecture 20: Random Variables", resource_type=ResourceType.VIDEO, duration_minutes=80, order=3),
-                    CourseResourceData(title="Unit 4 Lecture Notes", resource_type=ResourceType.LECTURE_NOTE, downloadable=True, order=4),
-                    CourseResourceData(title="Problem Set 9", resource_type=ResourceType.ASSIGNMENT, order=5),
-                    CourseResourceData(title="Midterm Exam", resource_type=ResourceType.EXAM, order=6),
-                    CourseResourceData(title="Midterm Solutions", resource_type=ResourceType.SOLUTION, order=7),
+                    CourseResourceData(
+                        title="Lecture 18: Probability Introduction",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=82,
+                        order=1,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 19: Conditional Probability",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=78,
+                        order=2,
+                    ),
+                    CourseResourceData(
+                        title="Lecture 20: Random Variables",
+                        resource_type=ResourceType.VIDEO,
+                        duration_minutes=80,
+                        order=3,
+                    ),
+                    CourseResourceData(
+                        title="Unit 4 Lecture Notes",
+                        resource_type=ResourceType.LECTURE_NOTE,
+                        downloadable=True,
+                        order=4,
+                    ),
+                    CourseResourceData(
+                        title="Problem Set 9", resource_type=ResourceType.ASSIGNMENT, order=5
+                    ),
+                    CourseResourceData(
+                        title="Midterm Exam", resource_type=ResourceType.EXAM, order=6
+                    ),
+                    CourseResourceData(
+                        title="Midterm Solutions", resource_type=ResourceType.SOLUTION, order=7
+                    ),
                 ],
             ),
         ],
@@ -177,16 +268,19 @@ class MITOCWConnector(CourseSourceConnector):
 
     platform = SourcePlatform.MIT_OCW
 
-    def search_courses(self, query: str, limit: int = 20, offset: int = 0) -> List[CatalogCourseData]:
+    def search_courses(
+        self, query: str, limit: int = 20, offset: int = 0
+    ) -> List[CatalogCourseData]:
         query_lower = query.lower()
         results = [
-            c for c in _MIT_OCW_CATALOG
+            c
+            for c in _MIT_OCW_CATALOG
             if query_lower in c.title.lower()
             or query_lower in c.description.lower()
             or query_lower in c.instructor.lower()
             or any(query_lower in tag for tag in c.tags)
         ]
-        return results[offset:offset + limit]
+        return results[offset : offset + limit]
 
     def get_course(self, source_id: str) -> Optional[CatalogCourseData]:
         return _OCW_BY_ID.get(source_id)

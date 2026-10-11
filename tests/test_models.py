@@ -216,7 +216,13 @@ def test_all_15_entities_integration(db_session: Session):
     db_session.flush()
 
     # 6. ContentChunk
-    chunk = ContentChunk(course_id=course.id, source_id=source.id, modality="text", text="Mitosis divides chromosomes.", page=5)
+    chunk = ContentChunk(
+        course_id=course.id,
+        source_id=source.id,
+        modality="text",
+        text="Mitosis divides chromosomes.",
+        page=5,
+    )
     db_session.add(chunk)
     db_session.flush()
 
@@ -280,7 +286,9 @@ def test_all_15_entities_integration(db_session: Session):
     db_session.add(chat_turn)
 
     # 15. StudyPlan
-    study_plan = StudyPlan(user_id=user.id, course_id=course.id, title="Pre-Exam Review", progress=0.25)
+    study_plan = StudyPlan(
+        user_id=user.id, course_id=course.id, title="Pre-Exam Review", progress=0.25
+    )
     db_session.add(study_plan)
 
     db_session.commit()
