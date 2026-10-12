@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 import { AuthModal } from '@/components/auth/AuthModal';
+import QueryProvider from '@/components/providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'KnowledgeTrace',
@@ -25,10 +26,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-black text-[#E1E0CC] selection:bg-[#DEDBC8] selection:text-black">
-        <AuthProvider>
-          {children}
-          <AuthModal />
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            {children}
+            <AuthModal />
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

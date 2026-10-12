@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, use } from 'react';
+import React, { useState, useMemo, useEffect, useRef, use } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { AppShell } from '@/components/AppShell';
@@ -27,6 +27,7 @@ import {
   Maximize2,
   Code2,
   Terminal,
+  GripVertical,
 } from 'lucide-react';
 import { CodingEnvironment } from '@/components/lectures/CodingEnvironment';
 
@@ -45,6 +46,71 @@ export default function CourseLecturesPage({
   const [playerMode, setPlayerMode] = useState<'embed' | 'direct'>('embed');
   const [transcriptSearch, setTranscriptSearch] = useState('');
   const [completedLectures, setCompletedLectures] = useState<Record<string, boolean>>({});
+
+  // Resizable split panel state
+  const [leftPanelPercent, setLeftPanelPercent] = useState<number>(55);
+  const [isDraggingDivider, setIsDraggingDivider] = useState<boolean>(false);
+  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Monitor desktop screen size & load saved preference
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mq = window.matchMedia('(min-width: 1024px)');
+      setIsDesktop(mq.matches);
+      const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+      mq.addEventListener('change', handler);
+
+      const saved = window.localStorage.getItem('knowtrace_lectures_split_pct');
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed >= 25 && parsed <= 75) {
+          setLeftPanelPercent(parsed);
+        }
+      }
+
+      return () => mq.removeEventListener('change', handler);
+    }
+  }, []);
+
+  const updateSplitPercent = (pct: number) => {
+    const clamped = Math.max(25, Math.min(75, pct));
+    setLeftPanelPercent(clamped);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('knowtrace_lectures_split_pct', clamped.toString());
+    }
+  };
+
+  const handleDividerMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDraggingDivider(true);
+
+    const container = containerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const currentX = moveEvent.clientX;
+      const relativeX = currentX - rect.left;
+      let newPercent = (relativeX / rect.width) * 100;
+      newPercent = Math.max(25, Math.min(75, newPercent));
+      setLeftPanelPercent(newPercent);
+    };
+
+    const handleMouseUp = (upEvent: MouseEvent) => {
+      setIsDraggingDivider(false);
+      const currentX = upEvent.clientX;
+      const relativeX = currentX - rect.left;
+      let newPercent = (relativeX / rect.width) * 100;
+      newPercent = Math.max(25, Math.min(75, newPercent));
+      updateSplitPercent(newPercent);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+  };
 
   // Fetch course details
   const { data: course } = useQuery<Course>({
@@ -197,7 +263,48 @@ export default function CourseLecturesPage({
             </h1>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-xs flex-wrap">
+            {/* Quick Layout Split Presets (Desktop) */}
+            <div className="hidden lg:flex items-center gap-1 px-2 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-[11px] font-mono shadow-2xs">
+              <span className="text-zinc-400 pl-0.5 pr-1 font-sans font-semibold">Layout:</span>
+              <button
+                type="button"
+                onClick={() => updateSplitPercent(65)}
+                className={`px-1.5 py-0.5 rounded-lg transition-colors cursor-pointer ${
+                  Math.round(leftPanelPercent) === 65
+                    ? 'bg-indigo-600 text-white font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
+                title="Video Focus (65% Video / 35% Code)"
+              >
+                65/35
+              </button>
+              <button
+                type="button"
+                onClick={() => updateSplitPercent(50)}
+                className={`px-1.5 py-0.5 rounded-lg transition-colors cursor-pointer ${
+                  Math.round(leftPanelPercent) === 50
+                    ? 'bg-indigo-600 text-white font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
+                title="Balanced (50% Video / 50% Code)"
+              >
+                50/50
+              </button>
+              <button
+                type="button"
+                onClick={() => updateSplitPercent(35)}
+                className={`px-1.5 py-0.5 rounded-lg transition-colors cursor-pointer ${
+                  Math.round(leftPanelPercent) === 35
+                    ? 'bg-indigo-600 text-white font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
+                title="Code Focus (35% Video / 65% Code)"
+              >
+                35/65
+              </button>
+            </div>
+
             {activeYtId && (
               <a
                 href={`https://www.youtube.com/watch?v=${activeYtId}`}
@@ -228,12 +335,24 @@ export default function CourseLecturesPage({
           </div>
         </div>
 
-        {/* Main Grid: Video Theater & Playlist */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left 2 Cols: Player & Tabs */}
-          <div className="lg:col-span-2 space-y-5">
+        {/* Main Flexible Split View: Video Theater & Code / Syllabus Panel */}
+        <div
+          ref={containerRef}
+          className={`flex flex-col lg:flex-row items-stretch relative ${
+            isDraggingDivider ? 'select-none cursor-col-resize' : ''
+          }`}
+        >
+          {/* Left Panel: Video Player & Tabs */}
+          <div
+            style={{ width: isDesktop ? `${leftPanelPercent}%` : '100%' }}
+            className={`w-full lg:shrink-0 space-y-5 lg:pr-3 transition-[width] duration-75 ${
+              isDraggingDivider ? 'select-none pointer-events-none' : ''
+            }`}
+          >
             {/* Embedded Video Theater */}
-            <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl">
+            <div className={`relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl ${
+              isDraggingDivider ? 'pointer-events-none select-none' : ''
+            }`}>
               {activeYtId ? (
                 <iframe
                   key={activeLecture?.id || activeYtId}
@@ -517,8 +636,33 @@ export default function CourseLecturesPage({
             </div>
           </div>
 
-          {/* Right Col: Code Sandbox & Course Syllabus Tabs */}
-          <div className="space-y-4">
+          {/* Draggable Vertical Divider (Visible on large screens) */}
+          <div
+            onMouseDown={handleDividerMouseDown}
+            onDoubleClick={() => updateSplitPercent(55)}
+            title="Drag left or right to adjust panel width (Double-click to reset)"
+            className={`hidden lg:flex w-4 shrink-0 -mx-1 z-20 cursor-col-resize items-center justify-center group transition-colors select-none ${
+              isDraggingDivider ? 'bg-indigo-600/25' : 'hover:bg-indigo-500/10'
+            }`}
+          >
+            <div
+              className={`w-1 rounded-full transition-all flex items-center justify-center ${
+                isDraggingDivider
+                  ? 'bg-indigo-500 h-28 ring-4 ring-indigo-500/20 shadow-md'
+                  : 'bg-zinc-700/60 h-16 group-hover:bg-indigo-400 group-hover:w-1.5 group-hover:h-24 group-hover:shadow-sm'
+              }`}
+            >
+              <GripVertical className="w-3 h-3 text-zinc-300 group-hover:text-white transition-colors" />
+            </div>
+          </div>
+
+          {/* Right Panel: Code Sandbox & Course Syllabus Tabs */}
+          <div
+            style={{ width: isDesktop ? `${100 - leftPanelPercent}%` : '100%' }}
+            className={`w-full lg:shrink-0 space-y-4 lg:pl-3 transition-[width] duration-75 ${
+              isDraggingDivider ? 'select-none pointer-events-none' : ''
+            }`}
+          >
             {/* Top Switcher Tab */}
             <div className="p-1 bg-zinc-100 dark:bg-zinc-800/90 rounded-2xl border border-zinc-200 dark:border-zinc-700 flex items-center gap-1 shadow-2xs">
               <button
