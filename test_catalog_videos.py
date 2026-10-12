@@ -1,5 +1,6 @@
-import urllib.request
 import json
+import urllib.request
+
 
 def test_vids(label, vids):
     print(f"\n=== {label} ===")
@@ -8,7 +9,9 @@ def test_vids(label, vids):
     for order, title, vid in vids:
         try:
             url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
-            res = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}))
+            res = urllib.request.urlopen(
+                urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            )
             d = json.loads(res.read())
             print(f"[{order}] OK: {title} ({vid}) -> {d.get('title')[:45]}")
             success_count += 1
@@ -17,6 +20,7 @@ def test_vids(label, vids):
             print(f"[{order}] FAIL: {title} ({vid}) -> {e}")
     print(f"Passed: {success_count}/{len(vids)}")
     return valid_list
+
 
 # 1. NPTEL Machine Learning (IIT Madras)
 nptel_vids = [

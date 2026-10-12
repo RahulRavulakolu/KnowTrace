@@ -51,7 +51,6 @@ export function ProcessingStepper({
   steps,
   stats,
   isComplete,
-  hasError: _hasError,
 }: ProcessingStepperProps) {
   return (
     <div className="space-y-6">

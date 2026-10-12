@@ -8,9 +8,11 @@ import { X, ArrowRight, Lock, Mail, User as UserIcon, Sparkles, AlertCircle } fr
 
 export function AuthModal() {
   const router = useRouter();
-  const { isAuthModalOpen, closeAuthModal, authModalMode, openAuthModal, login, signup } = useAuth();
+  const { isAuthModalOpen, closeAuthModal, authModalMode, login, signup } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'register'>(authModalMode);
+  const [prevModalOpen, setPrevModalOpen] = useState(isAuthModalOpen);
+  const [prevAuthMode, setPrevAuthMode] = useState(authModalMode);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,10 +20,14 @@ export function AuthModal() {
   const [error, setError] = useState<string | null>(null);
 
   // Sync mode with context mode when opened
-  React.useEffect(() => {
-    setMode(authModalMode);
-    setError(null);
-  }, [authModalMode, isAuthModalOpen]);
+  if (isAuthModalOpen !== prevModalOpen || authModalMode !== prevAuthMode) {
+    setPrevModalOpen(isAuthModalOpen);
+    setPrevAuthMode(authModalMode);
+    if (isAuthModalOpen) {
+      setMode(authModalMode);
+      setError(null);
+    }
+  }
 
   if (!isAuthModalOpen) return null;
 
@@ -38,8 +44,9 @@ export function AuthModal() {
       }
       closeAuthModal();
       router.push('/courses');
-    } catch (err: any) {
-      setError(err?.message || 'Authentication failed. Please check your credentials.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Authentication failed. Please check your credentials.';
+      setError(message);
     } finally {
       setSubmitting(false);
     }

@@ -4,7 +4,7 @@
  * NPTEL, SWAYAM, MIT OCW, MITx, Khan Academy, edX, and Coursera.
  */
 
-import { CatalogCourse, CatalogCourseDetail, SourcePlatform } from '@/types/discover';
+import { CatalogCourseDetail } from '@/types/discover';
 
 export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
   // 1. NPTEL - Machine Learning

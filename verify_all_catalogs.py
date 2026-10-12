@@ -1,5 +1,6 @@
-import urllib.request
 import json
+import urllib.request
+
 
 def verify(course_name, lectures):
     print(f"\n================ {course_name} ================")
@@ -16,6 +17,7 @@ def verify(course_name, lectures):
             print(f"[{num:02d}] FAIL: {title} ({vid}) -> {e}")
     print(f"Verified {len(valid)} / {len(lectures)} for {course_name}")
     return valid
+
 
 # 1. NPTEL Machine Learning (IIT Madras)
 nptel_lectures = [

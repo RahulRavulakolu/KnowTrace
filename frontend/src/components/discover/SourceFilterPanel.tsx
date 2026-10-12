@@ -5,7 +5,6 @@ import {
   SourcePlatform,
   AccessType,
   PLATFORM_CONFIGS,
-  ACCESS_TYPE_CONFIGS,
 } from '@/types/discover';
 import { Filter, RotateCcw } from 'lucide-react';
 
@@ -17,7 +16,7 @@ interface SourceFilterPanelProps {
   selectedCategory: string | null;
   onSelectCategory: (category: string | null) => void;
   availableCategories: string[];
-  totalResults: number;
+  totalResults?: number;
   onResetFilters: () => void;
 }
 
@@ -29,7 +28,6 @@ export function SourceFilterPanel({
   selectedCategory,
   onSelectCategory,
   availableCategories,
-  totalResults,
   onResetFilters,
 }: SourceFilterPanelProps) {
   const allPlatforms: SourcePlatform[] = [

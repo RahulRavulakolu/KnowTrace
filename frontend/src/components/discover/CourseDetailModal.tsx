@@ -16,7 +16,6 @@ import {
   ChevronDown,
   ChevronUp,
   Download,
-  BookOpen,
   ArrowRight,
 } from 'lucide-react';
 import { CatalogCourse, CatalogCourseDetail } from '@/types/discover';
@@ -47,15 +46,20 @@ export function CourseDetailModal({
     1: true,
   });
 
+  const currentKey = isOpen && course ? `${course.source_platform}-${course.source_id}` : null;
+  const [prevKey, setPrevKey] = useState<string | null>(null);
+
+  if (currentKey !== prevKey) {
+    setPrevKey(currentKey);
+    setDetail(null);
+    setEnrolled(false);
+    setLoading(Boolean(currentKey));
+  }
+
   useEffect(() => {
-    if (!course || !isOpen) {
-      setDetail(null);
-      setEnrolled(false);
-      return;
-    }
+    if (!course || !isOpen) return;
 
     let isMounted = true;
-    setLoading(true);
 
     api
       .getCatalogCourse(course.source_platform, course.source_id)

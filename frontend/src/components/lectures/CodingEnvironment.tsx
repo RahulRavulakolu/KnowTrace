@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import {
   Play,
@@ -10,18 +10,12 @@ import {
   Lightbulb,
   Terminal,
   Code2,
-  Sparkles,
-  BotMessageSquare,
-  AlertCircle,
-  CheckCircle2,
   Clock,
-  Layers,
   ChevronDown,
   ChevronUp,
   GripHorizontal,
-  Maximize2,
-  Minimize2,
   Trash2,
+  Sparkles,
 } from 'lucide-react';
 import { CodeExercise, CodeRunResult, Lecture } from '@/types';
 import { getLectureCodeExercise } from '@/lib/lectureExercises';
@@ -42,7 +36,7 @@ function simulatePythonExecution(userCode: string): string {
     const trimmed = line.trim();
     const printMatch = trimmed.match(/^print\s*\((.*)\)\s*$/);
     if (printMatch) {
-      let inner = printMatch[1].trim();
+      const inner = printMatch[1].trim();
       // String literals
       if (
         (inner.startsWith('"') && inner.endsWith('"')) ||
@@ -70,13 +64,12 @@ export function CodingEnvironment({
 }: CodingEnvironmentProps) {
   const exercise: CodeExercise | null = lecture ? getLectureCodeExercise(lecture) : null;
 
-  const [code, setCode] = useState<string>('');
+  const [code, setCode] = useState<string>(() => exercise?.starterCode || '');
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [output, setOutput] = useState<CodeRunResult | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [copiedOutput, setCopiedOutput] = useState<boolean>(false);
   const [showHints, setShowHints] = useState<boolean>(false);
-  const [activeHintIndex, setActiveHintIndex] = useState<number>(0);
 
   // Panel sizing & draggable divider state
   const [editorHeight, setEditorHeight] = useState<number>(260);
@@ -87,15 +80,16 @@ export function CodingEnvironment({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
 
-  // Sync starter code when lecture changes
-  useEffect(() => {
+  // Track lecture changes to sync starter code
+  const prevLectureIdRef = useRef<string | null>(lecture?.id || null);
+  if (lecture?.id && lecture.id !== prevLectureIdRef.current) {
+    prevLectureIdRef.current = lecture.id;
     if (exercise) {
       setCode(exercise.starterCode);
       setOutput(null);
       setShowHints(false);
-      setActiveHintIndex(0);
     }
-  }, [lecture?.id]);
+  }
 
   // Sync gutter scroll with textarea
   const handleEditorScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
@@ -193,7 +187,7 @@ export function CodingEnvironment({
           success: false,
         });
       }
-    } catch (err: any) {
+    } catch {
       // Client-side fallback simulation if backend is temporarily disconnected
       const elapsed = Math.round(performance.now() - startTime);
       const simulatedStdout = simulatePythonExecution(code);
@@ -254,20 +248,21 @@ export function CodingEnvironment({
       }`}
     >
       {/* 1. Header Bar */}
-      <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400">
+      <div className="px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 shrink-0">
             <Code2 className="w-4 h-4" />
           </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                {exercise.title}
-              </h3>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono font-semibold uppercase">
-                Python 3.12
-              </span>
-            </div>
+          <div className="min-w-0 flex items-center gap-2 flex-1">
+            <h3
+              className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate"
+              title={exercise.title}
+            >
+              {exercise.title}
+            </h3>
+            <span className="hidden sm:inline-flex shrink-0 text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono font-semibold uppercase">
+              Python 3.12
+            </span>
           </div>
         </div>
 
@@ -294,11 +289,12 @@ export function CodingEnvironment({
             type="button"
             onClick={handleRunCode}
             disabled={isRunning}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
             title="Run Code (Ctrl + Enter)"
           >
             <Play className={`w-3.5 h-3.5 fill-white ${isRunning ? 'animate-spin' : ''}`} />
-            <span>{isRunning ? 'Running...' : 'Run Code'}</span>
+            <span className="hidden sm:inline">{isRunning ? 'Running...' : 'Run Code'}</span>
+            <span className="sm:hidden">{isRunning ? '...' : 'Run'}</span>
           </button>
         </div>
       </div>

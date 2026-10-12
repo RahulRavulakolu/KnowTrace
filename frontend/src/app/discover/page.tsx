@@ -7,10 +7,7 @@ import {
   SlidersHorizontal,
   Compass,
   ArrowRight,
-  BookOpen,
   Sparkles,
-  Layers,
-  GraduationCap,
   Globe2,
   X,
 } from 'lucide-react';
@@ -18,7 +15,6 @@ import { CatalogCourse, SourcePlatform, AccessType, PLATFORM_CONFIGS } from '@/t
 import { CatalogCourseCard } from '@/components/discover/CatalogCourseCard';
 import { CourseDetailModal } from '@/components/discover/CourseDetailModal';
 import { SourceFilterPanel } from '@/components/discover/SourceFilterPanel';
-import { SourceBadge } from '@/components/discover/SourceBadge';
 import { Logo } from '@/components/Logo';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
@@ -50,7 +46,6 @@ export default function DiscoverPage() {
   // Load initial catalog and categories
   useEffect(() => {
     let isMounted = true;
-    setLoading(true);
 
     Promise.all([
       api.searchCatalog({

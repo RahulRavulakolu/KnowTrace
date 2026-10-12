@@ -73,7 +73,6 @@ interface KnowledgeMapProps {
 export function KnowledgeMap({
   graphData,
   onSelectConcept,
-  selectedConceptId: _selectedConceptId,
 }: KnowledgeMapProps) {
   const [filter, setFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all');
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Menu, RotateCcw, AlertTriangle, User, ChevronRight, GraduationCap } from 'lucide-react';
+import { Menu, RotateCcw, AlertTriangle, ChevronRight, GraduationCap } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 

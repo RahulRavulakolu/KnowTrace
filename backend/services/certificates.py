@@ -121,7 +121,10 @@ def get_platform_certification_info(platform: str, title: str, institution: str)
 
 
 def get_course_certificate_data(
-    course_id: str, db: Session, user_id: Optional[str] = None
+    course_id: str,
+    db: Session,
+    user_id: Optional[str] = None,
+    lectures_completed_pct: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Compile comprehensive certificate details, eligibility checklists, and credentials."""
     course = db.get(Course, course_id)
@@ -154,9 +157,13 @@ def get_course_certificate_data(
         concepts = db.query(Concept).filter(Concept.topic_id.in_(t_ids)).all()
         concept_count = len(concepts)
 
-    # Set calibrated realistic mastery for this student session
+    # Calculate dynamic syllabus lecture completion: must be >= 80% to unlock
+    if lectures_completed_pct is not None:
+        lectures_watched_pct = round(max(0.0, min(100.0, float(lectures_completed_pct))), 1)
+    else:
+        lectures_watched_pct = 0.0
+
     overall_mastery = 82.5  # Realistic calibrated mastery score (0-100)
-    lectures_watched_pct = 85.0
     final_exam_score = 88.0
     active_misconceptions = 0
 

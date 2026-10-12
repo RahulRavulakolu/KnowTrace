@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect, useRef, use } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { AppShell } from '@/components/AppShell';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Course, CourseLecturesResponse, Lecture } from '@/types';
 import {
@@ -22,12 +22,11 @@ import {
   Layers,
   ChevronRight,
   Download,
-  Tv,
   RefreshCw,
-  Maximize2,
   Code2,
-  Terminal,
   GripVertical,
+  Lock,
+  Award,
 } from 'lucide-react';
 import { CodingEnvironment } from '@/components/lectures/CodingEnvironment';
 
@@ -43,21 +42,39 @@ export default function CourseLecturesPage({
 
   const [activeTab, setActiveTab] = useState<'transcript' | 'notes' | 'resources'>('transcript');
   const [rightPanelTab, setRightPanelTab] = useState<'code' | 'syllabus'>('code');
-  const [playerMode, setPlayerMode] = useState<'embed' | 'direct'>('embed');
   const [transcriptSearch, setTranscriptSearch] = useState('');
   const [completedLectures, setCompletedLectures] = useState<Record<string, boolean>>({});
+  const queryClient = useQueryClient();
+
+  // Load persisted syllabus completion on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = window.localStorage.getItem('knowtrace_completed_lectures_' + courseId);
+        if (saved) {
+          setCompletedLectures(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error('Failed to load completed lectures', e);
+      }
+    }
+  }, [courseId]);
 
   // Resizable split panel state
   const [leftPanelPercent, setLeftPanelPercent] = useState<number>(55);
   const [isDraggingDivider, setIsDraggingDivider] = useState<boolean>(false);
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
+  const [isDesktop, setIsDesktop] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(min-width: 1024px)').matches;
+    }
+    return true;
+  });
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Monitor desktop screen size & load saved preference
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const mq = window.matchMedia('(min-width: 1024px)');
-      setIsDesktop(mq.matches);
       const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
       mq.addEventListener('change', handler);
 
@@ -119,7 +136,7 @@ export default function CourseLecturesPage({
   });
 
   // Fetch recorded lectures
-  const { data: lecturesData, refetch, isFetching } = useQuery<CourseLecturesResponse>({
+  const { data: lecturesData, refetch } = useQuery<CourseLecturesResponse>({
     queryKey: ['courseLectures', courseId],
     queryFn: () => api.getCourseLectures(courseId),
   });
@@ -155,21 +172,20 @@ export default function CourseLecturesPage({
     }
   }, [courseId, refetch]);
 
-  const rawLectures = lecturesData?.lectures || [];
-
   // Normalize each lecture so both camelCase and snake_case properties are guaranteed
   const lectures: Lecture[] = useMemo(() => {
-    return rawLectures.map((l: any, idx: number) => {
-      const ytId = l.youtubeId || l.youtube_id || '';
-      const dur = l.durationMinutes ?? l.duration_minutes ?? 75;
-      const mod = l.moduleTitle || l.module_title || 'Course Modules';
-      const concept = l.conceptName || l.concept_name || 'Core Concept';
+    const rawLectures = (lecturesData?.lectures || []) as (Lecture & Record<string, unknown>)[];
+    return rawLectures.map((l, idx: number): Lecture => {
+      const ytId = (l.youtubeId as string) || (l.youtube_id as string) || '';
+      const dur = (l.durationMinutes as number) ?? (l.duration_minutes as number) ?? 75;
+      const mod = (l.moduleTitle as string) || (l.module_title as string) || 'Course Modules';
+      const concept = (l.conceptName as string) || (l.concept_name as string) || 'Core Concept';
 
       return {
         ...l,
         id: l.id || `lec-${idx + 1}`,
-        courseId: l.courseId || l.course_id || courseId,
-        moduleId: l.moduleId || l.module_id || `mod-${idx + 1}`,
+        courseId: l.courseId || (l.course_id as string) || courseId,
+        moduleId: l.moduleId || (l.module_id as string) || `mod-${idx + 1}`,
         moduleTitle: mod,
         order: l.order || idx + 1,
         title: l.title || `Lecture ${idx + 1}`,
@@ -177,16 +193,16 @@ export default function CourseLecturesPage({
         instructor: l.instructor || 'Prof. Tom Leighton, MIT',
         platform: l.platform || 'MIT OpenCourseWare',
         youtubeId: ytId,
-        videoUrl: l.videoUrl || l.video_url || (ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1` : ''),
-        downloadUrl: l.downloadUrl || l.download_url || '',
-        thumbnailUrl: l.thumbnailUrl || l.thumbnail_url || (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : ''),
+        videoUrl: l.videoUrl || (l.video_url as string) || (ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1` : ''),
+        downloadUrl: l.downloadUrl || (l.download_url as string) || '',
+        thumbnailUrl: l.thumbnailUrl || (l.thumbnail_url as string) || (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : ''),
         conceptName: concept,
         notes: l.notes || [],
         transcript: l.transcript || [],
         resources: l.resources || [],
       };
     });
-  }, [rawLectures, courseId]);
+  }, [lecturesData?.lectures, courseId]);
 
   // Selected lecture state
   const [selectedLectureId, setSelectedLectureId] = useState<string | null>(null);
@@ -220,11 +236,25 @@ export default function CourseLecturesPage({
   }, [lectures]);
 
   const toggleCompleted = (lecId: string) => {
-    setCompletedLectures((prev) => ({
-      ...prev,
-      [lecId]: !prev[lecId],
-    }));
+    setCompletedLectures((prev) => {
+      const updated = {
+        ...prev,
+        [lecId]: !prev[lecId],
+      };
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('knowtrace_completed_lectures_' + courseId, JSON.stringify(updated));
+      }
+      queryClient.invalidateQueries({ queryKey: ['certificate', courseId] });
+      return updated;
+    });
   };
+
+  const completedCount = useMemo(() => {
+    return Object.values(completedLectures).filter(Boolean).length;
+  }, [completedLectures]);
+
+  const totalLecturesCount = lectures.length;
+  const lectureCompletionPct = totalLecturesCount > 0 ? Math.round((completedCount / totalLecturesCount) * 100) : 0;
 
   const filteredTranscript = useMemo(() => {
     if (!activeLecture?.transcript) return [];
@@ -331,6 +361,32 @@ export default function CourseLecturesPage({
             >
               <HelpCircle className="w-3.5 h-3.5" />
               <span>Take Quiz</span>
+            </Link>
+
+            <Link
+              href={`/courses/${courseId}/certificate`}
+              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                lectureCompletionPct >= 80
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-700 dark:text-emerald-300 shadow-xs'
+                  : 'bg-amber-50/80 dark:bg-amber-950/40 border-amber-300/80 text-amber-700 dark:text-amber-300'
+              }`}
+              title={
+                lectureCompletionPct >= 80
+                  ? 'Certificate requirements met! Click to claim'
+                  : `Complete at least 80% to unlock certificate (${lectureCompletionPct}% completed)`
+              }
+            >
+              {lectureCompletionPct >= 80 ? (
+                <>
+                  <Award className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Certificate Ready</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Certificate ({lectureCompletionPct}% / 80%)</span>
+                </>
+              )}
             </Link>
           </div>
         </div>
@@ -710,9 +766,11 @@ export default function CourseLecturesPage({
                       Course Syllabus
                     </h3>
                   </div>
-                  <span className="text-[11px] font-mono text-zinc-400">
-                    {lectures.length} Lectures
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                      {completedCount}/{totalLecturesCount} Watched ({lectureCompletionPct}%)
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-4 max-h-[calc(100vh-16rem)] overflow-y-auto pr-1">
@@ -728,46 +786,63 @@ export default function CourseLecturesPage({
                           const isDone = !!completedLectures[lec.id];
 
                           return (
-                            <button
+                            <div
                               key={lec.id}
-                              type="button"
-                              onClick={() => setSelectedLectureId(lec.id)}
-                              className={`w-full p-3 rounded-xl border transition-all text-left flex items-start gap-3 cursor-pointer ${isSelected
+                              className={`w-full p-2.5 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${isSelected
                                 ? 'bg-indigo-50/80 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 shadow-xs'
                                 : 'bg-zinc-50/50 dark:bg-zinc-800/30 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/60 border-zinc-200/80 dark:border-zinc-800'
                                 }`}
                             >
-                              <div className="mt-0.5 shrink-0">
-                                {isDone ? (
-                                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                                ) : isSelected ? (
-                                  <Play className="w-4 h-4 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400" />
-                                ) : (
-                                  <PlayCircle className="w-4 h-4 text-zinc-400" />
-                                )}
-                              </div>
-
-                              <div className="space-y-0.5 flex-1 min-w-0 text-xs">
-                                <div
-                                  className={`font-bold truncate ${isSelected
-                                    ? 'text-indigo-900 dark:text-indigo-200'
-                                    : 'text-zinc-800 dark:text-zinc-200'
-                                    }`}
-                                >
-                                  {lec.title}
-                                </div>
-
-                                <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-mono">
-                                  <span>{lec.durationMinutes} min</span>
-                                  {lec.conceptName && (
-                                    <>
-                                      <span>•</span>
-                                      <span className="truncate">{lec.conceptName}</span>
-                                    </>
+                              <button
+                                type="button"
+                                onClick={() => setSelectedLectureId(lec.id)}
+                                className="flex items-start gap-2.5 flex-1 min-w-0 text-left cursor-pointer"
+                              >
+                                <div className="mt-0.5 shrink-0">
+                                  {isDone ? (
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                                  ) : isSelected ? (
+                                    <Play className="w-4 h-4 text-indigo-600 dark:text-indigo-400 fill-indigo-600 dark:fill-indigo-400" />
+                                  ) : (
+                                    <PlayCircle className="w-4 h-4 text-zinc-400" />
                                   )}
                                 </div>
-                              </div>
-                            </button>
+
+                                <div className="space-y-0.5 flex-1 min-w-0 text-xs">
+                                  <div
+                                    className={`font-bold truncate ${isSelected
+                                      ? 'text-indigo-900 dark:text-indigo-200'
+                                      : 'text-zinc-800 dark:text-zinc-200'
+                                      }`}
+                                  >
+                                    {lec.title}
+                                  </div>
+
+                                  <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-mono">
+                                    <span>{lec.durationMinutes} min</span>
+                                    {lec.conceptName && (
+                                      <>
+                                        <span>•</span>
+                                        <span className="truncate">{lec.conceptName}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => toggleCompleted(lec.id)}
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold border transition-all shrink-0 cursor-pointer ${
+                                  isDone
+                                    ? 'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
+                                    : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 text-zinc-500 hover:text-zinc-800 hover:border-emerald-400'
+                                }`}
+                                title={isDone ? 'Mark as Unwatched' : 'Mark as Watched'}
+                              >
+                                {isDone ? 'Watched' : 'Mark Done'}
+                              </button>
+                            </div>
                           );
                         })}
                       </div>

@@ -745,9 +745,13 @@ export function getLectureCodeExercise(lecture: Partial<Lecture> | null): CodeEx
   if (combined.includes('norm')) return CURATED_LECTURE_EXERCISES['nptel-ml-lec-5'];
 
   // 3. Fallback generic Python coding environment tailored to this lecture
+  const displayTitle = lecture.conceptName
+    ? `Exercise: ${lecture.conceptName}`
+    : `Exercise: Lecture ${lecture.order || 1}`;
+
   return {
     id: `sandbox-${lecture.id || 'general'}`,
-    title: `${lecture.title || 'Lecture'} Code Sandbox`,
+    title: displayTitle,
     language: 'python',
     difficulty: 'beginner',
     instructions: `Interactive Python environment for ${lecture.title || 'this lecture'}. Write algorithms, test formulas, or experiment with concepts from the video:`,

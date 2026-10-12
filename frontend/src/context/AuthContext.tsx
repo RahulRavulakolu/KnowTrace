@@ -44,22 +44,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const savedToken = getAuthToken();
-    if (savedToken) {
-      setToken(savedToken);
-      api
-        .getMe()
-        .then((userData) => {
-          if (userData) {
-            setUser(userData);
-          } else {
-            setUser(null);
-            setToken(null);
-          }
-        })
-        .finally(() => setLoading(false));
-    } else {
+    if (!savedToken) {
       setLoading(false);
+      return;
     }
+
+    api
+      .getMe()
+      .then((userData) => {
+        if (userData) {
+          setToken(savedToken);
+          setUser(userData);
+        } else {
+          setUser(null);
+          setToken(null);
+        }
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const openAuthModal = (mode: 'login' | 'register' = 'login') => {

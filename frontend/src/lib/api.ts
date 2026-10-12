@@ -26,7 +26,6 @@ import {
   INITIAL_TUTOR_MESSAGES,
   INITIAL_QUIZ_QUESTIONS,
   INITIAL_MISCONCEPTIONS,
-  INITIAL_STUDY_PLAN,
   INITIAL_PLAN_DIFFS,
   EVALUATION_METRICS,
   SOURCE_DOCUMENTS,
@@ -225,24 +224,24 @@ export const api = {
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data)) {
-          const enrolled: Course[] = data.map((item: any) => ({
+          const enrolled: Course[] = data.map((item: Record<string, unknown>) => ({
             id: String(item.id),
-            name: item.title,
-            domain: item.category || 'Computer Science',
-            examDate: item.exam_date || '',
-            hoursAvailablePerDay: item.hours_per_day || 2,
+            name: (item.title as string) || 'Untitled Course',
+            domain: (item.category as string) || 'Computer Science',
+            examDate: (item.exam_date as string) || '',
+            hoursAvailablePerDay: (item.hours_per_day as number) || 2,
             targetMastery: 80,
             createdAt: item.created_at ? String(item.created_at).split('T')[0] : new Date().toISOString().split('T')[0],
             materialsCount: 2,
             conceptCount: 6,
             overallMastery: 72,
             activeMisconceptionsCount: 1,
-            source_platform: item.source_platform,
-            source_id: item.source_id,
-            source_url: item.source_url,
-            access_type: item.access_type,
-            instructor: item.instructor,
-            institution: item.institution,
+            source_platform: item.source_platform as Course['source_platform'],
+            source_id: item.source_id as string,
+            source_url: item.source_url as string,
+            access_type: item.access_type as Course['access_type'],
+            instructor: item.instructor as string,
+            institution: item.institution as string,
             certificate_available: Boolean(item.certificate_available ?? true),
           }));
           // Cache the user's real enrolled courses for offline display
@@ -365,7 +364,7 @@ export const api = {
       if (res.ok) {
         const data = await res.json();
         if (data.sources && Array.isArray(data.sources) && data.sources.length > 0) {
-          const totalChunks = data.sources.reduce((sum: number, s: any) => sum + (s.chunks_created || 0), 0);
+          const totalChunks = data.sources.reduce((sum: number, s: { chunks_created?: number }) => sum + (s.chunks_created || 0), 0);
           return {
             overallProgress: 100,
             currentStage: 'complete',
@@ -431,7 +430,7 @@ export const api = {
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          return data.map((item: any, idx: number) => ({
+          return data.map((item: { concept_id?: string; concept_name?: string; name?: string; topic?: string; description?: string; p?: number; days_since_practice?: number }, idx: number) => ({
             id: item.concept_id || `concept-${idx}`,
             courseId,
             name: item.concept_name || item.name || `Concept ${idx + 1}`,
@@ -467,7 +466,7 @@ export const api = {
         const data = await res.json();
         if (data.nodes && Array.isArray(data.nodes) && data.nodes.length > 0) {
           const concepts = await this.getConcepts(courseId);
-          const nodes = data.nodes.map((n: any, idx: number) => {
+          const nodes = data.nodes.map((n: { id: string | number; name: string; type?: string }, idx: number) => {
             const col = idx % 4;
             const row = Math.floor(idx / 4);
             const matched = concepts.find((c) => c.id === n.id || c.name.toLowerCase() === n.name.toLowerCase());
@@ -487,14 +486,14 @@ export const api = {
             };
           });
 
-          const edges = (data.edges || []).map((e: any, idx: number) => ({
+          const edges = (data.edges || []).map((e: { source: string | number; target: string | number; kind?: string }, idx: number) => ({
             id: `edge-${idx}`,
             source: String(e.source),
             target: String(e.target),
             animated: true,
             label: e.kind || 'requires',
             data: {
-              relation: (e.kind === 'contains' || e.kind === 'confusable' ? e.kind : 'requires') as any,
+              relation: (e.kind === 'contains' || e.kind === 'confusable' ? e.kind : 'requires') as 'contains' | 'confusable' | 'requires',
               description: e.kind,
             },
           }));
@@ -568,7 +567,7 @@ export const api = {
           mode === 'not_covered' ? 'not-covered' :
           mode === 'outside' ? 'outside-knowledge' : 'partial';
 
-        const citations: Citation[] = (result.sources || []).map((s: any, idx: number) => ({
+        const citations: Citation[] = (result.sources || []).map((s: { chunk_id?: string; source_id?: string; page?: number; slide?: number; ts_start?: number; ts_end?: number; label?: string; type?: string; snippet?: string }, idx: number) => ({
           id: `cit-${s.chunk_id || idx}`,
           sourceId: s.source_id || 'mat-pdf-1',
           sourceTitle: s.page
@@ -578,7 +577,7 @@ export const api = {
             : s.ts_start
             ? `Video @ ${Math.floor(s.ts_start)}s`
             : (s.label || 'Course Material'),
-          sourceType: (s.type === 'video' ? 'video' : s.type === 'pptx' ? 'pptx' : 'pdf') as any,
+          sourceType: (s.type === 'video' ? 'video' : s.type === 'pptx' ? 'pptx' : 'pdf') as 'pdf' | 'pptx' | 'video',
           pageNumber: s.page || undefined,
           slideNumber: s.slide || undefined,
           timestamp: s.ts_start || undefined,
@@ -950,7 +949,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          return data.map((m: any, idx: number): Misconception => ({
+          return data.map((m: { id?: string; concept_id?: string; concept_name?: string; name?: string; title?: string; description?: string; severity?: number; evidence_count?: number; contrast_summary?: string; explanation?: string; remediated?: boolean }, idx: number): Misconception => ({
             id: m.id || `misc-${idx}`,
             courseId,
             conceptId: m.concept_id || 'concept-1',
@@ -1019,9 +1018,9 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       });
       if (res.ok) {
         const data = await res.json();
-        const normalizedLectures = (data.lectures || []).map((l: any) => {
-          const ytId = l.youtubeId || l.youtube_id || '';
-          const embedUrl = l.videoUrl || l.video_url || (ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1` : '');
+        const normalizedLectures = (data.lectures || []).map((l: Partial<Lecture> & Record<string, unknown>) => {
+          const ytId = (l.youtubeId as string) || (l.youtube_id as string) || '';
+          const embedUrl = (l.videoUrl as string) || (l.video_url as string) || (ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1` : '');
           return {
             ...l,
             id: l.id,
@@ -1068,8 +1067,8 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       !cached ||
       !cached.lectures ||
       cached.lectures.length < 8 ||
-      cached.lectures.some((l: any) =>
-        ['PPLop442CuU', 'ytpJdnlu9ug', '4b4MUYve_U8'].includes(l.youtubeId || l.youtube_id)
+      cached.lectures.some((l: Partial<Lecture> & { youtube_id?: string }) =>
+        ['PPLop442CuU', 'ytpJdnlu9ug', '4b4MUYve_U8'].includes((l.youtubeId || l.youtube_id) as string)
       );
     if (cached && !isStale) return cached;
 
@@ -1130,12 +1129,12 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
           'Worked mathematical formulation.',
           'Practical applications and algorithms.',
         ],
-        transcript: (l.transcript as any) || [
+        transcript: l.transcript || [
           { seconds: 0, timestamp: '00:00', text: `Welcome to ${l.title || 'Lecture'}. Today we cover foundational concepts.` },
           { seconds: 300, timestamp: '05:00', text: 'Analyzing key theoretical formulations and mathematical properties.' },
           { seconds: 1200, timestamp: '20:00', text: 'Demonstrating practical implementations and algorithmic steps.' },
         ],
-        resources: (l.resources as any) || [
+        resources: l.resources || [
           { title: `${l.title || 'Lecture'} Handout (PDF)`, type: 'pdf', url: '#' },
         ],
       };
@@ -1401,7 +1400,8 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
   },
 
   // --- EVALUATION ---
-  async getEvaluationMetrics(_courseId: string): Promise<EvaluationMetrics> {
+  async getEvaluationMetrics(courseId?: string): Promise<EvaluationMetrics> {
+    void courseId;
     return EVALUATION_METRICS;
   },
 
@@ -1593,40 +1593,66 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
   },
 
   // --- CERTIFICATES & ACCREDITATION ---
-  async getCertificate(courseId: string): Promise<CourseCertificateDetails> {
+  async getCertificate(courseId: string, userId?: string): Promise<CourseCertificateDetails> {
+    // 1. Calculate actual syllabus completion percentage from recorded user progress
+    let actualLecturePct = 0;
+    let completedCount = 0;
+    let totalLectures = 10;
     try {
-      const res = await fetch(`${API_BASE}/certificates/${courseId}`, {
+      const completedMap = getStorage<Record<string, boolean>>('completed_lectures_' + courseId, {});
+      completedCount = Object.values(completedMap).filter(Boolean).length;
+      const lecturesResp = await this.getCourseLectures(courseId);
+      totalLectures = lecturesResp?.total_lectures || lecturesResp?.lectures?.length || 10;
+      actualLecturePct = totalLectures > 0 ? Math.min(100, Math.round((completedCount / totalLectures) * 100)) : 0;
+    } catch {
+      // Use fallback defaults
+    }
+
+    const isLectureMet = actualLecturePct >= 80;
+
+    try {
+      const queryParams = new URLSearchParams();
+      if (userId) queryParams.set('user_id', userId);
+      queryParams.set('lectures_completed_pct', actualLecturePct.toString());
+
+      const res = await fetch(`${API_BASE}/certificates/${courseId}?${queryParams.toString()}`, {
         headers: { Accept: 'application/json' },
       });
       if (res.ok) {
         const raw = await res.json();
-        const criteriaObj = (raw.criteria && !Array.isArray(raw.criteria)) ? raw.criteria : {
+        const rawMastery = typeof raw.overall_mastery === 'number' ? raw.overall_mastery : 82.5;
+        const conceptMet = rawMastery >= 80;
+        const examMet = (raw.criteria?.diagnostic_exam?.met ?? true);
+        const misconceptionsMet = (raw.criteria?.critical_misconceptions?.met ?? true);
+        const overallEligible = conceptMet && isLectureMet && examMet && misconceptionsMet;
+
+        const criteriaObj = {
           concept_mastery: {
             name: 'Concept Mastery',
             required: 80.0,
-            current: raw.overall_mastery || 82.5,
-            met: (raw.overall_mastery || 82.5) >= 80,
+            current: rawMastery,
+            met: conceptMet,
             description: 'Demonstrate >= 80% Bayesian calibrated mastery across syllabus concepts.',
           },
           lecture_progress: {
             name: 'Lecture Progress',
             required: 80.0,
-            current: 85.0,
-            met: true,
-            description: 'Complete >= 80% of recorded video lectures and syllabus milestones.',
+            current: actualLecturePct,
+            met: isLectureMet,
+            description: `Complete >= 80% of recorded video lectures (${completedCount}/${totalLectures} completed).`,
           },
           diagnostic_exam: {
             name: 'Diagnostic / Final Exam',
             required: 75.0,
-            current: 88.0,
-            met: true,
+            current: raw.criteria?.diagnostic_exam?.current || 88.0,
+            met: examMet,
             description: 'Pass the KnowTrace comprehensive summative evaluation with >= 75% score.',
           },
           critical_misconceptions: {
             name: 'Zero Critical Misconceptions',
             required: 0,
-            current: 0,
-            met: true,
+            current: raw.criteria?.critical_misconceptions?.current || 0,
+            met: misconceptionsMet,
             description: 'Resolve all active cognitive misconceptions detected by KT diagnostic engine.',
           },
         };
@@ -1638,8 +1664,8 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
           institution: raw.institution || raw.platform_info?.institution || 'IIT Madras',
           instructor: raw.instructor || 'Prof. Balaraman Ravindran',
           certificate_available: Boolean(raw.certificate_available ?? true),
-          eligible: Boolean(raw.eligible ?? raw.is_eligible ?? true),
-          overall_progress_pct: raw.overall_progress_pct ?? 84,
+          eligible: overallEligible,
+          overall_progress_pct: Math.round((rawMastery + actualLecturePct) / 2),
           criteria: criteriaObj,
           student: raw.student || {
             name: raw.student_name || 'Alex Chen',
@@ -1669,6 +1695,8 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
     const isNptel = platform.toUpperCase().includes('NPTEL');
     const isSwayam = platform.toUpperCase().includes('SWAYAM');
     const isMitx = platform.toUpperCase().includes('MIT');
+    const conceptMet = (course.overallMastery || 76.0) >= 80.0;
+    const overallEligible = conceptMet && isLectureMet;
 
     return {
       course_id: courseId,
@@ -1677,22 +1705,22 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       institution: course.institution || (isNptel ? 'IIT Madras' : isMitx ? 'MIT' : 'KnowTrace Academy'),
       instructor: course.instructor || (isNptel ? 'Prof. Balaraman Ravindran' : 'Lead Faculty'),
       certificate_available: true,
-      eligible: course.overallMastery >= 80,
-      overall_progress_pct: Math.min(100, Math.round((course.overallMastery + 80) / 2)),
+      eligible: overallEligible,
+      overall_progress_pct: Math.min(100, Math.round(((course.overallMastery || 76.0) + actualLecturePct) / 2)),
       criteria: {
         concept_mastery: {
           name: 'Concept Mastery',
           required: 80.0,
           current: course.overallMastery || 76.0,
-          met: (course.overallMastery || 76.0) >= 80.0,
+          met: conceptMet,
           description: 'Demonstrate >= 80% Bayesian calibrated mastery across syllabus concepts.',
         },
         lecture_progress: {
           name: 'Lecture Progress',
           required: 80.0,
-          current: 85.0,
-          met: true,
-          description: 'Complete >= 80% of recorded video lectures and syllabus milestones.',
+          current: actualLecturePct,
+          met: isLectureMet,
+          description: `Complete >= 80% of recorded video lectures (${completedCount}/${totalLectures} completed).`,
         },
         diagnostic_exam: {
           name: 'Diagnostic / Final Exam',
@@ -1735,18 +1763,37 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
   },
 
   async claimCertificate(courseId: string): Promise<{ success: boolean; certificate_id: string; message: string }> {
+    const cert = await this.getCertificate(courseId);
+    if (!cert.eligible) {
+      throw new Error('Course requirements not met. Please complete at least 80% of the syllabus before claiming your certificate.');
+    }
+
+    const completedMap = getStorage<Record<string, boolean>>('completed_lectures_' + courseId, {});
+    const completedCount = Object.values(completedMap).filter(Boolean).length;
+    const lecturesResp = await this.getCourseLectures(courseId);
+    const totalLectures = lecturesResp?.total_lectures || lecturesResp?.lectures?.length || 10;
+    const actualLecturePct = totalLectures > 0 ? Math.round((completedCount / totalLectures) * 100) : 0;
+
     try {
-      const res = await fetch(`${API_BASE}/certificates/${courseId}/claim`, {
+      const res = await fetch(`${API_BASE}/certificates/${courseId}/claim?lectures_completed_pct=${actualLecturePct}`, {
         method: 'POST',
         headers: { Accept: 'application/json' },
       });
       if (res.ok) {
+        setStorage('claimed_cert_' + courseId, true);
         return await res.json();
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.detail || 'Failed to claim certificate');
       }
-    } catch (e) {
-      console.warn('Backend claim certificate API not reached, using fallback', e);
+    } catch (e: any) {
+      if (e.message?.includes('Course requirements not met') || e.message?.includes('syllabus')) {
+        throw e;
+      }
+      console.warn('Backend claim certificate API not reached, using local stamp', e);
     }
 
+    setStorage('claimed_cert_' + courseId, true);
     return {
       success: true,
       certificate_id: `KT-CLAIMED-${courseId.slice(0, 6).toUpperCase()}-2026`,
@@ -1766,6 +1813,9 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
     window.localStorage.removeItem(STORAGE_PREFIX + 'misconceptions_' + courseId);
     window.localStorage.removeItem(STORAGE_PREFIX + 'study_plan_' + courseId);
     window.localStorage.removeItem(STORAGE_PREFIX + 'plan_diffs_' + courseId);
+    window.localStorage.removeItem(STORAGE_PREFIX + 'completed_lectures_' + courseId);
+    window.localStorage.removeItem(STORAGE_PREFIX + 'lectures_' + courseId);
+    window.localStorage.removeItem(STORAGE_PREFIX + 'claimed_cert_' + courseId);
   },
 };
 

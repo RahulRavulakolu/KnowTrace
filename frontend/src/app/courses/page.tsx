@@ -16,7 +16,6 @@ export default function CoursesListPage() {
 
   useEffect(() => {
     let isMounted = true;
-    setLoading(true);
     api
       .getAllCourses()
       .then((data) => {

@@ -9,11 +9,9 @@ import {
   Clock,
   ExternalLink,
   Sparkles,
-  CheckCircle2,
   Video,
   FileText,
   FileQuestion,
-  Download,
   Check,
 } from 'lucide-react';
 import { CatalogCourseDetail } from '@/types/discover';
@@ -36,7 +34,6 @@ export default function DiscoverCourseDetailPage() {
   useEffect(() => {
     if (!platform || !id) return;
     let isMounted = true;
-    setLoading(true);
 
     api
       .getCatalogCourse(platform, id)

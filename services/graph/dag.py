@@ -77,7 +77,8 @@ def _recursive_ids(concept_id: str, db_session: Session, dependents: bool = Fals
     """Query graph neighbors recursively to depth five."""
     edge_column = "concept_id" if dependents else "prerequisite_id"
     join_column = "prerequisite_id" if dependents else "concept_id"
-    query = text(f"""
+    query = text(
+        f"""
         WITH RECURSIVE graph(id, depth) AS (
             SELECT {edge_column}, 1 FROM prerequisites
             WHERE {join_column} = :concept_id AND kind = 'requires'
@@ -87,7 +88,8 @@ def _recursive_ids(concept_id: str, db_session: Session, dependents: bool = Fals
             WHERE p.kind = 'requires' AND graph.depth < 5
         )
         SELECT DISTINCT id FROM graph WHERE id != :concept_id
-    """)
+    """
+    )
     return [str(row[0]) for row in db_session.execute(query, {"concept_id": concept_id})]
 
 

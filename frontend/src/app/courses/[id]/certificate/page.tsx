@@ -9,24 +9,20 @@ import { Course, CourseCertificateDetails } from '@/types';
 import {
   Award,
   CheckCircle2,
-  XCircle,
   ExternalLink,
-  Download,
   Printer,
-  Share2,
   Sparkles,
   ShieldCheck,
   Building2,
   Calendar,
   CreditCard,
-  FileText,
   ArrowRight,
   Video,
   HelpCircle,
   AlertTriangle,
-  QrCode,
   Check,
   Copy,
+  Lock,
 } from 'lucide-react';
 
 export default function CourseCertificatePage({
@@ -41,15 +37,17 @@ export default function CourseCertificatePage({
   const [copiedLink, setCopiedLink] = useState(false);
   const [claimSuccessMsg, setClaimSuccessMsg] = useState<string | null>(null);
 
-  const { data: course, isLoading: courseLoading } = useQuery<Course>({
+  const { data: course } = useQuery<Course>({
     queryKey: ['course', courseId],
     queryFn: () => api.getCourse(courseId),
   });
 
-  const { data: certDetails, isLoading: certLoading } = useQuery<CourseCertificateDetails>({
+  const { data: certDetails } = useQuery<CourseCertificateDetails>({
     queryKey: ['certificate', courseId],
     queryFn: () => api.getCertificate(courseId),
   });
+
+  const isEligible = certDetails?.eligible ?? false;
 
   const claimMutation = useMutation({
     mutationFn: () => api.claimCertificate(courseId),
@@ -69,15 +67,17 @@ export default function CourseCertificatePage({
   };
 
   const handlePrint = () => {
+    if (!isEligible) {
+      alert('Certificate is locked. You must complete at least 80% of recorded syllabus lectures before you can print the official certificate.');
+      return;
+    }
     if (typeof window !== 'undefined') {
       window.print();
     }
   };
 
-  const isLoading = courseLoading || certLoading;
   const criteria = certDetails?.criteria;
   const platformInfo = certDetails?.platform_info;
-  const isEligible = certDetails?.eligible ?? false;
 
   const criteriaList = criteria && criteria.concept_mastery
     ? [
@@ -95,7 +95,7 @@ export default function CourseCertificatePage({
         {
           key: 'lecture_progress',
           name: criteria.lecture_progress?.name || 'Lecture Progress',
-          current: `${criteria.lecture_progress?.current ?? 85}%`,
+          current: `${criteria.lecture_progress?.current ?? 0}%`,
           target: `${criteria.lecture_progress?.required ?? 80}%`,
           met: Boolean(criteria.lecture_progress?.met),
           desc: criteria.lecture_progress?.description || 'Watch and complete at least 80% of course video lectures.',
@@ -140,10 +140,17 @@ export default function CourseCertificatePage({
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                  <Award className="w-3.5 h-3.5 text-amber-400" />
-                  Verified Certification Pathway
-                </span>
+                {isEligible ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                    <Award className="w-3.5 h-3.5 text-emerald-400" />
+                    Verified & Unlocked
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                    <Lock className="w-3.5 h-3.5 text-amber-400" />
+                    Syllabus In Progress ({certDetails?.criteria?.lecture_progress?.current ?? 0}%)
+                  </span>
+                )}
                 <span className="text-xs text-zinc-300 bg-white/10 px-2.5 py-1 rounded-full">
                   {certDetails?.source_platform || 'NPTEL'} • {certDetails?.institution || 'IIT Madras'}
                 </span>
@@ -159,10 +166,16 @@ export default function CourseCertificatePage({
             <div className="shrink-0 flex flex-col sm:flex-row md:flex-col gap-3">
               <button
                 onClick={handlePrint}
-                className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-all cursor-pointer"
+                disabled={!isEligible}
+                className={`px-4 py-2.5 rounded-xl border text-xs font-bold inline-flex items-center justify-center gap-2 transition-all ${
+                  isEligible
+                    ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white cursor-pointer'
+                    : 'bg-zinc-800/60 border-zinc-700/60 text-zinc-400 cursor-not-allowed opacity-75'
+                }`}
+                title={!isEligible ? 'Certificate locked until syllabus is completed' : 'Print Certificate'}
               >
-                <Printer className="w-4 h-4" />
-                <span>Print Certificate</span>
+                {isEligible ? <Printer className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                <span>{isEligible ? 'Print Certificate' : 'Certificate Locked'}</span>
               </button>
               <button
                 onClick={handleCopyLink}
@@ -268,34 +281,43 @@ export default function CourseCertificatePage({
           {/* Quick claim banner */}
           <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-indigo-600 text-white shrink-0">
-                <Award className="w-5 h-5" />
+              <div className={`p-2.5 rounded-xl text-white shrink-0 ${isEligible ? 'bg-indigo-600' : 'bg-zinc-600'}`}>
+                {isEligible ? <Award className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
               </div>
               <div>
                 <h4 className="text-sm font-bold text-indigo-950 dark:text-indigo-200">
                   {isEligible
                     ? 'Congratulations! You are eligible to claim this certificate.'
-                    : 'Certificate Issuance Status'}
+                    : 'Certificate Issuance Status: Locked'}
                 </h4>
                 <p className="text-xs text-indigo-800/80 dark:text-indigo-300/80">
                   {isEligible
                     ? 'All requirements are fulfilled. Claim below to stamp your digital credential and generate permanent verification hashes.'
-                    : `Complete remaining milestones above to automatically unlock your official credential.`}
+                    : `Syllabus incomplete (${certDetails?.criteria?.lecture_progress?.current ?? 0}% completed). Complete at least 80% of recorded syllabus lectures to unlock.`}
                 </p>
               </div>
             </div>
 
             <button
-              onClick={() => claimMutation.mutate()}
-              disabled={claimMutation.isPending}
-              className={`px-5 py-2.5 rounded-xl font-extrabold text-xs inline-flex items-center gap-2 transition-all shrink-0 cursor-pointer ${
+              onClick={() => {
+                if (!isEligible) return;
+                claimMutation.mutate();
+              }}
+              disabled={!isEligible || claimMutation.isPending}
+              className={`px-5 py-2.5 rounded-xl font-extrabold text-xs inline-flex items-center gap-2 transition-all shrink-0 ${
                 isEligible
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md active:scale-95'
-                  : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700'
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md active:scale-95 cursor-pointer'
+                  : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed opacity-75'
               }`}
             >
-              <Award className="w-4 h-4" />
-              <span>{claimMutation.isPending ? 'Verifying...' : 'Claim & Stamp Certificate'}</span>
+              {isEligible ? <Award className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              <span>
+                {claimMutation.isPending
+                  ? 'Verifying...'
+                  : isEligible
+                  ? 'Claim & Stamp Certificate'
+                  : 'Locked (Syllabus Incomplete)'}
+              </span>
             </button>
           </div>
 
@@ -399,131 +421,174 @@ export default function CourseCertificatePage({
                 <span>Certificate of Cognitive Mastery Preview</span>
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Cryptographically signed credential with Bayesian knowledge tracing verification.
+                {isEligible
+                  ? 'Cryptographically signed credential with Bayesian knowledge tracing verification.'
+                  : 'Official certificate is locked until at least 80% of the syllabus lectures are completed.'}
               </p>
             </div>
-            <button
-              onClick={handlePrint}
-              className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print Preview</span>
-            </button>
+            {isEligible && (
+              <button
+                onClick={handlePrint}
+                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Print Preview</span>
+              </button>
+            )}
           </div>
 
-          {/* Certificate Canvas / Card */}
-          <div
-            id="certificate-print-area"
-            className="p-8 sm:p-12 rounded-3xl bg-radial from-amber-50/60 via-white to-amber-50/30 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-4 border-double border-amber-600/40 dark:border-amber-500/30 shadow-2xl relative overflow-hidden"
-          >
-            {/* Watermark Logo Accent */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-3 dark:opacity-5 pointer-events-none select-none">
-              <Award className="w-96 h-96 text-amber-500" />
-            </div>
+          {/* Certificate Canvas / Card Wrapper with Locked Overlay */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <div
+              id="certificate-print-area"
+              className={`p-8 sm:p-12 bg-radial from-amber-50/60 via-white to-amber-50/30 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-4 border-double border-amber-600/40 dark:border-amber-500/30 relative overflow-hidden transition-all duration-300 ${
+                !isEligible ? 'filter blur-[5px] opacity-25 select-none pointer-events-none' : ''
+              }`}
+            >
+              {/* Watermark Logo Accent */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-3 dark:opacity-5 pointer-events-none select-none">
+                <Award className="w-96 h-96 text-amber-500" />
+              </div>
 
-            {/* Corner Decorative Ornaments */}
-            <div className="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-amber-500/60 pointer-events-none" />
+              {/* Corner Decorative Ornaments */}
+              <div className="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-amber-500/60 pointer-events-none" />
+              <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-amber-500/60 pointer-events-none" />
+              <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-amber-500/60 pointer-events-none" />
+              <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-amber-500/60 pointer-events-none" />
 
-            <div className="relative z-10 text-center space-y-6 max-w-3xl mx-auto">
-              {/* Certificate Header */}
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-black tracking-widest uppercase border border-amber-500/20">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  KNOWTRACE ACADEMIC HONORS & COGNITIVE MASTERY
+              <div className="relative z-10 text-center space-y-6 max-w-3xl mx-auto">
+                {/* Certificate Header */}
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-black tracking-widest uppercase border border-amber-500/20">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    KNOWTRACE ACADEMIC HONORS & COGNITIVE MASTERY
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-serif font-black tracking-wide text-zinc-900 dark:text-zinc-50 pt-1">
+                    Certificate of Achievement
+                  </h3>
+                  <p className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
+                    This is proudly presented to
+                  </p>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-serif font-black tracking-wide text-zinc-900 dark:text-zinc-50 pt-1">
-                  Certificate of Achievement
-                </h3>
-                <p className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
-                  This is proudly presented to
+
+                {/* Recipient Name */}
+                <div className="py-2 border-b-2 border-dashed border-amber-500/30 max-w-lg mx-auto">
+                  <div className="text-3xl sm:text-4xl font-serif font-bold text-amber-700 dark:text-amber-300 italic tracking-wide">
+                    {certDetails?.student?.name || 'Alex Chen'}
+                  </div>
+                </div>
+
+                {/* Award Description */}
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-2xl mx-auto">
+                  for demonstrating verified cognitive proficiency and surpassing rigorous Bayesian knowledge tracing standards in the course
                 </p>
-              </div>
 
-              {/* Recipient Name */}
-              <div className="py-2 border-b-2 border-dashed border-amber-500/30 max-w-lg mx-auto">
-                <div className="text-3xl sm:text-4xl font-serif font-bold text-amber-700 dark:text-amber-300 italic tracking-wide">
-                  {certDetails?.student?.name || 'Alex Chen'}
-                </div>
-              </div>
-
-              {/* Award Description */}
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-2xl mx-auto">
-                for demonstrating verified cognitive proficiency and surpassing rigorous Bayesian knowledge tracing standards in the course
-              </p>
-
-              {/* Course Title & Platform */}
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-                  {course?.name || certDetails?.course_name || 'Machine Learning'}
-                </div>
-                <div className="text-xs font-semibold text-zinc-500">
-                  Offered via {certDetails?.source_platform || 'NPTEL'} • {certDetails?.institution || 'IIT Madras'}
-                </div>
-              </div>
-
-              {/* Mastery Grade Badge */}
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-200">
-                <ShieldCheck className="w-4 h-4 text-amber-600" />
-                <span className="text-xs font-mono font-black">
-                  Calibrated Mastery: {course?.overallMastery ?? 82}% • Elite / Distinction
-                </span>
-              </div>
-
-              {/* Signatures & Verification Seal */}
-              <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 items-end gap-6 border-t border-zinc-200/80 dark:border-zinc-800 text-left sm:text-center">
+                {/* Course Title & Platform */}
                 <div className="space-y-1">
-                  <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
-                    {certDetails?.instructor || 'Prof. Balaraman Ravindran'}
+                  <div className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                    {course?.name || certDetails?.course_name || 'Machine Learning'}
                   </div>
-                  <div className="text-[11px] font-semibold text-zinc-500">
-                    Lead Course Instructor
-                  </div>
-                  <div className="text-[10px] text-zinc-400">
-                    {certDetails?.institution || 'IIT Madras'}
+                  <div className="text-xs font-semibold text-zinc-500">
+                    Offered via {certDetails?.source_platform || 'NPTEL'} • {certDetails?.institution || 'IIT Madras'}
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center space-y-1.5">
-                  <div className="w-16 h-16 rounded-full border-2 border-dashed border-amber-500/60 flex items-center justify-center bg-amber-500/5">
-                    <Award className="w-8 h-8 text-amber-500" />
-                  </div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
-                    Official Seal
+                {/* Mastery Grade Badge */}
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-200">
+                  <ShieldCheck className="w-4 h-4 text-amber-600" />
+                  <span className="text-xs font-mono font-black">
+                    Calibrated Mastery: {course?.overallMastery ?? 82}% • Elite / Distinction
                   </span>
                 </div>
 
-                <div className="space-y-1">
-                  <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
-                    KnowTrace Academic Council
+                {/* Signatures & Verification Seal */}
+                <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 items-end gap-6 border-t border-zinc-200/80 dark:border-zinc-800 text-left sm:text-center">
+                  <div className="space-y-1">
+                    <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
+                      {certDetails?.instructor || 'Prof. Balaraman Ravindran'}
+                    </div>
+                    <div className="text-[11px] font-semibold text-zinc-500">
+                      Lead Course Instructor
+                    </div>
+                    <div className="text-[10px] text-zinc-400">
+                      {certDetails?.institution || 'IIT Madras'}
+                    </div>
                   </div>
-                  <div className="text-[11px] font-semibold text-zinc-500">
-                    Adaptive Engine Director
-                  </div>
-                  <div className="text-[10px] text-zinc-400">
-                    Issued: {certDetails?.student?.completion_date || 'October 2026'}
-                  </div>
-                </div>
-              </div>
 
-              {/* Cryptographic Footnote */}
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100 dark:border-zinc-900 gap-2">
-                <div>
-                  Credential ID:{' '}
-                  <span className="text-zinc-600 dark:text-zinc-300 font-bold">
-                    {certDetails?.student?.certificate_id || 'KT-NPTE-23E9EF-2026'}
-                  </span>
+                  <div className="flex flex-col items-center justify-center space-y-1.5">
+                    <div className="w-16 h-16 rounded-full border-2 border-dashed border-amber-500/60 flex items-center justify-center bg-amber-500/5">
+                      <Award className="w-8 h-8 text-amber-500" />
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
+                      Official Seal
+                    </span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
+                      KnowTrace Academic Council
+                    </div>
+                    <div className="text-[11px] font-semibold text-zinc-500">
+                      Adaptive Engine Director
+                    </div>
+                    <div className="text-[10px] text-zinc-400">
+                      Issued: {certDetails?.student?.completion_date || 'October 2026'}
+                    </div>
+                  </div>
                 </div>
-                <div className="truncate max-w-xs">
-                  SHA-256:{' '}
-                  <span className="text-zinc-500">
-                    {certDetails?.student?.verification_hash || 'd8f4e2c9a17b889360c7f12e9647201bc6f32890'}
-                  </span>
+
+                {/* Cryptographic Footnote */}
+                <div className="pt-4 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-zinc-400 border-t border-zinc-100 dark:border-zinc-900 gap-2">
+                  <div>
+                    Credential ID:{' '}
+                    <span className="text-zinc-600 dark:text-zinc-300 font-bold">
+                      {certDetails?.student?.certificate_id || 'KT-NPTE-23E9EF-2026'}
+                    </span>
+                  </div>
+                  <div className="truncate max-w-xs">
+                    SHA-256:{' '}
+                    <span className="text-zinc-500">
+                      {certDetails?.student?.verification_hash || 'd8f4e2c9a17b889360c7f12e9647201bc6f32890'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Locked Overlay if not eligible */}
+            {!isEligible && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 sm:p-10 text-center bg-zinc-950/80 backdrop-blur-md border-2 border-amber-500/30 rounded-3xl">
+                <div className="p-4 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-400 mb-3 shadow-xl">
+                  <Lock className="w-8 h-8" />
+                </div>
+                <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-2">
+                  Prerequisites Required
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
+                  Certificate Locked: Syllabus Incomplete
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-300 max-w-lg mb-5 leading-relaxed">
+                  You have completed <strong>{certDetails?.criteria?.lecture_progress?.current ?? 0}%</strong> of the syllabus. At least <strong>80%</strong> of course lectures must be completed to unlock and claim your official KnowTrace certificate.
+                </p>
+
+                {/* Progress bar */}
+                <div className="w-full max-w-xs bg-zinc-800 rounded-full h-2.5 mb-6 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-amber-500 to-emerald-500 h-2.5 rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min(100, Math.max(5, certDetails?.criteria?.lecture_progress?.current ?? 0))}%` }}
+                  />
+                </div>
+
+                <Link
+                  href={`/courses/${courseId}/lectures`}
+                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-600 hover:to-indigo-700 text-white font-black text-xs sm:text-sm shadow-xl hover:shadow-2xl transition-all inline-flex items-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Video className="w-4 h-4" />
+                  <span>Watch Lectures to Unlock ({certDetails?.criteria?.lecture_progress?.current ?? 0}% / 80%)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       </div>
