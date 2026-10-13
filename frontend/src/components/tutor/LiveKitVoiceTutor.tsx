@@ -11,7 +11,7 @@ interface LiveKitVoiceTutorProps {
   courseId: string;
   courseTitle?: string;
   initialMessages: TutorMessage[];
-  onSendMessage: (text: string, allowOutside: boolean) => Promise<void>;
+  onSendMessage: (text: string, allowOutside: boolean) => Promise<TutorMessage | any>;
   onCitationClick?: (citation: Citation) => void;
 }
 
@@ -45,6 +45,7 @@ export function LiveKitVoiceTutor({
   const roomRef = useRef<Room | null>(null);
   const recognitionRef = useRef<any>(null);
   const synthUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const isProcessingRef = useRef<boolean>(false);
 
   // Web Speech Fallback for local simulation mode
   const setupSpeechRecognition = useCallback(() => {
@@ -67,28 +68,56 @@ export function LiveKitVoiceTutor({
       };
 
       recognition.onresult = async (event: any) => {
+        if (isProcessingRef.current) return;
+
         const lastIndex = event.results.length - 1;
-        const transcriptText = event.results[lastIndex][0].transcript.trim();
+        const rawText = (event.results[lastIndex][0].transcript || '').trim();
 
-        if (transcriptText) {
-          // Add User Turn to transcript
-          const userTurn: TutorMessage = {
-            id: `usr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-            sender: 'user',
-            text: transcriptText,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          };
-          setMessages((prev) => {
-            if (prev.some((m) => m.id === userTurn.id)) return prev;
-            return [...prev, userTurn];
-          });
-          setAgentState('thinking');
+        // Filter out filler words, mic clicks, or very short accidental noises
+        if (!rawText || rawText.length < 3 || /^(um+|uh+|hmm+|ah+|er+)$/i.test(rawText)) {
+          return;
+        }
 
-          try {
-            // Send turn through KnowTrace grounding pipeline
-            await onSendMessage(transcriptText, false);
-          } catch (e: any) {
-            console.error(e);
+        isProcessingRef.current = true;
+        try {
+          recognition.stop();
+        } catch {}
+
+        const userTurn: TutorMessage = {
+          id: `usr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+          sender: 'user',
+          text: rawText,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === userTurn.id)) return prev;
+          return [...prev, userTurn];
+        });
+        setAgentState('thinking');
+
+        try {
+          // Send turn through KnowTrace grounding pipeline
+          const tutorTurn = await onSendMessage(rawText, false);
+          if (tutorTurn && tutorTurn.text) {
+            setMessages((prev) => {
+              if (prev.some((m) => m.id === tutorTurn.id)) return prev;
+              return [...prev, tutorTurn];
+            });
+            // Speaking state will be triggered by speech synthesis below
+          } else {
+            setAgentState('listening');
+            isProcessingRef.current = false;
+            if (isConnected && !isMuted) {
+              try { recognition.start(); } catch {}
+            }
+          }
+        } catch (e: any) {
+          console.error(e);
+          setAgentState('listening');
+          isProcessingRef.current = false;
+          if (isConnected && !isMuted) {
+            try { recognition.start(); } catch {}
           }
         }
       };
@@ -100,7 +129,7 @@ export function LiveKitVoiceTutor({
       };
 
       recognition.onend = () => {
-        if (isConnected && !isMuted) {
+        if (isConnected && !isMuted && !isProcessingRef.current) {
           try {
             recognition.start();
           } catch {}
@@ -124,7 +153,16 @@ export function LiveKitVoiceTutor({
 
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(lastMsg.text);
+        // Clean markdown symbols for cleaner voice recitation
+        const plainText = lastMsg.text
+          .replace(/\[S\d+\]/g, '')
+          .replace(/\*\*/g, '')
+          .replace(/#+/g, '')
+          .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1 over $2')
+          .replace(/\\text\{([^}]+)\}/g, '$1')
+          .replace(/\$+/g, '');
+
+        const utterance = new SpeechSynthesisUtterance(plainText);
         utterance.rate = 1.05;
         utterance.pitch = 1.0;
 
@@ -135,10 +173,18 @@ export function LiveKitVoiceTutor({
 
         utterance.onend = () => {
           setAgentState('listening');
+          isProcessingRef.current = false;
+          if (isConnected && !isMuted) {
+            try { recognitionRef.current?.start(); } catch {}
+          }
         };
 
         utterance.onerror = () => {
           setAgentState('listening');
+          isProcessingRef.current = false;
+          if (isConnected && !isMuted) {
+            try { recognitionRef.current?.start(); } catch {}
+          }
         };
 
         synthUtteranceRef.current = utterance;
@@ -146,11 +192,15 @@ export function LiveKitVoiceTutor({
       } else {
         const timer = setTimeout(() => {
           setAgentState('listening');
+          isProcessingRef.current = false;
+          if (isConnected && !isMuted) {
+            try { recognitionRef.current?.start(); } catch {}
+          }
         }, 3000);
         return () => clearTimeout(timer);
       }
     }
-  }, [messages, isConnected, isAudioOutputMuted]);
+  }, [messages, isConnected, isAudioOutputMuted, isMuted]);
 
   // Connect to LiveKit Room
   const handleConnect = async () => {
@@ -269,6 +319,15 @@ export function LiveKitVoiceTutor({
     });
   };
 
+  const handleClearTranscript = () => {
+    setMessages([]);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem('tutor_msgs_' + courseId);
+      } catch {}
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Side-by-side Avatar & Transcript Layout with viewport height constraint */}
@@ -306,6 +365,7 @@ export function LiveKitVoiceTutor({
             messages={messages}
             onCitationClick={onCitationClick}
             agentState={agentState}
+            onClear={handleClearTranscript}
           />
         </div>
       </div>

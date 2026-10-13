@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { Citation, TutorMessage } from '@/types';
-import { FileText, Sparkles, User, Bot, ExternalLink, HelpCircle } from 'lucide-react';
+import { FileText, Sparkles, User, Bot, ExternalLink, HelpCircle, Trash2 } from 'lucide-react';
 
 interface VoiceTranscriptFeedProps {
   messages: TutorMessage[];
   onCitationClick?: (citation: Citation) => void;
   activeCitation?: Citation | null;
   agentState: 'connecting' | 'listening' | 'thinking' | 'speaking' | 'idle';
+  onClear?: () => void;
 }
 
 export function VoiceTranscriptFeed({
@@ -16,6 +17,7 @@ export function VoiceTranscriptFeed({
   onCitationClick,
   activeCitation,
   agentState,
+  onClear,
 }: VoiceTranscriptFeedProps) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -34,9 +36,21 @@ export function VoiceTranscriptFeed({
           <FileText className="w-4 h-4 text-[#E06D3B]" />
           <h4 className="text-xs font-bold text-[#F6F5EE]">Live Socratic Transcript</h4>
         </div>
-        <span className="text-[10px] font-mono text-[#7E8078] uppercase">
-          {messages.length} Turns Logged
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-mono text-[#7E8078] uppercase">
+            {messages.length} Turns Logged
+          </span>
+          {onClear && messages.length > 0 && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="p-1 rounded-lg text-[#7E8078] hover:text-[#E06D3B] hover:bg-[#1D2024] transition-colors cursor-pointer"
+              title="Clear Transcript History"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Message Feed */}

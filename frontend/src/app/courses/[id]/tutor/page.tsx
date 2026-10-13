@@ -54,7 +54,7 @@ export default function CourseTutorPage({
   }, [searchParams, messages.length, sendMutation]);
 
   const handleSendMessage = async (text: string, allowOutside: boolean) => {
-    await sendMutation.mutateAsync({ text, allowOutside });
+    return await sendMutation.mutateAsync({ text, allowOutside });
   };
 
   const handleCitationClick = (citation: Citation) => {
