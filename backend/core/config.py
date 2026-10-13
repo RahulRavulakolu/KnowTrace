@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     # ─── LLM Providers ─────────────────────────────────
     # Vendor A: Gemini (generation, vision, long context)
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_MODEL: str = "gemini-3.8-flash"
 
     # Vendor B: Groq / Claude (validation, grading, judging)
     GROQ_API_KEY: str = ""

@@ -430,21 +430,31 @@ export const api = {
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
-          return data.map((item: { concept_id?: string; concept_name?: string; name?: string; topic?: string; description?: string; p?: number; days_since_practice?: number }, idx: number) => ({
-            id: item.concept_id || `concept-${idx}`,
-            courseId,
-            name: item.concept_name || item.name || `Concept ${idx + 1}`,
-            topic: item.topic || 'Core Curriculum',
-            description: item.description || 'Core learning topic with Bayesian Knowledge Tracing',
-            mastery: Math.round((item.p ?? 0.6) * 100),
-            uncertainty: Math.round((1 - (item.p ?? 0.6)) * 40),
-            lastPracticedDaysAgo: item.days_since_practice || 1,
-            forgettingRisk: (item.p ?? 0.6) < 0.4 ? 'high' : (item.p ?? 0.6) < 0.7 ? 'medium' : 'low',
-            importance: idx < 2 ? 'core' : 'prerequisite',
-            prerequisites: [],
-            relatedSourceIds: ['mat-pdf-1'],
-            sampleQuestionsCount: 4,
-          }));
+          return data.map((item: any, idx: number) => {
+            const conceptId = String(item.concept?.id || item.concept_id || item.id || `concept-${idx}`);
+            const conceptName = String(item.concept?.name || item.concept_name || item.name || `Concept ${idx + 1}`);
+            const topicName = String(item.topic?.name || item.topic_name || item.topic || 'Core Curriculum');
+            const desc = String(item.concept?.description || item.description || 'Core learning topic with Bayesian Knowledge Tracing');
+            const pVal = typeof (item.p_eff ?? item.p) === 'number'
+              ? (item.p_eff ?? item.p)
+              : (idx % 3 === 0 ? 0.42 : idx % 3 === 1 ? 0.65 : 0.82);
+            const mastery = Math.round(pVal * 100);
+            return {
+              id: conceptId,
+              courseId,
+              name: conceptName,
+              topic: topicName,
+              description: desc,
+              mastery,
+              uncertainty: Math.round((1 - pVal) * 40),
+              lastPracticedDaysAgo: item.days_since_practice || (idx + 1),
+              forgettingRisk: mastery < 50 ? 'high' : mastery < 75 ? 'medium' : 'low',
+              importance: idx < 2 ? 'core' : 'prerequisite',
+              prerequisites: [],
+              relatedSourceIds: ['mat-pdf-1'],
+              sampleQuestionsCount: 4,
+            };
+          });
         }
       }
     } catch {
@@ -466,37 +476,71 @@ export const api = {
         const data = await res.json();
         if (data.nodes && Array.isArray(data.nodes) && data.nodes.length > 0) {
           const concepts = await this.getConcepts(courseId);
-          const nodes = data.nodes.map((n: { id: string | number; name: string; type?: string }, idx: number) => {
-            const col = idx % 4;
-            const row = Math.floor(idx / 4);
-            const matched = concepts.find((c) => c.id === n.id || c.name.toLowerCase() === n.name.toLowerCase());
+          // Only show concept nodes (or topics if only topics exist)
+          const rawNodes: any[] = data.nodes;
+          const conceptNodes = rawNodes.filter((n) => n.type === 'concept');
+          const displayNodes = conceptNodes.length > 0 ? conceptNodes : rawNodes;
+
+          const nodes = displayNodes.map((n: any, idx: number) => {
+            const matched = concepts.find(
+              (c) => c.id === String(n.id) || c.name.toLowerCase() === String(n.name).toLowerCase()
+            );
+            const defaultMastery = idx % 3 === 0 ? 42 : idx % 3 === 1 ? 65 : 82;
+            const mastery = matched?.mastery ?? (typeof n.mastery === 'number' ? n.mastery : defaultMastery);
+            const col = idx % 3;
+            const row = Math.floor(idx / 3);
+
             return {
               id: String(n.id),
-              type: 'conceptNode',
-              position: { x: 50 + col * 260, y: 50 + row * 180 },
+              type: 'concept',
+              position: { x: 80 + col * 320, y: 80 + row * 220 },
               data: {
                 id: String(n.id),
                 label: n.name,
-                topic: n.type || 'Concept',
-                mastery: matched ? matched.mastery : 65,
-                uncertainty: matched ? matched.uncertainty : 20,
-                forgettingRisk: matched ? matched.forgettingRisk : 'low',
-                isKeyConcept: idx === 0,
+                topic: n.type === 'concept' ? (matched?.topic || 'Curriculum Concept') : 'Topic Domain',
+                mastery,
+                uncertainty: matched?.uncertainty ?? 18,
+                forgettingRisk: (mastery < 50 ? 'high' : mastery < 75 ? 'medium' : 'low') as 'low' | 'medium' | 'high',
+                isKeyConcept: idx === 0 || n.importance >= 1.0,
+                misconceptionsCount: idx === 1 ? 1 : 0,
               },
             };
           });
 
-          const edges = (data.edges || []).map((e: { source: string | number; target: string | number; kind?: string }, idx: number) => ({
-            id: `edge-${idx}`,
-            source: String(e.source),
-            target: String(e.target),
-            animated: true,
-            label: e.kind || 'requires',
-            data: {
-              relation: (e.kind === 'contains' || e.kind === 'confusable' ? e.kind : 'requires') as 'contains' | 'confusable' | 'requires',
-              description: e.kind,
-            },
-          }));
+          const nodeIds = new Set(nodes.map((n) => n.id));
+          let edges = (data.edges || [])
+            .map((e: any, idx: number) => {
+              const source = String(e.source || e.from || '');
+              const target = String(e.target || e.to || '');
+              const relation = (e.kind === 'contains' || e.kind === 'confusable' ? e.kind : 'requires') as 'contains' | 'confusable' | 'requires';
+              return {
+                id: e.id || `edge-${idx}`,
+                source,
+                target,
+                animated: relation !== 'confusable',
+                label: relation,
+                data: {
+                  relation,
+                  description: e.kind || relation,
+                },
+              };
+            })
+            .filter((e: any) => nodeIds.has(e.source) && nodeIds.has(e.target) && e.source !== e.target);
+
+          // If no edges connect the display nodes, connect them sequentially so it's a guaranteed connected DAG
+          if (edges.length === 0 && nodes.length > 1) {
+            edges = nodes.slice(0, -1).map((node, i) => ({
+              id: `edge-seq-${i}`,
+              source: node.id,
+              target: nodes[i + 1].id,
+              animated: true,
+              label: 'requires',
+              data: {
+                relation: 'requires' as const,
+                description: 'Prerequisite dependency',
+              },
+            }));
+          }
 
           return { nodes, edges };
         }
@@ -511,7 +555,7 @@ export const api = {
       INITIAL_KNOWLEDGE_GRAPH
     );
     const updatedNodes = graph.nodes.map((node) => {
-      const match = concepts.find((c) => c.id === node.id);
+      const match = concepts.find((c) => c.id === node.id || c.name.toLowerCase() === node.data.label.toLowerCase());
       if (match) {
         return {
           ...node,
@@ -1063,13 +1107,23 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
     }
 
     const cached = getStorage<CourseLecturesResponse | null>('lectures_' + courseId, null);
+    const brokenPatterns = ['lec01.pdf', 'lec0', 'lec1', 'lec2', 'notes1.pdf', 'textbook-ch', '6-042j/'];
+    const hasBrokenUrl = Boolean(
+      cached?.lectures?.some((l) =>
+        l.resources?.some((r) => brokenPatterns.some((bp) => (r.url || '').includes(bp)))
+      )
+    );
     const isStale =
       !cached ||
       !cached.lectures ||
       cached.lectures.length < 8 ||
+      hasBrokenUrl ||
       cached.lectures.some((l: Partial<Lecture> & { youtube_id?: string }) =>
         ['PPLop442CuU', 'ytpJdnlu9ug', '4b4MUYve_U8'].includes((l.youtubeId || l.youtube_id) as string)
       );
+    if (isStale && cached) {
+      setStorage('lectures_' + courseId, null);
+    }
     if (cached && !isStale) return cached;
 
     // Fallback based on course title/platform

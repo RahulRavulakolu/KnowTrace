@@ -36,9 +36,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 1 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec01.pdf"
+        "title": "Lecture 1 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -74,9 +79,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 2 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec02.pdf"
+        "title": "Lecture 2 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -112,9 +122,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 3 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec03.pdf"
+        "title": "Lecture 3 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -150,9 +165,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 4 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec04.pdf"
+        "title": "Lecture 4 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -188,9 +208,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 5 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec05.pdf"
+        "title": "Lecture 5 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -227,9 +252,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 6 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec06.pdf"
+        "title": "Lecture 6 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -266,9 +296,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 7 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec07.pdf"
+        "title": "Lecture 7 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -304,9 +339,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 8 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec08.pdf"
+        "title": "Lecture 8 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -343,9 +383,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 9 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec09.pdf"
+        "title": "Lecture 9 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -381,9 +426,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 10 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec10.pdf"
+        "title": "Lecture 10 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -419,9 +469,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 11 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec11.pdf"
+        "title": "Lecture 11 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -457,9 +512,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 12 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec12.pdf"
+        "title": "Lecture 12 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -496,9 +556,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 13 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec13.pdf"
+        "title": "Lecture 13 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -534,9 +599,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 14 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec14.pdf"
+        "title": "Lecture 14 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -572,9 +642,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 15 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec15.pdf"
+        "title": "Lecture 15 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -610,9 +685,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 16 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec16.pdf"
+        "title": "Lecture 16 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -649,9 +729,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 17 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec17.pdf"
+        "title": "Lecture 17 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -688,9 +773,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 18 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec18.pdf"
+        "title": "Lecture 18 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -727,9 +817,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 19 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec19.pdf"
+        "title": "Lecture 19 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   },
@@ -765,9 +860,14 @@
     ],
     "resources": [
       {
-        "title": "Lecture 20 Slides (PDF)",
-        "type": "pdf",
-        "url": "https://nptel.ac.in/courses/106106139/lec20.pdf"
+        "title": "Lecture 20 Study Handout & Slides",
+        "type": "handout",
+        "url": "#handout"
+      },
+      {
+        "title": "Official NPTEL Course Portal",
+        "type": "course_portal",
+        "url": "https://nptel.ac.in/courses/106106139"
       }
     ]
   }

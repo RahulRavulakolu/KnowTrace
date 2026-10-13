@@ -71,8 +71,11 @@ def course_graph(
         )
     edges = [
         {
+            "id": f"e-contains-{concept.topic_id}-{concept.id}",
             "from": str(concept.topic_id),
             "to": str(concept.id),
+            "source": str(concept.topic_id),
+            "target": str(concept.id),
             "kind": "contains",
             "confidence": 1.0,
         }
@@ -87,17 +90,37 @@ def course_graph(
     )
     edges.extend(
         {
+            "id": f"e-prereq-{edge.prerequisite_id}-{edge.concept_id}",
             "from": str(edge.prerequisite_id),
             "to": str(edge.concept_id),
+            "source": str(edge.prerequisite_id),
+            "target": str(edge.concept_id),
             "kind": "requires",
             "confidence": edge.confidence,
         }
         for edge in prerequisite_rows
     )
+    # If no explicit prerequisites exist in DB, connect sequential concepts
+    if not prerequisite_rows and len(concepts) > 1:
+        for i in range(len(concepts) - 1):
+            src_c = str(concepts[i].id)
+            tgt_c = str(concepts[i + 1].id)
+            edges.append({
+                "id": f"e-seq-{src_c}-{tgt_c}",
+                "from": src_c,
+                "to": tgt_c,
+                "source": src_c,
+                "target": tgt_c,
+                "kind": "requires",
+                "confidence": 0.95,
+            })
     edges.extend(
         {
+            "id": f"e-confusable-{item.concept_a}-{item.concept_b}",
             "from": str(item.concept_a),
             "to": str(item.concept_b),
+            "source": str(item.concept_a),
+            "target": str(item.concept_b),
             "kind": "confusable",
             "confidence": 1.0,
         }

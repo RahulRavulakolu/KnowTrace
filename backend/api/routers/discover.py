@@ -36,7 +36,7 @@ router = APIRouter(prefix="/discover", tags=["Discovery"])
     summary="Search courses across all platforms",
 )
 def discover_search(
-    q: str = Query(..., min_length=1, max_length=500, description="Search query"),
+    q: str = Query("", max_length=500, description="Search query"),
     platforms: Optional[str] = Query(
         None,
         description="Comma-separated platform IDs to filter (e.g. 'nptel,mit_ocw')",

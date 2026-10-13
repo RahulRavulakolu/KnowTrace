@@ -98,7 +98,7 @@ def grounded_generation(query: str, chunks: list[Any], student_context: str = ""
         return answer
     sentences = re.split(r"(?<=[.!?])\s+", answer)
     return " ".join(
-        sentence if re.search(r"\[S\d+\]$", sentence.strip()) else f"{sentence.rstrip('.!?')} [S1]."
+        sentence if re.search(r"\[S\d+\]\.?$", sentence.strip()) else f"{sentence.rstrip('.!?')} [S1]."
         for sentence in sentences
         if sentence.strip()
     )

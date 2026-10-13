@@ -42,7 +42,7 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         resources: [
           { title: 'Lecture 01: Introduction to Machine Learning', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/1', description: 'Overview of learning types and course syllabus', duration_minutes: 52, downloadable: true, order: 1 },
           { title: 'Lecture 02: Supervised Learning & Hypotheses', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/2', description: 'Concept learning and Version Space', duration_minutes: 48, downloadable: true, order: 2 },
-          { title: 'Week 1 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes1.pdf', description: 'Handouts covering inductive learning principles', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Week 1 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139', description: 'Handouts covering inductive learning principles', duration_minutes: null, downloadable: true, order: 3 },
           { title: 'Assignment 1: Hypothesis Spaces & Inductive Bias', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass1', description: 'Self-assessment questions for week 1', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
@@ -53,7 +53,7 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         resources: [
           { title: 'Lecture 03: Linear Regression Formulation', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/3', description: 'Analytical solution and geometric interpretation', duration_minutes: 50, downloadable: true, order: 1 },
           { title: 'Lecture 04: Gradient Descent Variants', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/4', description: 'Convergence rates and step size selection', duration_minutes: 55, downloadable: true, order: 2 },
-          { title: 'Week 2 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes2.pdf', description: 'Detailed derivations of normal equations', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Week 2 Lecture Notes (PDF)', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139', description: 'Detailed derivations of normal equations', duration_minutes: null, downloadable: true, order: 3 },
           { title: 'Assignment 2: Regression Implementation', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass2', description: 'Practice with normal equations and gradient descent', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
@@ -64,7 +64,7 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         resources: [
           { title: 'Lecture 05: Bias-Variance Decomposition', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/5', description: 'Mathematical breakdown of expected generalization error', duration_minutes: 51, downloadable: true, order: 1 },
           { title: 'Lecture 06: Ridge and Lasso Regularization', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/6', description: 'Geometric explanation of diamond vs circle constraint regions', duration_minutes: 58, downloadable: true, order: 2 },
-          { title: 'Week 3 Notes: Regularization & Shrinkage', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes3.pdf', description: 'Full derivations of L1 sparsity properties', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Week 3 Notes: Regularization & Shrinkage', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139', description: 'Full derivations of L1 sparsity properties', duration_minutes: null, downloadable: true, order: 3 },
           { title: 'Assignment 3: Regularization & Cross-Validation', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass3', description: 'Diagnostic exercises on L1 vs L2 regularization', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
@@ -75,7 +75,7 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         resources: [
           { title: 'Lecture 07: Logistic Regression Model', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/7', description: 'Odds ratio and Bernoulli likelihood maximization', duration_minutes: 54, downloadable: true, order: 1 },
           { title: 'Lecture 08: Model Evaluation Metrics', resource_type: 'video', url: 'https://nptel.ac.in/courses/106106139/8', description: 'Precision, Recall, F1, and threshold selection', duration_minutes: 49, downloadable: true, order: 2 },
-          { title: 'Week 4 Notes: Classification Metrics', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139/notes4.pdf', description: 'Handout on confusion matrices and ROC analysis', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Week 4 Notes: Classification Metrics', resource_type: 'lecture_note', url: 'https://nptel.ac.in/courses/106106139', description: 'Handout on confusion matrices and ROC analysis', duration_minutes: null, downloadable: true, order: 3 },
           { title: 'Assignment 4: Binary Classification Problem Set', resource_type: 'assignment', url: 'https://nptel.ac.in/courses/106106139/ass4', description: 'Evaluation metric problems and threshold sensitivity', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
@@ -115,10 +115,10 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         order: 1,
         description: 'Propositions, predicates, logical deductions, proof methods, and mathematical induction.',
         resources: [
-          { title: 'Lecture 01: Introduction & Proof Methods', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-1', description: 'Direct proofs, proof by contradiction, and cases', duration_minutes: 50, downloadable: true, order: 1 },
-          { title: 'Lecture 02: Well Ordering Principle', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-2', description: 'Using WOP to prove correctness and non-existence', duration_minutes: 52, downloadable: true, order: 2 },
-          { title: 'Textbook Chapter 1: Proofs (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch1.pdf', description: 'Comprehensive open textbook chapter', duration_minutes: null, downloadable: true, order: 3 },
-          { title: 'Problem Set 1: Induction & WOP', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps1.pdf', description: 'Rigorous proof exercises with solutions', duration_minutes: null, downloadable: true, order: 4 },
+          { title: 'Lecture 01: Introduction & Proof Methods', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Direct proofs, proof by contradiction, and cases', duration_minutes: 50, downloadable: true, order: 1 },
+          { title: 'Lecture 02: Well Ordering Principle', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Using WOP to prove correctness and non-existence', duration_minutes: 52, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 1: Proofs (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Comprehensive open textbook chapter', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 1: Induction & WOP', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Rigorous proof exercises with solutions', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
       {
@@ -126,10 +126,10 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         order: 2,
         description: 'Simple graphs, isomorphism, connectivity, trees, Eulerian and Hamiltonian paths, coloring.',
         resources: [
-          { title: 'Lecture 06: Graph Basics & Isomorphism', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-6', description: 'Vertices, degrees, handshaking lemma', duration_minutes: 51, downloadable: true, order: 1 },
-          { title: 'Lecture 07: Trees and Spanning Forests', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-7', description: 'Tree characterizations and minimum spanning trees', duration_minutes: 48, downloadable: true, order: 2 },
-          { title: 'Textbook Chapter 5: Graph Theory (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch5.pdf', description: 'Open course textbook chapter on graphs', duration_minutes: null, downloadable: true, order: 3 },
-          { title: 'Problem Set 4: Graph Proofs & Coloring', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps4.pdf', description: '4-color theorem insights and bipartiteness proofs', duration_minutes: null, downloadable: true, order: 4 },
+          { title: 'Lecture 06: Graph Basics & Isomorphism', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Vertices, degrees, handshaking lemma', duration_minutes: 51, downloadable: true, order: 1 },
+          { title: 'Lecture 07: Trees and Spanning Forests', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Tree characterizations and minimum spanning trees', duration_minutes: 48, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 5: Graph Theory (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Open course textbook chapter on graphs', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 4: Graph Proofs & Coloring', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: '4-color theorem insights and bipartiteness proofs', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
       {
@@ -137,10 +137,10 @@ export const MOCK_CATALOG_COURSES: CatalogCourseDetail[] = [
         order: 3,
         description: 'Combinatorics, inclusion-exclusion, conditional probability, Bayes rule, and random variables.',
         resources: [
-          { title: 'Lecture 15: Combinatorics & Bijections', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-15', description: 'Permutations, combinations, pigeonhole principle', duration_minutes: 53, downloadable: true, order: 1 },
-          { title: 'Lecture 18: Conditional Probability & Bayes', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j/video-18', description: 'Monty Hall problem, false positive paradox, independence', duration_minutes: 55, downloadable: true, order: 2 },
-          { title: 'Textbook Chapter 8: Probability (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j/textbook-ch8.pdf', description: 'Rigorous sample spaces and probability laws', duration_minutes: null, downloadable: true, order: 3 },
-          { title: 'Problem Set 7: Probability Calculations', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j/ps7.pdf', description: 'Expectation and variance problems', duration_minutes: null, downloadable: true, order: 4 },
+          { title: 'Lecture 15: Combinatorics & Bijections', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Permutations, combinations, pigeonhole principle', duration_minutes: 53, downloadable: true, order: 1 },
+          { title: 'Lecture 18: Conditional Probability & Bayes', resource_type: 'video', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Monty Hall problem, false positive paradox, independence', duration_minutes: 55, downloadable: true, order: 2 },
+          { title: 'Textbook Chapter 8: Probability (PDF)', resource_type: 'lecture_note', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Rigorous sample spaces and probability laws', duration_minutes: null, downloadable: true, order: 3 },
+          { title: 'Problem Set 7: Probability Calculations', resource_type: 'assignment', url: 'https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/', description: 'Expectation and variance problems', duration_minutes: null, downloadable: true, order: 4 },
         ],
       },
     ],

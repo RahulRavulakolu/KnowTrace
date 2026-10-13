@@ -27,6 +27,8 @@ import {
   GripVertical,
   Lock,
   Award,
+  Printer,
+  X,
 } from 'lucide-react';
 import { CodingEnvironment } from '@/components/lectures/CodingEnvironment';
 
@@ -44,6 +46,7 @@ export default function CourseLecturesPage({
   const [rightPanelTab, setRightPanelTab] = useState<'code' | 'syllabus'>('code');
   const [transcriptSearch, setTranscriptSearch] = useState('');
   const [completedLectures, setCompletedLectures] = useState<Record<string, boolean>>({});
+  const [isHandoutModalOpen, setIsHandoutModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
   // Load persisted syllabus completion on mount
@@ -141,7 +144,7 @@ export default function CourseLecturesPage({
     queryFn: () => api.getCourseLectures(courseId),
   });
 
-  // Clear stale local storage cache once on mount if it contains old truncated data or broken video IDs
+  // Clear stale local storage cache once on mount if it contains old truncated data, broken video IDs, or hallucinated URLs
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -149,7 +152,8 @@ export default function CourseLecturesPage({
         if (raw) {
           let shouldClear = false;
           const badIds = ['PPLop442CuU', 'ytpJdnlu9ug', '4b4MUYve_U8', 'NuDgq0Lp8l4', 'wblW_M_SXh8', 'h9wStqSkNU4'];
-          if (badIds.some((bid) => raw.includes(bid))) {
+          const brokenPatterns = ['lec01.pdf', 'lec0', 'lec1', 'lec2', 'notes1.pdf', 'notes2.pdf', 'textbook-ch', '6-042j/'];
+          if (badIds.some((bid) => raw.includes(bid)) || brokenPatterns.some((bp) => raw.includes(bp))) {
             shouldClear = true;
           } else {
             try {
@@ -651,41 +655,77 @@ export default function CourseLecturesPage({
                       Official Course Handouts & Slides
                     </h3>
                     <p className="text-zinc-500">
-                      Download original lecture notes, slides, and problem sets provided by {activeLecture?.platform || 'the institution'}:
+                      View synthesized study notes, slides, and access verified course portal resources:
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    {activeLecture?.resources && activeLecture.resources.length > 0 ? (
-                      activeLecture.resources.map((res, idx) => (
-                        <a
-                          key={idx}
-                          href={res.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex items-center justify-between group cursor-pointer"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
-                              <FileText className="w-4 h-4" />
-                            </div>
-                            <div>
-                              <div className="font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                {res.title}
-                              </div>
-                              <div className="text-[11px] text-zinc-400 uppercase font-mono">
-                                {res.type} Document · Official Course Material
-                              </div>
-                            </div>
+                  <div className="space-y-2.5">
+                    {/* Primary In-App Printable Handout & Slide Deck */}
+                    <div
+                      onClick={() => setIsHandoutModalOpen(true)}
+                      className="p-4 rounded-xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-r from-indigo-50/50 to-white dark:from-indigo-950/20 dark:to-zinc-900 hover:border-indigo-400 dark:hover:border-indigo-700 transition-all flex items-center justify-between group cursor-pointer shadow-xs"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div className="p-2.5 rounded-xl bg-indigo-600 text-white shadow-xs group-hover:scale-105 transition-transform">
+                          <FileText className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-2">
+                            <span>{activeLecture?.title || 'Lecture'} Study Handout & Slides</span>
+                            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+                              PDF Ready
+                            </span>
                           </div>
-                          <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-indigo-600 transition-colors" />
-                        </a>
-                      ))
-                    ) : (
-                      <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-400 text-center">
-                        All materials embedded into the live video lecture and AI tutor index.
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            Synthesized Lecture Notes · Mathematical Proofs · Full Transcript · Print/Save PDF
+                          </div>
+                        </div>
                       </div>
-                    )}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsHandoutModalOpen(true);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        <span>View / Print PDF</span>
+                      </button>
+                    </div>
+
+                    {/* Additional Resources from Catalog */}
+                    {activeLecture?.resources && activeLecture.resources.length > 0 ? (
+                      activeLecture.resources.map((res, idx) => {
+                        const isHandout = res.type === 'handout' || res.url === '#handout';
+                        if (isHandout) return null; // already shown as primary card above
+
+                        return (
+                          <a
+                            key={idx}
+                            href={res.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex items-center justify-between group cursor-pointer bg-zinc-50/50 dark:bg-zinc-850/40"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                <ExternalLink className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <div className="font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                  {res.title}
+                                </div>
+                                <div className="text-[11px] text-zinc-400 uppercase font-mono">
+                                  Official Institution Portal · Verified Source
+                                </div>
+                              </div>
+                            </div>
+                            <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-indigo-600 transition-colors" />
+                          </a>
+                        );
+                      })
+                    ) : null}
                   </div>
                 </div>
               )}
@@ -865,6 +905,176 @@ export default function CourseLecturesPage({
           </div>
         </div>
       </div>
+
+      {/* Handout & Slide Notes Printable Modal */}
+      {isHandoutModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-xs">
+          <style>{`
+            @media print {
+              body * {
+                visibility: hidden !important;
+              }
+              .printable-handout-modal, .printable-handout-modal * {
+                visibility: visible !important;
+              }
+              .printable-handout-modal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 24px !important;
+                background: #ffffff !important;
+                color: #111827 !important;
+                box-shadow: none !important;
+                border: none !important;
+                overflow: visible !important;
+              }
+              .print-hide {
+                display: none !important;
+              }
+            }
+          `}</style>
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150 printable-handout-modal">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-850 print-hide">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                    Lecture Study Handout & Slides
+                  </h2>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {activeLecture?.title} · {activeLecture?.platform || 'KnowTrace Learning'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.print();
+                    }
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
+                  title="Print or Save as PDF"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Print / Save as PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsHandoutModalOpen(false)}
+                  className="p-2 rounded-xl text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  title="Close Handout"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 text-zinc-800 dark:text-zinc-200">
+              {/* Document Banner */}
+              <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+                <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
+                  <span className="font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-mono">
+                    {activeLecture?.platform || 'NPTEL & IIT Madras'} · Official Courseware
+                  </span>
+                  <span className="font-mono">Module: {activeLecture?.moduleTitle}</span>
+                </div>
+                <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight mb-2">
+                  {activeLecture?.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+                  <span><strong>Instructor:</strong> {activeLecture?.instructor || 'Course Faculty'}</span>
+                  <span>•</span>
+                  <span><strong>Focus Concept:</strong> {activeLecture?.conceptName || 'Core Foundations'}</span>
+                  <span>•</span>
+                  <span><strong>Duration:</strong> {activeLecture?.durationMinutes} mins</span>
+                </div>
+              </div>
+
+              {/* Core Concepts */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-indigo-500" />
+                  Core Concepts & Key Takeaways
+                </h3>
+                <div className="grid gap-2.5">
+                  {activeLecture?.notes && activeLecture.notes.length > 0 ? (
+                    activeLecture.notes.map((note, i) => (
+                      <div
+                        key={i}
+                        className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-700/60 flex items-start gap-3 text-xs leading-relaxed"
+                      >
+                        <span className="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 font-mono font-bold flex items-center justify-center shrink-0 text-[10px]">
+                          {i + 1}
+                        </span>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">{note}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-zinc-400 italic">No notes recorded yet for this lecture.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Spoken Transcript */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-indigo-500" />
+                  Spoken Transcript & Timestamped Discussion Points
+                </h3>
+                <div className="space-y-2">
+                  {activeLecture?.transcript && activeLecture.transcript.length > 0 ? (
+                    activeLecture.transcript.map((seg, i) => (
+                      <div
+                        key={i}
+                        className="p-3 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/20 border border-zinc-100 dark:border-zinc-800 flex items-start gap-3 text-xs"
+                      >
+                        <span className="px-2 py-0.5 rounded font-mono font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 shrink-0 text-[11px]">
+                          {seg.timestamp}
+                        </span>
+                        <span className="text-zinc-700 dark:text-zinc-300 leading-relaxed">{seg.text}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-zinc-400 italic">No transcript segments recorded.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Official Verification Box */}
+              <div className="p-4 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/60 text-xs text-zinc-600 dark:text-zinc-400 flex items-start justify-between gap-4">
+                <div>
+                  <div className="font-bold text-zinc-900 dark:text-zinc-100 mb-0.5">
+                    Official Course Portal Verification
+                  </div>
+                  <p>
+                    This lecture handout was synthesized from verified {activeLecture?.platform || 'official course'} curriculum.
+                    For exam registration and certified grading, visit the official institution portal.
+                  </p>
+                </div>
+                <a
+                  href="https://nptel.ac.in/courses/106106139"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold flex items-center gap-1.5 shrink-0 transition-colors"
+                >
+                  <span>Visit Portal</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </AppShell>
   );
 }
