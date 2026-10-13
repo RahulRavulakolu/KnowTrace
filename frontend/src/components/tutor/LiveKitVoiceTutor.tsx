@@ -30,9 +30,16 @@ export function LiveKitVoiceTutor({
   const [avatarVideoTrack, setAvatarVideoTrack] = useState<MediaStreamTrack | null>(null);
   const [messages, setMessages] = useState<TutorMessage[]>(initialMessages);
 
-  // Keep messages in sync with parent query updates
+  // Keep messages in sync with parent query updates and prevent duplicates
   useEffect(() => {
-    setMessages(initialMessages);
+    setMessages((prev) => {
+      const map = new Map<string, TutorMessage>();
+      initialMessages.forEach((m) => map.set(m.id, m));
+      prev.forEach((m) => {
+        if (!map.has(m.id)) map.set(m.id, m);
+      });
+      return Array.from(map.values());
+    });
   }, [initialMessages]);
 
   const roomRef = useRef<Room | null>(null);
@@ -66,12 +73,15 @@ export function LiveKitVoiceTutor({
         if (transcriptText) {
           // Add User Turn to transcript
           const userTurn: TutorMessage = {
-            id: `usr_${Date.now()}`,
+            id: `usr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
             sender: 'user',
             text: transcriptText,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           };
-          setMessages((prev) => [...prev, userTurn]);
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === userTurn.id)) return prev;
+            return [...prev, userTurn];
+          });
           setAgentState('thinking');
 
           try {

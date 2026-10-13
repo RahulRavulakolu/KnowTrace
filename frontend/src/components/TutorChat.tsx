@@ -79,9 +79,9 @@ export function TutorChat({
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-        {messages.map((msg) => (
+        {messages.map((msg, idx) => (
           <ChatMessage
-            key={msg.id}
+            key={`${msg.id || 'msg'}-${idx}`}
             message={msg}
             onCitationClick={onCitationClick}
             onAllowGeneralKnowledge={() => {

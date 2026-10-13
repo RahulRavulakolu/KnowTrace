@@ -53,11 +53,11 @@ export function VoiceTranscriptFeed({
             </p>
           </div>
         ) : (
-          messages.map((msg) => {
+          messages.map((msg, idx) => {
             const isUser = msg.sender === 'user';
             return (
               <div
-                key={msg.id}
+                key={`${msg.id || 'msg'}-${idx}`}
                 className={`flex gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}
               >
                 {!isUser && (

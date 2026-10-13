@@ -575,7 +575,17 @@ export const api = {
 
   // --- TUTOR CHAT ---
   async getTutorMessages(courseId: string): Promise<TutorMessage[]> {
-    return getStorage<TutorMessage[]>('tutor_msgs_' + courseId, INITIAL_TUTOR_MESSAGES);
+    const raw = getStorage<TutorMessage[]>('tutor_msgs_' + courseId, INITIAL_TUTOR_MESSAGES);
+    const seen = new Set<string>();
+    const unique = (raw || []).filter((m) => {
+      if (!m || !m.id || seen.has(m.id)) return false;
+      seen.add(m.id);
+      return true;
+    });
+    if (unique.length !== (raw || []).length) {
+      setStorage('tutor_msgs_' + courseId, unique);
+    }
+    return unique;
   },
 
   async sendTutorMessage(
@@ -585,7 +595,7 @@ export const api = {
   ): Promise<TutorMessage> {
     const messages = await this.getTutorMessages(courseId);
     const userMsg: TutorMessage = {
-      id: 'msg-' + Date.now(),
+      id: 'msg-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
       sender: 'user',
       text: userText,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
