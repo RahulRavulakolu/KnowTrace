@@ -1,5 +1,5 @@
-import urllib.request
 import json
+import urllib.request
 
 mitx_candidates = [
     ("Lec 1", "ytpJdnlu9ug"),
@@ -18,7 +18,9 @@ mitx_candidates = [
 
 for title, vid in mitx_candidates:
     try:
-        url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        url = (
+            f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        )
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         res = urllib.request.urlopen(req)
         d = json.loads(res.read())

@@ -209,11 +209,19 @@ def ingest_catalog_course(
     if title_collision:
         inst_label = (detail.get("institution") or request.platform.upper()).strip()
         candidate = f"{course_title} ({inst_label})"
-        if not db.query(Course).filter(Course.owner_id == user.id, Course.title == candidate).first():
+        if (
+            not db.query(Course)
+            .filter(Course.owner_id == user.id, Course.title == candidate)
+            .first()
+        ):
             course_title = candidate
         else:
             suffix = 2
-            while db.query(Course).filter(Course.owner_id == user.id, Course.title == f"{candidate} #{suffix}").first():
+            while (
+                db.query(Course)
+                .filter(Course.owner_id == user.id, Course.title == f"{candidate} #{suffix}")
+                .first()
+            ):
                 suffix += 1
             course_title = f"{candidate} #{suffix}"
 

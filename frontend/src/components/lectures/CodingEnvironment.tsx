@@ -42,7 +42,7 @@ function simulatePythonExecution(userCode: string): string {
     const trimmed = line.trim();
     const printMatch = trimmed.match(/^print\s*\((.*)\)\s*$/);
     if (printMatch) {
-      let inner = printMatch[1].trim();
+      const inner = printMatch[1].trim();
       // String literals
       if (
         (inner.startsWith('"') && inner.endsWith('"')) ||

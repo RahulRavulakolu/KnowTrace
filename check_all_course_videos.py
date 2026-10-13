@@ -1,9 +1,12 @@
-import urllib.request
 import json
+import urllib.request
+
 
 def check(name, vid):
     try:
-        url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        url = (
+            f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+        )
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         res = urllib.request.urlopen(req)
         d = json.loads(res.read())
@@ -12,6 +15,7 @@ def check(name, vid):
     except Exception as e:
         print(f"[FAIL] {name}: {vid} -> {e}")
         return False
+
 
 print("--- Testing NPTEL Machine Learning (IIT Madras) ---")
 nptel_vids = [
