@@ -11,6 +11,7 @@ import {
   Handle,
   Position,
   NodeProps,
+  type Node,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { KnowledgeGraphData } from '@/types';
@@ -160,13 +161,13 @@ export function KnowledgeMap({
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onNodeClick={(_, node) => onSelectConcept(node.id)}
+        onNodeClick={(_: React.MouseEvent, node: Node) => onSelectConcept(node.id)}
         fitView
       >
         <Background gap={16} size={1} />
         <Controls className="!bg-white dark:!bg-zinc-900 !border-zinc-200 dark:!border-zinc-800 !shadow-sm !rounded-xl" />
         <MiniMap
-          nodeColor={(n) => {
+          nodeColor={(n: Node) => {
             const m = (n.data?.mastery as number) ?? 50;
             return m >= 75 ? '#10b981' : m >= 50 ? '#f59e0b' : '#f43f5e';
           }}
