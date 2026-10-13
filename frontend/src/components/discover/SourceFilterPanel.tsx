@@ -58,7 +58,7 @@ export function SourceFilterPanel({
       {/* Header & Reset */}
       <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#EDEDE8]">
-          <Filter className="w-3.5 h-3.5 text-indigo-400" />
+          <Filter className="w-3.5 h-3.5 text-[#E06D3B]" />
           <span>Catalog Filters</span>
         </div>
 
@@ -66,7 +66,7 @@ export function SourceFilterPanel({
           <button
             type="button"
             onClick={onResetFilters}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E06D3B] hover:text-indigo-300 hover:underline cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Reset</span>
@@ -97,7 +97,7 @@ export function SourceFilterPanel({
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => onTogglePlatform(pId)}
-                    className="w-3.5 h-3.5 rounded text-indigo-600 focus:ring-indigo-500 border-zinc-700 cursor-pointer"
+                    className="w-3.5 h-3.5 rounded text-[#E06D3B] focus:ring-indigo-500 border-zinc-700 cursor-pointer"
                   />
                   <span>{config.icon}</span>
                   <span className="truncate">{config.name}</span>
@@ -167,7 +167,7 @@ export function SourceFilterPanel({
                   onClick={() => onSelectCategory(isSelected ? null : cat)}
                   className={`text-[11px] px-2.5 py-1 rounded-full font-semibold transition-all border cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)]'
+                      ? 'bg-[#E06D3B] text-white border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)]'
                       : 'bg-white/[0.03] text-[#9E9EA8] border-white/[0.08] hover:border-white/20 hover:text-[#EDEDE8]'
                   }`}
                 >

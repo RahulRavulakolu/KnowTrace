@@ -36,19 +36,19 @@ export default function CoursesListPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDE8] flex flex-col relative selection:bg-[#DEDBC8] selection:text-black">
+    <div className="min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col relative selection:bg-[#E06D3B] selection:text-black">
       {/* Noise Texture */}
       <div className="fixed inset-0 noise-overlay opacity-[0.5] mix-blend-overlay pointer-events-none z-0" />
 
       {/* Top Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[350px] bg-indigo-600/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[350px] bg-[#E06D3B]/5 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       {/* Floating Island Navbar */}
       <header className="sticky top-4 z-40 w-full max-w-5xl mx-auto px-4">
-        <nav className="bg-[#0A0A0E]/80 backdrop-blur-2xl rounded-full px-4 sm:px-6 py-2.5 border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.8)] flex items-center justify-between gap-4">
+        <nav className="bg-[#141619]/90 backdrop-blur-2xl rounded-full px-4 sm:px-6 py-2.5 border border-[#1D2024] shadow-[0_12px_40px_rgba(0,0,0,0.8)] flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Logo href="/" size="sm" priority />
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase tracking-wider">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1A1D21] border border-[#1D2024] text-[#E06D3B] text-[10px] font-bold uppercase tracking-wider font-mono">
               Workspace
             </span>
           </div>
@@ -56,35 +56,35 @@ export default function CoursesListPage() {
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/"
-              className="text-xs font-medium text-[#9E9EA8] hover:text-[#EDEDE8] px-3 py-1.5 rounded-full transition-colors hover:bg-white/5"
+              className="text-xs font-medium text-[#7E8078] hover:text-[#F6F5EE] px-3 py-1.5 rounded-full transition-colors hover:bg-[#1A1D21]"
             >
               Overview
             </Link>
 
             <Link
               href="/discover"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-[#EDEDE8] text-xs font-semibold transition-all hover:border-white/20"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1A1D21] hover:bg-[#1D2024] border border-[#1D2024] text-[#F6F5EE] text-xs font-semibold transition-all hover:border-[#E06D3B]/40"
             >
-              <Compass className="w-3.5 h-3.5 text-indigo-400" />
+              <Compass className="w-3.5 h-3.5 text-[#E06D3B]" />
               <span>Discover</span>
             </Link>
 
             <Link
               href="/courses/new"
-              className="inline-flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 rounded-full bg-white text-black hover:bg-[#DEDBC8] text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 rounded-full bg-[#E06D3B] text-black hover:bg-[#FF9457] text-xs font-bold shadow-md transition-all active:scale-95 cursor-pointer font-mono"
             >
               <span>+ Course</span>
-              <span className="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-black/15 flex items-center justify-center">
                 <Plus className="w-3 h-3 text-black" />
               </span>
             </Link>
 
             {/* Auth Section */}
-            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-white/10">
+            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-[#1D2024]">
               {user ? (
                 <div className="flex items-center gap-2">
                   <span
-                    className="text-xs text-indigo-300 font-medium hidden md:inline-block max-w-[110px] truncate"
+                    className="text-xs text-[#E06D3B] font-medium hidden md:inline-block max-w-[110px] truncate font-mono"
                     title={user.email}
                   >
                     {user.name || user.email.split('@')[0]}
@@ -92,7 +92,7 @@ export default function CoursesListPage() {
                   <button
                     type="button"
                     onClick={logout}
-                    className="text-xs text-[#9E9EA8] hover:text-rose-400 px-2.5 py-1 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                    className="text-xs text-[#7E8078] hover:text-[#C94A44] px-2.5 py-1 rounded-full hover:bg-[#1A1D21] transition-colors cursor-pointer"
                   >
                     Sign Out
                   </button>
@@ -101,7 +101,7 @@ export default function CoursesListPage() {
                 <button
                   type="button"
                   onClick={() => openAuthModal('login')}
-                  className="text-xs text-[#EDEDE8] bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors font-medium cursor-pointer"
+                  className="text-xs text-[#F6F5EE] bg-[#1A1D21] hover:bg-[#1D2024] px-3 py-1 rounded-full transition-colors font-medium cursor-pointer border border-[#1D2024]"
                 >
                   Sign In
                 </button>
@@ -114,17 +114,17 @@ export default function CoursesListPage() {
       {/* Main Workspace Content */}
       <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-10 pb-20">
         {/* Workspace Title & Stats Banner */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-8 border-b border-white/[0.08]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-8 border-b border-[#1D2024]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] uppercase tracking-wider font-semibold mb-3">
-              <Layers className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E06D3B]/10 border border-[#E06D3B]/25 text-[#E06D3B] text-[10px] uppercase tracking-wider font-semibold mb-3 font-mono">
+              <Layers className="w-3.5 h-3.5 text-[#E06D3B]" />
               <span>Adaptive Bayesian Learning Studio</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#EDEDE8] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#F6F5EE] tracking-tight">
               Learning Workspace
             </h1>
-            <p className="text-xs sm:text-sm text-[#9E9EA8] mt-2 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#7E8078] mt-2 max-w-xl leading-relaxed">
               Enrolled university courses with real-time concept knowledge tracing, misconception diagnostics, and grounded tutor citations.
             </p>
           </div>
@@ -132,11 +132,11 @@ export default function CoursesListPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/discover"
-              className="inline-flex items-center gap-2 pl-4 pr-2 py-2 rounded-full bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-bold shadow-[0_0_25px_rgba(99,102,241,0.35)] transition-all active:scale-95"
+              className="inline-flex items-center gap-2 pl-4 pr-2 py-2 rounded-full bg-[#E06D3B] hover:bg-[#FF9457] text-black text-xs font-bold shadow-md transition-all active:scale-95 font-mono"
             >
               <span>Explore Course Catalogs</span>
-              <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                <ArrowRight className="w-3.5 h-3.5 text-white" />
+              <span className="w-6 h-6 rounded-full bg-black/15 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5 text-black" />
               </span>
             </Link>
           </div>

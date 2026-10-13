@@ -23,7 +23,7 @@ export function ChatMessage({
   return (
     <div className={`flex gap-3 sm:gap-4 ${isUser ? 'justify-end' : 'justify-start'}`}>
       {!isUser && (
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shrink-0 shadow-xs mt-1">
+        <div className="w-8 h-8 rounded-xl bg-[#E06D3B]/15 border border-[#E06D3B]/30 text-[#E06D3B] flex items-center justify-center shrink-0 shadow-xs mt-1">
           <Sparkles className="w-4 h-4" />
         </div>
       )}
@@ -32,15 +32,15 @@ export function ChatMessage({
         {!isUser && (
           <div className="flex items-center gap-2 mb-2">
             {message.mode && <ModeBadge mode={message.mode} confidence={message.confidence} />}
-            <span className="text-[10px] text-zinc-400 font-mono">{message.timestamp}</span>
+            <span className="text-[10px] text-[#7E8078] font-mono">{message.timestamp}</span>
           </div>
         )}
 
         <div
           className={`p-4 rounded-2xl text-sm leading-relaxed ${
             isUser
-              ? 'bg-indigo-600 text-white rounded-br-xs shadow-xs'
-              : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-bl-xs shadow-xs'
+              ? 'bg-[#E06D3B] text-white font-medium rounded-br-xs shadow-xs'
+              : 'bg-[#141619] border border-[#1D2024] text-[#F6F5EE] rounded-bl-xs shadow-xs'
           }`}
         >
           {isUser ? (
@@ -54,15 +54,15 @@ export function ChatMessage({
           )}
 
           {message.mode === 'not-covered' && message.outsideKnowledgeAvailable && onAllowGeneralKnowledge && (
-            <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-              <span className="text-xs text-zinc-500 flex items-center gap-1.5">
-                <HelpCircle className="w-3.5 h-3.5 text-zinc-400" />
+            <div className="mt-4 pt-3 border-t border-[#1D2024] flex items-center justify-between">
+              <span className="text-xs text-[#7E8078] flex items-center gap-1.5">
+                <HelpCircle className="w-3.5 h-3.5 text-[#7E8078]" />
                 Want general LLM reasoning?
               </span>
               <button
                 type="button"
                 onClick={onAllowGeneralKnowledge}
-                className="px-3 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 text-xs font-semibold transition-colors cursor-pointer"
+                className="px-3 py-1 rounded-lg bg-[#E06D3B]/15 text-[#E06D3B] hover:bg-[#E06D3B]/25 border border-[#E06D3B]/30 text-xs font-semibold transition-colors cursor-pointer"
               >
                 Show General Answer
               </button>
@@ -72,7 +72,7 @@ export function ChatMessage({
 
         {!isUser && message.citations && message.citations.length > 0 && (
           <div className="mt-2.5 flex flex-wrap gap-2 items-center">
-            <span className="text-[11px] font-semibold text-zinc-400 flex items-center gap-1">
+            <span className="text-[11px] font-semibold text-[#7E8078] flex items-center gap-1">
               📚 Sources:
             </span>
             {message.citations.map((citation) => (
@@ -86,12 +86,12 @@ export function ChatMessage({
         )}
 
         {isUser && (
-          <span className="text-[10px] text-zinc-400 font-mono mt-1 mr-1">{message.timestamp}</span>
+          <span className="text-[10px] text-[#7E8078] font-mono mt-1 mr-1">{message.timestamp}</span>
         )}
       </div>
 
       {isUser && (
-        <div className="w-8 h-8 rounded-xl bg-zinc-800 dark:bg-zinc-700 flex items-center justify-center text-white shrink-0 shadow-xs mt-1">
+        <div className="w-8 h-8 rounded-xl bg-[#1A1D21] border border-[#1D2024] text-[#E06D3B] flex items-center justify-center shrink-0 shadow-xs mt-1">
           <User className="w-4 h-4" />
         </div>
       )}

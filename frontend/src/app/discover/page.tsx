@@ -129,19 +129,19 @@ export default function DiscoverPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDE8] flex flex-col relative selection:bg-[#DEDBC8] selection:text-black">
+    <div className="min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col relative selection:bg-[#E06D3B] selection:text-black">
       {/* Noise Texture */}
       <div className="fixed inset-0 noise-overlay opacity-[0.5] mix-blend-overlay pointer-events-none z-0" />
 
       {/* Top Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1200px] h-[450px] bg-indigo-600/10 blur-[150px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] sm:w-[1200px] h-[450px] bg-[#E06D3B]/5 blur-[150px] rounded-full pointer-events-none -z-10" />
 
       {/* Floating Island Navbar */}
       <header className="sticky top-4 z-40 w-full max-w-5xl mx-auto px-4">
-        <nav className="bg-[#0A0A0E]/80 backdrop-blur-2xl rounded-full px-4 sm:px-6 py-2.5 border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.8)] flex items-center justify-between gap-4">
+        <nav className="bg-[#141619]/90 backdrop-blur-2xl rounded-full px-4 sm:px-6 py-2.5 border border-[#1D2024] shadow-[0_12px_40px_rgba(0,0,0,0.8)] flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Logo href="/" size="sm" priority />
-            <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+            <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#E06D3B]/10 text-[#E06D3B] border border-[#1D2024]">
               <Globe2 className="w-3.5 h-3.5" />
               <span>Multi-Platform Discovery</span>
             </div>
@@ -156,13 +156,13 @@ export default function DiscoverPage() {
             </Link>
             <Link
               href="/courses"
-              className="text-xs font-semibold text-[#9E9EA8] hover:text-[#EDEDE8] px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+              className="text-xs font-semibold text-[#9E9EA8] hover:text-[#EDEDE8] px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-[#1D2024] transition-colors"
             >
               My Workspace
             </Link>
             <Link
               href="/courses/cs229-ml/dashboard"
-              className="inline-flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all active:scale-95"
+              className="inline-flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 rounded-full bg-[#E06D3B] hover:bg-indigo-500 text-white text-xs font-bold shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all active:scale-95"
             >
               <span>Demo Tutor</span>
               <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
@@ -171,11 +171,11 @@ export default function DiscoverPage() {
             </Link>
 
             {/* Auth section */}
-            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-white/10">
+            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-[#1D2024]">
               {user ? (
                 <div className="flex items-center gap-2">
                   <span
-                    className="text-xs text-indigo-300 font-medium hidden md:inline-block max-w-[110px] truncate"
+                    className="text-xs text-[#E06D3B] font-medium hidden md:inline-block max-w-[110px] truncate"
                     title={user.email}
                   >
                     {user.name || user.email.split('@')[0]}
@@ -203,10 +203,10 @@ export default function DiscoverPage() {
       </header>
 
       {/* Hero Search Section */}
-      <section className="relative z-10 pt-12 pb-10 px-4 sm:px-6 border-b border-white/[0.08]">
+      <section className="relative z-10 pt-12 pb-10 px-4 sm:px-6 border-b border-[#1D2024]">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[10px] uppercase tracking-wider font-semibold mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E06D3B]/10 border border-[#1D2024] text-[#E06D3B] text-[10px] uppercase tracking-wider font-semibold mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#E06D3B]" />
             <span>Discover Free Courses Across 7 Platforms</span>
           </div>
 
@@ -222,9 +222,9 @@ export default function DiscoverPage() {
 
           {/* Search Bar Input */}
           <form onSubmit={handleSearchSubmit} className="relative max-w-2xl mx-auto mb-6">
-            <div className="p-1 rounded-[1.75rem] bg-white/[0.04] border border-white/[0.08] shadow-[0_0_35px_rgba(99,102,241,0.1)] focus-within:border-indigo-500/50 focus-within:shadow-[0_0_40px_rgba(99,102,241,0.25)] transition-all duration-300">
-              <div className="relative flex items-center rounded-[calc(1.75rem-0.25rem)] bg-[#0C0C14]/95 px-4 py-2">
-                <Search className="w-4 h-4 text-indigo-400/80 mr-3 shrink-0" />
+            <div className="p-1 rounded-[1.75rem] bg-white/[0.04] border border-[#1D2024] shadow-[0_0_35px_rgba(99,102,241,0.1)] focus-within:border-indigo-500/50 focus-within:shadow-[0_0_40px_rgba(99,102,241,0.25)] transition-all duration-300">
+              <div className="relative flex items-center rounded-[calc(1.75rem-0.25rem)] bg-[#141619] px-4 py-2">
+                <Search className="w-4 h-4 text-[#E06D3B]/80 mr-3 shrink-0" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -234,7 +234,7 @@ export default function DiscoverPage() {
                 />
                 <button
                   type="submit"
-                  className="shrink-0 inline-flex items-center gap-1.5 pl-4 pr-2.5 py-1.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer ml-2"
+                  className="shrink-0 inline-flex items-center gap-1.5 pl-4 pr-2.5 py-1.5 rounded-full bg-[#E06D3B] hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer ml-2"
                 >
                   <span>Search</span>
                   <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
@@ -256,7 +256,7 @@ export default function DiscoverPage() {
                   setSearchQuery(tag);
                   setActiveQuery(tag);
                 }}
-                className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] hover:border-indigo-400/50 hover:bg-white/[0.06] text-[#9E9EA8] hover:text-[#EDEDE8] transition-colors cursor-pointer text-[11px] font-medium"
+                className="px-3 py-1 rounded-full bg-white/[0.03] border border-[#1D2024] hover:border-indigo-400/50 hover:bg-white/[0.06] text-[#9E9EA8] hover:text-[#EDEDE8] transition-colors cursor-pointer text-[11px] font-medium"
               >
                 {tag}
               </button>
@@ -265,7 +265,7 @@ export default function DiscoverPage() {
         </div>
 
         {/* Platform Carousel Pills */}
-        <div className="max-w-5xl mx-auto mt-8 pt-6 border-t border-white/[0.08]">
+        <div className="max-w-5xl mx-auto mt-8 pt-6 border-t border-[#1D2024]">
           <div className="text-[10px] font-bold uppercase tracking-wider text-[#9E9EA8]/70 text-center mb-3">
             Supported Educational Sources
           </div>
@@ -276,7 +276,7 @@ export default function DiscoverPage() {
               className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border cursor-pointer ${
                 selectedPlatforms.length === 0
                   ? 'bg-white text-black border-white shadow-md'
-                  : 'bg-white/[0.02] text-[#9E9EA8] border-white/[0.08] hover:bg-white/[0.06] hover:text-[#EDEDE8]'
+                  : 'bg-white/[0.02] text-[#9E9EA8] border-[#1D2024] hover:bg-white/[0.06] hover:text-[#EDEDE8]'
               }`}
             >
               All Platforms ({platformsList.length})
@@ -291,8 +291,8 @@ export default function DiscoverPage() {
                   onClick={() => handleTogglePlatform(p)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-950/60 text-indigo-300 border-indigo-500/80 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
-                      : 'bg-white/[0.02] text-[#9E9EA8] border-white/[0.08] hover:border-white/20 hover:text-[#EDEDE8]'
+                      ? 'bg-indigo-950/60 text-[#E06D3B] border-indigo-500/80 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
+                      : 'bg-white/[0.02] text-[#9E9EA8] border-[#1D2024] hover:border-white/20 hover:text-[#EDEDE8]'
                   }`}
                 >
                   <span>{cfg.icon}</span>
@@ -309,8 +309,8 @@ export default function DiscoverPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Left Filter Sidebar */}
           <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-24 rounded-[1.75rem] p-1 bg-white/[0.03] border border-white/[0.08] shadow-2xl">
-              <div className="rounded-[calc(1.75rem-0.25rem)] bg-[#0C0C14]/95 p-5 backdrop-blur-xl border border-white/[0.02]">
+            <div className="sticky top-24 rounded-[1.75rem] p-1 bg-white/[0.03] border border-[#1D2024] shadow-2xl">
+              <div className="rounded-[calc(1.75rem-0.25rem)] bg-[#141619] p-5 backdrop-blur-xl border border-white/[0.02]">
                 <SourceFilterPanel
                   selectedPlatforms={selectedPlatforms}
                   onTogglePlatform={handleTogglePlatform}
@@ -329,13 +329,13 @@ export default function DiscoverPage() {
           {/* Right Results Column */}
           <div className="flex-1">
             {/* Results Header Bar */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/[0.08]">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#1D2024]">
               <div>
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl font-bold text-[#EDEDE8] tracking-tight">
                     {activeQuery ? `Results for "${activeQuery}"` : 'Discovered Courses'}
                   </h2>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 font-bold text-indigo-300">
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E06D3B]/10 border border-[#1D2024] font-bold text-[#E06D3B]">
                     {sortedCourses.length}
                   </span>
                 </div>
@@ -349,9 +349,9 @@ export default function DiscoverPage() {
                 <button
                   type="button"
                   onClick={() => setShowMobileFilters(!showMobileFilters)}
-                  className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-xs font-semibold text-[#EDEDE8]"
+                  className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.03] border border-[#1D2024] text-xs font-semibold text-[#EDEDE8]"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-400" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#E06D3B]" />
                   <span>Filters</span>
                 </button>
 
@@ -361,7 +361,7 @@ export default function DiscoverPage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="px-3.5 py-1.5 rounded-full bg-[#0C0C14] border border-white/[0.08] text-xs font-semibold text-[#EDEDE8] focus:outline-hidden cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-full bg-[#0C0C14] border border-[#1D2024] text-xs font-semibold text-[#EDEDE8] focus:outline-hidden cursor-pointer"
                   >
                     <option value="relevance">Recommended</option>
                     <option value="title">Course Name (A-Z)</option>
@@ -373,7 +373,7 @@ export default function DiscoverPage() {
 
             {/* Mobile Filter Drawer */}
             {showMobileFilters && (
-              <div className="lg:hidden mb-6 rounded-[1.5rem] p-1 bg-white/[0.03] border border-white/[0.08]">
+              <div className="lg:hidden mb-6 rounded-[1.5rem] p-1 bg-white/[0.03] border border-[#1D2024]">
                 <div className="rounded-[calc(1.5rem-0.25rem)] bg-[#0C0C14] p-4">
                   <SourceFilterPanel
                     selectedPlatforms={selectedPlatforms}
@@ -398,7 +398,7 @@ export default function DiscoverPage() {
               <div className="flex flex-wrap items-center gap-2 mb-6">
                 <span className="text-xs text-[#9E9EA8] font-medium">Active:</span>
                 {activeQuery && (
-                  <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-white/[0.04] text-[#EDEDE8] font-semibold border border-white/[0.08]">
+                  <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-white/[0.04] text-[#EDEDE8] font-semibold border border-[#1D2024]">
                     <span>&ldquo;{activeQuery}&rdquo;</span>
                     <button
                       type="button"
@@ -415,7 +415,7 @@ export default function DiscoverPage() {
                 {selectedPlatforms.map((p) => (
                   <span
                     key={p}
-                    className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-indigo-950/60 text-indigo-300 font-semibold border border-indigo-800"
+                    className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-indigo-950/60 text-[#E06D3B] font-semibold border border-indigo-800"
                   >
                     <span>{PLATFORM_CONFIGS[p]?.name}</span>
                     <button
@@ -428,7 +428,7 @@ export default function DiscoverPage() {
                   </span>
                 ))}
                 {selectedCategory && (
-                  <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-white/[0.04] text-[#EDEDE8] font-semibold border border-white/[0.08]">
+                  <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-white/[0.04] text-[#EDEDE8] font-semibold border border-[#1D2024]">
                     <span>{selectedCategory}</span>
                     <button
                       type="button"
@@ -442,7 +442,7 @@ export default function DiscoverPage() {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="text-xs text-indigo-400 font-semibold hover:underline ml-2 cursor-pointer"
+                  className="text-xs text-[#E06D3B] font-semibold hover:underline ml-2 cursor-pointer"
                 >
                   Clear all
                 </button>
@@ -462,8 +462,8 @@ export default function DiscoverPage() {
                 ))}
               </div>
             ) : sortedCourses.length === 0 ? (
-              <div className="py-16 text-center rounded-[2rem] bg-white/[0.02] border border-white/[0.08] backdrop-blur-xl p-8 max-w-md mx-auto shadow-2xl">
-                <Compass className="w-12 h-12 text-indigo-400/80 mx-auto mb-3" />
+              <div className="py-16 text-center rounded-[2rem] bg-white/[0.02] border border-[#1D2024] backdrop-blur-xl p-8 max-w-md mx-auto shadow-2xl">
+                <Compass className="w-12 h-12 text-[#E06D3B]/80 mx-auto mb-3" />
                 <h3 className="text-base font-bold text-[#EDEDE8] mb-1">
                   No courses found matching your criteria
                 </h3>
@@ -474,7 +474,7 @@ export default function DiscoverPage() {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="px-5 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md cursor-pointer transition-all active:scale-95"
+                  className="px-5 py-2.5 rounded-full bg-[#E06D3B] hover:bg-indigo-500 text-white font-bold text-xs shadow-md cursor-pointer transition-all active:scale-95"
                 >
                   Reset All Filters
                 </button>
@@ -502,7 +502,7 @@ export default function DiscoverPage() {
       />
 
       {/* Footer */}
-      <footer className="mt-auto py-8 px-6 border-t border-white/[0.08] text-center text-xs text-[#9E9EA8]">
+      <footer className="mt-auto py-8 px-6 border-t border-[#1D2024] text-center text-xs text-[#9E9EA8]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Logo href="/" size="sm" />

@@ -36,17 +36,17 @@ export default function CreateCoursePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEDE8] flex flex-col justify-between p-4 sm:p-6 relative selection:bg-[#DEDBC8] selection:text-black">
+    <div className="min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col justify-between p-4 sm:p-6 relative selection:bg-[#E06D3B] selection:text-black">
       {/* Noise Texture */}
       <div className="fixed inset-0 noise-overlay opacity-[0.5] mix-blend-overlay pointer-events-none z-0" />
 
       {/* Top Ambient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#E06D3B]/5 blur-[130px] rounded-full pointer-events-none -z-10" />
 
       <div className="relative z-10 max-w-2xl w-full mx-auto flex items-center justify-between">
         <Link
           href="/courses"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#9E9EA8] hover:text-[#EDEDE8] px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] hover:border-white/20 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#9E9EA8] hover:text-[#EDEDE8] px-3.5 py-1.5 rounded-full bg-[#141619] border border-[#1D2024] hover:border-white/20 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Workspace</span>
@@ -55,10 +55,10 @@ export default function CreateCoursePage() {
         <Logo href="/" size="sm" />
       </div>
 
-      <div className="relative z-10 max-w-xl w-full mx-auto my-8 rounded-[2rem] p-1 bg-white/[0.03] border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
-        <div className="rounded-[calc(2rem-0.25rem)] bg-[#0C0C14]/95 p-8 sm:p-10 backdrop-blur-xl border border-white/[0.02]">
+      <div className="relative z-10 max-w-xl w-full mx-auto my-8 rounded-[2rem] p-1 bg-[#141619] border border-[#1D2024] shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
+        <div className="rounded-[calc(2rem-0.25rem)] bg-[#141619] p-8 sm:p-10 backdrop-blur-xl border border-[#1D2024]">
           <div className="mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/60 px-2.5 py-0.5 rounded-full border border-indigo-800">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#E06D3B] bg-indigo-950/60 px-2.5 py-0.5 rounded-full border border-indigo-800">
               Step 1 of 3 • Course Setup
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#EDEDE8] mt-3 tracking-tight">
@@ -82,7 +82,7 @@ export default function CreateCoursePage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. CS 229: Machine Learning & Optimization"
-                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-[#EDEDE8] placeholder:text-[#9E9EA8]/60 focus:outline-hidden focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full bg-[#141619] border border-[#1D2024] rounded-xl px-4 py-3 text-sm text-[#EDEDE8] placeholder:text-[#9E9EA8]/60 focus:outline-hidden focus:border-[#E06D3B] focus:ring-1 focus:ring-[#E06D3B] transition-all"
                 />
               </div>
             </div>
@@ -96,14 +96,14 @@ export default function CreateCoursePage() {
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
                 placeholder="e.g. Computer Science, Medicine, Organic Chemistry"
-                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] placeholder:text-[#9E9EA8]/60 focus:outline-hidden focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                className="w-full bg-[#141619] border border-[#1D2024] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] placeholder:text-[#9E9EA8]/60 focus:outline-hidden focus:border-[#E06D3B] focus:ring-1 focus:ring-[#E06D3B] transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-bold text-[#EDEDE8] mb-1.5 flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                  <Calendar className="w-3.5 h-3.5 text-[#E06D3B]" />
                   <span>Target Exam / Deadline Date</span>
                 </label>
                 <input
@@ -111,13 +111,13 @@ export default function CreateCoursePage() {
                   required
                   value={examDate}
                   onChange={(e) => setExamDate(e.target.value)}
-                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] focus:outline-hidden focus:border-indigo-500 transition-all"
+                  className="w-full bg-[#141619] border border-[#1D2024] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] focus:outline-hidden focus:border-[#E06D3B] transition-all"
                 />
               </div>
 
               <div>
                 <label className="block font-bold text-[#EDEDE8] mb-1.5 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-indigo-400" />
+                  <Clock className="w-3.5 h-3.5 text-[#E06D3B]" />
                   <span>Hours Available Per Day</span>
                 </label>
                 <input
@@ -128,7 +128,7 @@ export default function CreateCoursePage() {
                   required
                   value={hoursPerDay}
                   onChange={(e) => setHoursPerDay(parseFloat(e.target.value))}
-                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] focus:outline-hidden focus:border-indigo-500 transition-all"
+                  className="w-full bg-[#141619] border border-[#1D2024] rounded-xl px-4 py-2.5 text-xs text-[#EDEDE8] focus:outline-hidden focus:border-[#E06D3B] transition-all"
                 />
               </div>
             </div>
@@ -136,10 +136,10 @@ export default function CreateCoursePage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="font-bold text-[#EDEDE8] flex items-center gap-1.5">
-                  <Target className="w-3.5 h-3.5 text-indigo-400" />
+                  <Target className="w-3.5 h-3.5 text-[#E06D3B]" />
                   <span>Target Mastery Threshold</span>
                 </label>
-                <span className="font-mono font-bold text-indigo-400 text-xs">
+                <span className="font-mono font-bold text-[#E06D3B] text-xs">
                   {targetMastery}%
                 </span>
               </div>
@@ -163,7 +163,7 @@ export default function CreateCoursePage() {
               <button
                 type="submit"
                 disabled={isSubmitting || !name.trim()}
-                className="w-full py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-bold text-sm shadow-[0_0_25px_rgba(99,102,241,0.35)] transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 rounded-full bg-[#E06D3B] hover:bg-indigo-500 disabled:opacity-40 text-white font-bold text-sm shadow-[0_0_25px_rgba(99,102,241,0.35)] transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>{isSubmitting ? 'Creating Course...' : 'Create Course & Proceed to Upload'}</span>
                 <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">

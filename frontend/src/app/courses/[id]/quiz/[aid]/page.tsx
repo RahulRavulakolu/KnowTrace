@@ -46,9 +46,9 @@ export default function ActiveQuizPage({
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['quizAttempt', attemptId] });
       queryClient.invalidateQueries({ queryKey: ['concepts', courseId] });
       queryClient.invalidateQueries({ queryKey: ['course', courseId] });
+      queryClient.invalidateQueries({ queryKey: ['certificate', courseId] });
     },
   });
 
@@ -66,10 +66,10 @@ export default function ActiveQuizPage({
     return (
       <AppShell courseId={courseId} title="Quiz Not Found">
         <div className="max-w-md mx-auto py-12 text-center space-y-4">
-          <h2 className="text-base font-bold">Quiz Session Not Found</h2>
+          <h2 className="text-base font-bold text-[#F6F5EE]">Quiz Session Not Found</h2>
           <button
             onClick={() => router.push(`/courses/${courseId}/quiz/new`)}
-            className="px-4 py-2 bg-indigo-600 rounded-xl text-white text-xs font-semibold cursor-pointer"
+            className="px-4 py-2 bg-[#E06D3B] hover:bg-[#FF9457] rounded-xl text-white text-xs font-semibold cursor-pointer"
           >
             Start New Quiz
           </button>
@@ -82,10 +82,11 @@ export default function ActiveQuizPage({
   const isLastQuestion = attempt.currentQuestionIndex === attempt.totalQuestions - 1;
   const progressPct = ((attempt.currentQuestionIndex + 1) / attempt.totalQuestions) * 100;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (isLastQuestion) {
       router.push(`/courses/${courseId}/results/${attemptId}`);
     } else {
+      await api.advanceQuizQuestion(attemptId);
       questionStartTimeRef.current = Date.now();
       queryClient.invalidateQueries({ queryKey: ['quizAttempt', attemptId] });
     }
@@ -98,10 +99,10 @@ export default function ActiveQuizPage({
   return (
     <AppShell courseId={courseId} title={attempt.title}>
       <div className="space-y-6 max-w-3xl mx-auto">
-        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs space-y-2">
+        <div className="p-4 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-2xs space-y-2">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-bold text-zinc-800 dark:text-zinc-200">{attempt.title}</span>
-            <span className="font-mono text-zinc-400">
+            <span className="font-bold text-[#F6F5EE]">{attempt.title}</span>
+            <span className="font-mono text-[#7E8078]">
               {attempt.currentQuestionIndex + 1} of {attempt.totalQuestions} Questions
             </span>
           </div>

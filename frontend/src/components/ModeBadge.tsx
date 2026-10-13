@@ -37,10 +37,10 @@ export function ModeBadge({ mode = 'source-backed', confidence }: ModeBadgeProps
     },
     'outside-knowledge': {
       label: 'Outside Knowledge',
-      icon: <Globe className="w-3.5 h-3.5 text-blue-500" />,
-      bg: 'bg-blue-50 dark:bg-blue-950/40',
-      text: 'text-blue-700 dark:text-blue-300',
-      border: 'border-blue-200 dark:border-blue-800',
+      icon: <Globe className="w-3.5 h-3.5 text-[#E06D3B]" />,
+      bg: 'bg-[#E06D3B]/10',
+      text: 'text-[#E06D3B]',
+      border: 'border-[#E06D3B]/30',
     },
   };
 

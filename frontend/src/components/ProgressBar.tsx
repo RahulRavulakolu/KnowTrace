@@ -7,7 +7,7 @@ interface ProgressBarProps {
   label?: string;
   subLabel?: string;
   size?: 'sm' | 'md' | 'lg';
-  variant?: 'indigo' | 'emerald' | 'amber' | 'rose' | 'gradient';
+  variant?: 'indigo' | 'terracotta' | 'emerald' | 'amber' | 'rose' | 'gradient';
   showPercentage?: boolean;
 }
 
@@ -28,11 +28,12 @@ export function ProgressBar({
   };
 
   const variantGradients = {
-    indigo: 'bg-indigo-600',
-    emerald: 'bg-emerald-500',
-    amber: 'bg-amber-500',
-    rose: 'bg-rose-500',
-    gradient: 'bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400',
+    indigo: 'bg-[#E06D3B]',
+    terracotta: 'bg-[#E06D3B]',
+    emerald: 'bg-[#3E8E68]',
+    amber: 'bg-[#D48838]',
+    rose: 'bg-[#C94A44]',
+    gradient: 'bg-gradient-to-r from-[#E06D3B] via-[#D48838] to-[#3E8E68]',
   };
 
   return (
@@ -40,17 +41,17 @@ export function ProgressBar({
       {(label || showPercentage) && (
         <div className="flex justify-between items-center mb-1.5 text-xs">
           <div className="flex items-center gap-2">
-            {label && <span className="font-semibold text-zinc-800 dark:text-zinc-200">{label}</span>}
-            {subLabel && <span className="text-zinc-400 text-[11px]">{subLabel}</span>}
+            {label && <span className="font-semibold text-[#F6F5EE]">{label}</span>}
+            {subLabel && <span className="text-[#7E8078] text-[11px]">{subLabel}</span>}
           </div>
           {showPercentage && (
-            <span className="font-mono font-bold text-zinc-700 dark:text-zinc-300">
+            <span className="font-mono font-bold text-[#C8C6B9]">
               {clamped}%
             </span>
           )}
         </div>
       )}
-      <div className={`w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden ${sizeClasses[size]}`}>
+      <div className={`w-full bg-[#1D2024] rounded-full overflow-hidden ${sizeClasses[size]}`}>
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${variantGradients[variant]}`}
           style={{ width: `${clamped}%` }}

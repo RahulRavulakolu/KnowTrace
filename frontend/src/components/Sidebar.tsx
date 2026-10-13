@@ -20,7 +20,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { Logo } from './Logo';
-
+import { useSidebar } from './ui/sidebar';
 
 interface SidebarProps {
   courseId: string;
@@ -36,10 +36,22 @@ export function Sidebar({
   courseName = 'CS 229 Machine Learning',
   activeMisconceptions = 2,
   overallMastery = 64,
-  isOpen = true,
-  onClose,
+  isOpen: isOpenProp,
+  onClose: onCloseProp,
 }: SidebarProps) {
   const pathname = usePathname();
+  const sidebar = useSidebar();
+
+  const isMobile = sidebar.isMobile;
+  const isMobileOpen = isMobile ? (isOpenProp ?? sidebar.openMobile) : false;
+  const isCollapsed = !sidebar.open;
+
+  const handleClose = () => {
+    if (onCloseProp) {
+      onCloseProp();
+    }
+    sidebar.setOpenMobile(false);
+  };
 
   const navItems = [
     {
@@ -53,7 +65,7 @@ export function Sidebar({
       href: `/courses/${courseId}/lectures`,
       icon: Video,
       badge: 'Recorded',
-      badgeColor: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
+      badgeColor: 'bg-[#E06D3B]/10 text-[#E06D3B] border-[#E06D3B]/20',
     },
     {
       label: 'AI Tutor',
@@ -122,69 +134,107 @@ export function Sidebar({
   return (
     <>
       {/* Mobile Backdrop */}
-      {isOpen && (
+      {isMobileOpen && (
         <div
-          onClick={onClose}
-          className="fixed inset-0 z-40 bg-zinc-900/50 backdrop-blur-xs md:hidden"
+          onClick={handleClose}
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
         />
       )}
 
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-transform duration-200 md:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed top-0 bottom-0 left-0 z-50 bg-[#0C0D0E] text-[#F6F5EE] border-r border-[#1D2024] flex flex-col transition-all duration-300 ease-in-out ${
+          isMobile
+            ? isMobileOpen
+              ? 'translate-x-0 w-64'
+              : '-translate-x-full w-64'
+            : isCollapsed
+            ? 'w-16 translate-x-0'
+            : 'w-64 translate-x-0'
         }`}
       >
         {/* Brand header */}
-        <div className="h-16 px-5 flex items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800">
-          <Logo href="/courses" size="md" priority />
+        <div
+          className={`h-16 flex items-center border-b border-[#1D2024] shrink-0 transition-all ${
+            isCollapsed && !isMobile ? 'justify-center px-2' : 'justify-between px-5'
+          }`}
+        >
+          {isCollapsed && !isMobile ? (
+            <Logo href="/courses" variant="icon" size="md" priority />
+          ) : (
+            <Logo href="/courses" size="md" priority />
+          )}
         </div>
 
         {/* Global Enrolled Courses Button */}
-        <div className="px-3 pt-3">
+        <div className={`pt-3 shrink-0 ${isCollapsed && !isMobile ? 'px-2' : 'px-3'}`}>
           <Link
             href="/courses"
-            onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-xs transition-all active:scale-98 group"
+            onClick={handleClose}
+            title="My Enrolled Courses"
+            className={`flex items-center rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] text-[#F6F5EE] shadow-xs transition-all active:scale-98 group ${
+              isCollapsed && !isMobile
+                ? 'justify-center p-2.5'
+                : 'justify-between px-3 py-2.5'
+            }`}
           >
             <div className="flex items-center gap-2.5">
-              <GraduationCap className="w-4 h-4 text-white group-hover:rotate-12 transition-transform" />
-              <span className="text-xs font-bold tracking-tight">My Enrolled Courses</span>
+              <GraduationCap className="w-4 h-4 text-[#E06D3B] group-hover:rotate-12 transition-transform shrink-0" />
+              {(!isCollapsed || isMobile) && (
+                <span className="text-xs font-bold tracking-tight truncate">My Enrolled Courses</span>
+              )}
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-indigo-200 group-hover:translate-x-0.5 transition-transform" />
+            {(!isCollapsed || isMobile) && (
+              <ChevronRight className="w-3.5 h-3.5 text-[#C8C6B9] group-hover:translate-x-0.5 transition-transform shrink-0" />
+            )}
           </Link>
         </div>
 
         {/* Current Course Snippet Card with Switcher */}
-        <div className="p-3.5 mx-3 my-2.5 rounded-xl bg-gradient-to-br from-indigo-50/70 to-purple-50/70 dark:from-zinc-900 dark:to-zinc-900/50 border border-indigo-100 dark:border-zinc-800">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 font-mono">
-              Active Course
-            </span>
+        {(!isCollapsed || isMobile) ? (
+          <div className="p-3.5 mx-3 my-2.5 rounded-xl bg-[#141619] border border-[#1D2024]">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#E06D3B] font-mono">
+                Active Course
+              </span>
+              <Link
+                href="/courses"
+                onClick={handleClose}
+                className="text-[10px] font-semibold text-[#C8C6B9] hover:text-[#E06D3B] transition-colors"
+                title="View all enrolled courses"
+              >
+                Switch Course ⇄
+              </Link>
+            </div>
+            <div className="font-bold text-xs text-[#F6F5EE] truncate" title={courseName}>
+              {courseName}
+            </div>
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1D2024] text-[11px]">
+              <span className="text-[#7E8078]">Mastery</span>
+              <span className="font-bold font-mono text-[#E06D3B]">
+                {overallMastery}%
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="my-2 px-2 flex justify-center">
             <Link
               href="/courses"
-              onClick={onClose}
-              className="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
-              title="View all enrolled courses"
+              onClick={handleClose}
+              title={`Active: ${courseName} (${overallMastery}% Mastery)`}
+              className="w-10 h-10 rounded-xl bg-[#141619] border border-[#1D2024] flex items-center justify-center font-mono font-bold text-xs text-[#E06D3B] hover:border-[#E06D3B]/40 transition-colors"
             >
-              Switch Course ⇄
+              {overallMastery}%
             </Link>
           </div>
-          <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate" title={courseName}>
-            {courseName}
-          </div>
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-indigo-100/80 dark:border-zinc-800/80 text-[11px]">
-            <span className="text-zinc-500">Mastery</span>
-            <span className="font-bold font-mono text-indigo-600 dark:text-indigo-400">
-              {overallMastery}%
-            </span>
-          </div>
-        </div>
+        )}
 
         {/* Navigation list */}
-        <div className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-          <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-            Learning Modules
-          </div>
+        <div className={`flex-1 overflow-y-auto py-2 space-y-1 ${isCollapsed && !isMobile ? 'px-2' : 'px-3'}`}>
+          {(!isCollapsed || isMobile) && (
+            <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#7E8078] font-mono">
+              Learning Modules
+            </div>
+          )}
 
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href.includes('/quiz/') && pathname.includes('/quiz'));
@@ -193,23 +243,28 @@ export function Sidebar({
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={onClose}
-                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                onClick={handleClose}
+                title={isCollapsed && !isMobile ? item.label : undefined}
+                className={`flex items-center rounded-xl text-xs font-semibold transition-all group ${
+                  isCollapsed && !isMobile
+                    ? 'justify-center p-2.5'
+                    : 'justify-between px-3 py-2'
+                } ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-500/20'
-                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-900'
+                    ? 'bg-[#E06D3B] text-black shadow-xs font-bold'
+                    : 'text-[#C8C6B9] hover:text-[#F6F5EE] hover:bg-[#141619]'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-zinc-400'}`} />
-                  <span>{item.label}</span>
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-black' : 'text-[#7E8078] group-hover:text-[#F6F5EE]'}`} />
+                  {(!isCollapsed || isMobile) && <span className="truncate">{item.label}</span>}
                 </div>
-                {item.badge && (
+                {(!isCollapsed || isMobile) && item.badge && (
                   <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-md font-mono border ${
+                    className={`text-[10px] px-1.5 py-0.5 rounded-md font-mono border shrink-0 ${
                       isActive
-                        ? 'bg-white/20 text-white border-white/20'
-                        : item.badgeColor || 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700'
+                        ? 'bg-black/20 text-black border-black/20'
+                        : 'bg-[#141619] text-[#C8C6B9] border-[#1D2024]'
                     }`}
                   >
                     {item.badge}
@@ -219,8 +274,12 @@ export function Sidebar({
             );
           })}
 
-          <div className="pt-4 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-            Course Pipeline
+          <div className="pt-3">
+            {(!isCollapsed || isMobile) && (
+              <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#7E8078] font-mono">
+                Course Pipeline
+              </div>
+            )}
           </div>
 
           {secondaryItems.map((item) => {
@@ -230,26 +289,49 @@ export function Sidebar({
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={onClose}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                onClick={handleClose}
+                title={isCollapsed && !isMobile ? item.label : undefined}
+                className={`flex items-center rounded-xl text-xs font-semibold transition-all group ${
+                  isCollapsed && !isMobile
+                    ? 'justify-center p-2.5'
+                    : 'gap-3 px-3 py-2'
+                } ${
                   isActive
-                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 font-bold'
-                    : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-900'
+                    ? 'bg-[#1A1D21] text-[#E06D3B] font-bold border border-[#1D2024]'
+                    : 'text-[#7E8078] hover:text-[#F6F5EE] hover:bg-[#141619]'
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                <span>{item.label}</span>
+                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#E06D3B]' : 'text-[#7E8078] group-hover:text-[#F6F5EE]'}`} />
+                {(!isCollapsed || isMobile) && <span className="truncate">{item.label}</span>}
               </Link>
             );
           })}
         </div>
 
         {/* Footer info */}
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-400">
-          <span>v1.0 • Adaptive Core</span>
-          <Link href="/courses/new" className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
-            + New Course
-          </Link>
+        <div
+          className={`border-t border-[#1D2024] flex items-center text-xs text-[#7E8078] shrink-0 ${
+            isCollapsed && !isMobile
+              ? 'p-2.5 justify-center'
+              : 'p-4 justify-between'
+          }`}
+        >
+          {isCollapsed && !isMobile ? (
+            <Link
+              href="/courses/new"
+              title="Create New Course"
+              className="text-[#E06D3B] hover:text-[#FF9457] font-bold text-sm"
+            >
+              +
+            </Link>
+          ) : (
+            <>
+              <span className="font-mono text-[11px]">v1.0 • Bayesian Core</span>
+              <Link href="/courses/new" className="text-[#E06D3B] hover:text-[#FF9457] font-semibold">
+                + New Course
+              </Link>
+            </>
+          )}
         </div>
       </aside>
     </>

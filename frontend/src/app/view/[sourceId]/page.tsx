@@ -43,7 +43,7 @@ export default function StandaloneSourceViewerPage({
         <p className="text-xs text-zinc-400">ID: {sourceId}</p>
         <button
           onClick={() => router.back()}
-          className="px-4 py-2 bg-indigo-600 rounded-xl text-white text-xs font-semibold cursor-pointer"
+          className="px-4 py-2 bg-[#E06D3B] rounded-xl text-white text-xs font-semibold cursor-pointer"
         >
           Go Back
         </button>
@@ -53,7 +53,7 @@ export default function StandaloneSourceViewerPage({
 
   return (
     <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex flex-col">
-      <header className="h-16 px-6 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+      <header className="h-16 px-6 bg-[#141619] border-b border-[#1D2024] flex items-center justify-between">
         <button
           type="button"
           onClick={() => router.back()}

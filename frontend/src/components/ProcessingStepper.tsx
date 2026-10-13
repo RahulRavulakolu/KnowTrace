@@ -56,7 +56,7 @@ export function ProcessingStepper({
   return (
     <div className="space-y-6">
       {/* Top Progress & Metrics Card */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-4">
+      <div className="p-6 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
@@ -71,7 +71,7 @@ export function ProcessingStepper({
               Extracting mathematical formulas, slides, audio transcripts & knowledge concepts
             </p>
           </div>
-          <span className="text-xl font-mono font-extrabold text-indigo-600 dark:text-indigo-400">
+          <span className="text-xl font-mono font-extrabold text-[#E06D3B]">
             {overallProgress}%
           </span>
         </div>
@@ -85,9 +85,9 @@ export function ProcessingStepper({
 
         {/* Real-time Artifact Extraction Counters */}
         <div className="grid grid-cols-3 gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 text-center">
+          <div className="p-3 rounded-xl bg-[#0C0D0E] border border-zinc-100 dark:border-zinc-800 text-center">
             <div className="flex items-center justify-center gap-1.5 text-zinc-400 text-xs mb-1">
-              <Layers className="w-3.5 h-3.5 text-indigo-500" />
+              <Layers className="w-3.5 h-3.5 text-[#E06D3B]" />
               <span>Chunks</span>
             </div>
             <div className="text-lg font-mono font-bold text-zinc-900 dark:text-zinc-100">
@@ -95,7 +95,7 @@ export function ProcessingStepper({
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 text-center">
+          <div className="p-3 rounded-xl bg-[#0C0D0E] border border-zinc-100 dark:border-zinc-800 text-center">
             <div className="flex items-center justify-center gap-1.5 text-zinc-400 text-xs mb-1">
               <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
               <span>Figures</span>
@@ -105,7 +105,7 @@ export function ProcessingStepper({
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 text-center">
+          <div className="p-3 rounded-xl bg-[#0C0D0E] border border-zinc-100 dark:border-zinc-800 text-center">
             <div className="flex items-center justify-center gap-1.5 text-zinc-400 text-xs mb-1">
               <Film className="w-3.5 h-3.5 text-rose-500" />
               <span>Keyframes</span>
@@ -118,7 +118,7 @@ export function ProcessingStepper({
       </div>
 
       {/* Stepper Pipeline List */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="p-6 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-sm">
         <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-4">
           Pipeline Progression Stages
         </h4>
@@ -143,7 +143,7 @@ export function ProcessingStepper({
                     isDone
                       ? 'bg-emerald-500 text-white'
                       : isCurrent
-                      ? 'bg-indigo-600 text-white animate-pulse'
+                      ? 'bg-[#E06D3B] text-white animate-pulse'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400'
                   }`}
                 >
@@ -163,7 +163,7 @@ export function ProcessingStepper({
                         isDone
                           ? 'text-zinc-900 dark:text-zinc-100'
                           : isCurrent
-                          ? 'text-indigo-600 dark:text-indigo-400 font-extrabold'
+                          ? 'text-[#E06D3B] font-extrabold'
                           : 'text-zinc-400'
                       }`}
                     >
@@ -174,7 +174,7 @@ export function ProcessingStepper({
                         isDone
                           ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
                           : isCurrent
-                          ? 'text-indigo-600 font-bold'
+                          ? 'text-[#E06D3B] font-bold'
                           : 'text-zinc-400'
                       }`}
                     >

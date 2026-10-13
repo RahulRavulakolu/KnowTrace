@@ -34,17 +34,17 @@ export default function KnowledgeMapPage({
     : null;
 
   return (
-    <AppShell courseId={courseId} title="Interactive Knowledge Graph">
+    <AppShell courseId={courseId} title="Interactive Knowledge Graph" fullWidth>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#E06D3B] font-mono">
               Curriculum Concept Graph
             </span>
-            <h1 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-0.5">
+            <h1 className="text-xl font-extrabold text-[#F6F5EE] mt-0.5">
               Knowledge Map & Prerequisite Structure
             </h1>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-xs text-[#7E8078] mt-0.5">
               Explore conceptual dependencies, confusable topic boundaries, and live Bayesian mastery estimates.
             </p>
           </div>

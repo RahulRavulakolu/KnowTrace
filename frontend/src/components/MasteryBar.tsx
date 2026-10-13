@@ -28,14 +28,14 @@ export function MasteryBar({
   return (
     <div
       onClick={onClick}
-      className={`p-3.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 transition-all ${
-        onClick ? 'cursor-pointer hover:shadow-md' : ''
+      className={`p-3.5 rounded-xl border border-[#1D2024] bg-[#141619] shadow-xs hover:border-[#E06D3B]/40 transition-all ${
+        onClick ? 'cursor-pointer hover:bg-[#1A1D21]' : ''
       }`}
     >
       <div className="flex justify-between items-start mb-2 gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100 truncate">
+            <span className="font-semibold text-sm text-[#F6F5EE] truncate">
               {name}
             </span>
             <span
@@ -45,15 +45,15 @@ export function MasteryBar({
             </span>
           </div>
 
-          <div className="flex items-center gap-3 mt-1 text-xs text-zinc-400">
+          <div className="flex items-center gap-3 mt-1 text-xs text-[#7E8078]">
             {uncertainty !== undefined && (
               <span className="font-mono text-[11px]">
-                Estimate: <strong className="text-zinc-700 dark:text-zinc-300">{mastery}%</strong> (±{uncertainty}%)
+                Estimate: <strong className="text-[#F6F5EE]">{mastery}%</strong> (±{uncertainty}%)
               </span>
             )}
             {lastPracticedDaysAgo !== undefined && (
               <span className="flex items-center gap-1 text-[11px]">
-                <Clock className="w-3 h-3" />
+                <Clock className="w-3 h-3 text-[#7E8078]" />
                 {lastPracticedDaysAgo === 0 ? 'Today' : `${lastPracticedDaysAgo}d ago`}
               </span>
             )}
@@ -61,18 +61,18 @@ export function MasteryBar({
         </div>
 
         {forgettingRisk === 'high' && (
-          <div className="flex items-center gap-1 text-xs font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-1 rounded-md border border-rose-200 dark:border-rose-900 shrink-0">
-            <AlertCircle className="w-3.5 h-3.5 text-rose-500" />
-            <span className="text-[11px]">Needs Revision</span>
+          <div className="flex items-center gap-1 text-xs font-medium text-[#C94A44] bg-[#C94A44]/15 px-2 py-1 rounded-md border border-[#C94A44]/30 shrink-0">
+            <AlertCircle className="w-3.5 h-3.5 text-[#C94A44]" />
+            <span className="text-[11px] font-mono uppercase">Decay Alert</span>
           </div>
         )}
       </div>
 
       {/* Bar with uncertainty shadow interval */}
-      <div className="relative w-full h-3 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+      <div className="relative w-full h-2.5 bg-[#1D2024] rounded-full overflow-hidden">
         {/* Uncertainty Range Band (subtle hatched or lighter shade) */}
         <div
-          className="absolute top-0 bottom-0 bg-indigo-200/50 dark:bg-indigo-900/40 transition-all duration-500"
+          className="absolute top-0 bottom-0 bg-[#E06D3B]/20 transition-all duration-500"
           style={{
             left: `${minEstimate}%`,
             width: `${maxEstimate - minEstimate}%`,
@@ -84,10 +84,10 @@ export function MasteryBar({
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${
             mastery >= 75
-              ? 'bg-emerald-500'
+              ? 'bg-[#3E8E68]'
               : mastery >= 50
-              ? 'bg-amber-500'
-              : 'bg-rose-500'
+              ? 'bg-[#D48838]'
+              : 'bg-[#C94A44]'
           }`}
           style={{ width: `${mastery}%` }}
         />

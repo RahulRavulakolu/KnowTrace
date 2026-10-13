@@ -56,10 +56,10 @@ export default function CourseTutorPage({
       <div className="space-y-4 max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h1 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">
+            <h1 className="text-xl font-extrabold text-[#F6F5EE]">
               Source-Grounded AI Tutor
             </h1>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-[#7E8078]">
               Every claim is attributed to textbook pages, slide figures, or lecture speech spans.
             </p>
           </div>

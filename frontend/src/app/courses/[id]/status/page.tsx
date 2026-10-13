@@ -83,7 +83,7 @@ export default function CourseStatusPage({
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#E06D3B] font-mono">
               Multimodal Ingestion Pipeline
             </span>
             <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-0.5">
@@ -115,7 +115,7 @@ export default function CourseStatusPage({
               <button
                 type="button"
                 onClick={handleOpenCourse}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md hover:shadow-indigo-500/25 transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-xs shadow-md hover:shadow-indigo-500/25 transition-all active:scale-95 cursor-pointer"
               >
                 <span>Open Course Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
@@ -156,7 +156,7 @@ export default function CourseStatusPage({
             <button
               type="button"
               onClick={handleOpenCourse}
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer flex items-center gap-2"
+              className="px-6 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer flex items-center gap-2"
             >
               <span>Go to Course Dashboard</span>
               <ArrowRight className="w-4 h-4" />

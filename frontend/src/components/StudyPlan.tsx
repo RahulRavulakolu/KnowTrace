@@ -21,26 +21,26 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
   const getActivityIcon = (activity: string) => {
     switch (activity) {
       case 'Study':
-        return <BookOpen className="w-3.5 h-3.5 text-indigo-500" />;
+        return <BookOpen className="w-3.5 h-3.5 text-[#E06D3B]" />;
       case 'Practice':
-        return <HelpCircle className="w-3.5 h-3.5 text-amber-500" />;
+        return <HelpCircle className="w-3.5 h-3.5 text-[#3E8E68]" />;
       case 'Revise':
-        return <RotateCcw className="w-3.5 h-3.5 text-emerald-500" />;
+        return <RotateCcw className="w-3.5 h-3.5 text-[#D48838]" />;
       default:
-        return <BookOpen className="w-3.5 h-3.5 text-indigo-500" />;
+        return <BookOpen className="w-3.5 h-3.5 text-[#E06D3B]" />;
     }
   };
 
   const getActivityBadge = (activity: string) => {
     switch (activity) {
       case 'Study':
-        return 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800';
+        return 'bg-[#E06D3B]/15 text-[#E06D3B] border-[#E06D3B]/30';
       case 'Practice':
-        return 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border-amber-200 dark:border-amber-800';
+        return 'bg-[#3E8E68]/15 text-[#3E8E68] border-[#3E8E68]/30';
       case 'Revise':
-        return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800';
+        return 'bg-[#D48838]/15 text-[#D48838] border-[#D48838]/30';
       default:
-        return 'bg-zinc-100 text-zinc-700';
+        return 'bg-[#141619] text-[#C8C6B9] border-[#1D2024]';
     }
   };
 
@@ -49,19 +49,19 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
       <div className="space-y-3">
         <div className="flex items-center justify-between pb-1">
           <h3
-            className={`text-xs font-bold uppercase tracking-wider ${
-              isToday ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-500'
+            className={`text-xs font-bold uppercase tracking-wider font-mono ${
+              isToday ? 'text-[#E06D3B]' : 'text-[#7E8078]'
             }`}
           >
             {title}
           </h3>
-          <span className="text-[11px] text-zinc-400 font-mono">
+          <span className="text-[11px] text-[#7E8078] font-mono">
             {list.reduce((acc, b) => acc + (b.completed ? 0 : b.durationMinutes), 0)} min remaining
           </span>
         </div>
 
         {list.length === 0 ? (
-          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-400 text-center">
+          <div className="p-4 rounded-xl border border-[#1D2024] bg-[#0C0D0E] text-xs text-[#7E8078] text-center font-mono">
             No tasks scheduled for this period.
           </div>
         ) : (
@@ -71,8 +71,8 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                 key={block.id}
                 className={`p-4 rounded-xl border transition-all flex items-start justify-between gap-4 ${
                   block.completed
-                    ? 'bg-zinc-50/50 dark:bg-zinc-900/30 border-zinc-200 dark:border-zinc-800 opacity-60'
-                    : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 shadow-xs hover:border-indigo-300 dark:hover:border-indigo-800'
+                    ? 'bg-[#0C0D0E]/60 border-[#1D2024] opacity-50'
+                    : 'bg-[#0C0D0E] border-[#1D2024] shadow-xs hover:border-[#E06D3B]/40'
                 }`}
               >
                 {/* Left check and info */}
@@ -80,12 +80,12 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                   <button
                     type="button"
                     onClick={() => onToggleBlock(block.id)}
-                    className="mt-0.5 text-zinc-400 hover:text-indigo-600 transition-colors cursor-pointer shrink-0"
+                    className="mt-0.5 text-[#7E8078] hover:text-[#E06D3B] transition-colors cursor-pointer shrink-0"
                   >
                     {block.completed ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                      <CheckCircle2 className="w-5 h-5 text-[#3E8E68]" />
                     ) : (
-                      <Circle className="w-5 h-5 hover:text-indigo-500" />
+                      <Circle className="w-5 h-5 hover:text-[#E06D3B]" />
                     )}
                   </button>
 
@@ -94,14 +94,14 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                       <span
                         className={`text-sm font-bold ${
                           block.completed
-                            ? 'line-through text-zinc-400'
-                            : 'text-zinc-900 dark:text-zinc-100'
+                            ? 'line-through text-[#7E8078]'
+                            : 'text-[#F6F5EE]'
                         }`}
                       >
                         {block.conceptName}
                       </span>
                       <span
-                        className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${getActivityBadge(
+                        className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border font-mono ${getActivityBadge(
                           block.activity
                         )}`}
                       >
@@ -110,7 +110,7 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-3 text-[11px] text-zinc-400 font-mono">
+                    <div className="flex items-center gap-3 text-[11px] text-[#7E8078] font-mono">
                       <span>{block.timeSlot}</span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
@@ -119,8 +119,8 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                       </span>
                     </div>
 
-                    <p className="text-xs text-zinc-500 pt-1 leading-relaxed">
-                      <span className="font-semibold text-zinc-600 dark:text-zinc-400">Reason: </span>
+                    <p className="text-xs text-[#7E8078] pt-1 leading-relaxed">
+                      <span className="font-semibold text-[#C8C6B9]">Reason: </span>
                       {block.reason}
                     </p>
                   </div>
@@ -137,16 +137,16 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                           ? `/courses/${courseId}/lectures?lectureId=${block.lectureId}`
                           : `/courses/${courseId}/lectures`
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shrink-0 active:scale-95 shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E06D3B] hover:bg-[#FF9457] text-white text-xs font-bold transition-all shrink-0 active:scale-95 shadow-xs font-mono"
                     >
                       {block.activity === 'Practice' ? (
                         <>
                           <span>Practice Quiz</span>
-                          <ArrowRight className="w-3 h-3" />
+                          <ArrowRight className="w-3 h-3 text-white" />
                         </>
                       ) : (
                         <>
-                          <Video className="w-3.5 h-3.5" />
+                          <Video className="w-3.5 h-3.5 text-white" />
                           <span>Watch Lecture</span>
                         </>
                       )}
@@ -155,9 +155,9 @@ export function StudyPlan({ blocks, courseId, onToggleBlock }: StudyPlanProps) {
                     <Link
                       href={`/courses/${courseId}/tutor?prompt=${encodeURIComponent(`Can you explain the key intuition behind ${block.conceptName}?`)}`}
                       title="Ask AI Tutor about this concept"
-                      className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
+                      className="p-1.5 rounded-lg bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 text-[#C8C6B9] hover:text-[#F6F5EE] transition-colors"
                     >
-                      <BotMessageSquare className="w-3.5 h-3.5" />
+                      <BotMessageSquare className="w-3.5 h-3.5 text-[#E06D3B]" />
                     </Link>
                   </div>
                 )}

@@ -42,33 +42,33 @@ export default function StudyPlanPage({
 
   return (
     <AppShell courseId={courseId} title="Personalized Study Plan">
-      <div className="space-y-6 max-w-4xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="space-y-6 max-w-5xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-[#141619] border border-[#1D2024]">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-              Personalized Spaced Repetition
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#E06D3B] font-mono">
+              Adaptive Spaced Repetition Engine
             </span>
-            <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-0.5">
+            <h1 className="text-2xl font-black text-[#F6F5EE] mt-1 tracking-tight">
               Personalized Study Schedule
             </h1>
-            <p className="text-xs text-zinc-500 mt-1">
-              Dynamically adapted to your exam deadline, daily available hours, and knowledge gaps.
+            <p className="text-xs text-[#7E8078] mt-1 max-w-xl">
+              Dynamically calibrated to your exam deadline, daily available hours, and live retention decay.
             </p>
           </div>
 
           <button
             type="button"
             onClick={handleRebalance}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 shadow-2xs transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0C0D0E] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 text-xs font-semibold text-[#F6F5EE] shadow-xs transition-colors cursor-pointer font-mono"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw className="w-3.5 h-3.5 text-[#E06D3B]" />
             <span>Simulate Adaptive Re-balance</span>
           </button>
         </div>
 
         {diffs.length > 0 && <PlanDiff diff={diffs[0]} />}
 
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#141619] border border-[#1D2024] shadow-sm">
           <StudyPlan
             blocks={blocks}
             courseId={courseId}

@@ -38,37 +38,37 @@ export default function MisconceptionsPage({
 
   return (
     <AppShell courseId={courseId} title="Misconception Remediation Center">
-      <div className="space-y-6 max-w-4xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="space-y-6 max-w-5xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-[#141619] border border-[#1D2024]">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C94A44] font-mono">
               Cognitive Diagnosis & Metacognition
             </span>
-            <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-0.5">
+            <h1 className="text-2xl font-black text-[#F6F5EE] mt-1 tracking-tight">
               Detected Learning Misconceptions
             </h1>
-            <p className="text-xs text-zinc-500 mt-1">
-              KnowTrace analyzes specific distractor choices to isolate misconceptions before they solidify.
+            <p className="text-xs text-[#7E8078] mt-1 max-w-xl">
+              KnowTrace isolates systemic misunderstandings before they solidify into permanent cognitive barriers.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200 dark:border-rose-900 font-mono">
+            <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#C94A44]/15 text-[#C94A44] border border-[#C94A44]/30 font-mono">
               {activeCount} Active Confusions
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-mono">
+            <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#3E8E68]/15 text-[#3E8E68] border border-[#3E8E68]/30 font-mono">
               {remediatedCount} Remediated
             </span>
           </div>
         </div>
 
-        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-50/70 via-indigo-50/50 to-purple-50/50 dark:from-rose-950/20 dark:via-indigo-950/20 dark:to-purple-950/20 border border-rose-200/80 dark:border-zinc-800 flex items-start gap-3.5 text-xs text-zinc-700 dark:text-zinc-300">
-          <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+        <div className="p-5 rounded-2xl bg-[#141619] border border-[#1D2024] flex items-start gap-3.5 text-xs text-[#C8C6B9]">
+          <ShieldAlert className="w-5 h-5 text-[#C94A44] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <span className="font-bold text-zinc-900 dark:text-zinc-100">
-              Why Remediation Beats More Repetitive Questions
+            <span className="font-bold text-[#F6F5EE]">
+              Why Remediation Beats Repetitive Questions
             </span>
-            <p className="text-zinc-500 leading-relaxed text-[11px]">
+            <p className="text-[#7E8078] leading-relaxed text-[11px]">
               Simply repeating quizzes when a conceptual misconception exists reinforces errors. Each
               remediation card below provides an intuitive contrast, deep mathematical explanation,
               real-world application, and an analogy before verifying understanding with a quick check.
