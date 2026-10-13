@@ -450,6 +450,11 @@ export interface PlatformCertificationInfo {
   eligibility_rule: string;
   portal_url: string;
   credit_transfer: string;
+  exam_dates?: string;
+  registration_deadline?: string;
+  exam_fee?: string;
+  passing_criteria?: string;
+  guidelines?: string[];
 }
 
 export interface CourseCertificateDetails {

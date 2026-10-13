@@ -1777,6 +1777,14 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
             eligibility_rule: raw.platform_info?.eligibility_rule || raw.platform_info?.passing_criteria || 'Passing grade across continuous evaluations and proctored examination.',
             portal_url: raw.platform_info?.portal_url || raw.platform_info?.exam_portal_url || 'https://swayam.gov.in',
             credit_transfer: raw.platform_info?.credit_transfer || raw.platform_info?.credit_eligibility || 'AICTE & UGC approved university credit transfer.',
+            exam_dates: raw.platform_info?.exam_dates || 'October / November 2026',
+            registration_deadline: raw.platform_info?.registration_deadline || 'Open on portal',
+            exam_fee: raw.platform_info?.exam_fee || raw.platform_info?.fee || '₹1,000 / $15',
+            passing_criteria: raw.platform_info?.passing_criteria || '25% Assignments + 75% Proctored Exam >= 40%',
+            guidelines: raw.platform_info?.guidelines || [
+              'Carry Government issued Photo ID Card & Admit Card',
+              'Calculator permitted according to course syllabus specifications',
+            ],
           },
         };
       }
@@ -1853,6 +1861,14 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
         credit_transfer: isNptel || isSwayam
           ? 'AICTE approved; eligible for 3 to 4 university MOOC credit transfers under UGC regulations.'
           : 'Eligible for CEU / ECTS micro-credentials upon verification.',
+        exam_dates: 'October / November 2026',
+        registration_deadline: 'Open on portal',
+        exam_fee: isNptel || isSwayam ? '₹1,000 / $15' : '$49 - $99',
+        passing_criteria: '25% Assignments + 75% Proctored Exam >= 40%',
+        guidelines: [
+          'Carry Government issued Photo ID Card & Admit Card',
+          'Calculator permitted according to course syllabus specifications',
+        ],
       },
     };
   },

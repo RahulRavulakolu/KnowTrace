@@ -298,11 +298,11 @@ def _call_gemini(
 
                         contents.append(PIL.Image.open(io.BytesIO(img)))
 
+            gen_kwargs: dict[str, Any] = {"temperature": temperature}
+            if json_schema:
+                gen_kwargs["response_mime_type"] = "application/json"
             try:
-                generation_config = genai.GenerationConfig(
-                    temperature=temperature,
-                    response_mime_type="application/json" if json_schema else "text/plain",
-                )
+                generation_config = genai.GenerationConfig(**gen_kwargs)
             except TypeError:
                 generation_config = genai.GenerationConfig(
                     temperature=temperature,

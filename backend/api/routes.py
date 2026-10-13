@@ -30,7 +30,8 @@ def health_check(db: Session = Depends(get_db)) -> HealthResponse:
             import redis
 
             r = redis.from_url(settings.REDIS_URL, socket_connect_timeout=1)
-            r.ping()
+            if r is not None:
+                r.ping()
             redis_status = "connected"
         except Exception as exc:
             logger.warning("Redis ping failed in health check: %s", exc)

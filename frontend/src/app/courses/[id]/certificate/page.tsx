@@ -409,7 +409,7 @@ export default function CourseCertificatePage({
                   <div className="text-sm font-extrabold text-[#F6F5EE]">
                     {platformInfo.passing_criteria || '25% Assignments + 75% Proctored Exam >= 40%'}
                   </div>
-                  <div className="text-[11px] text-[#7E8078]">Elite / Gold badges for >= 75% / 90%</div>
+                  <div className="text-[11px] text-[#7E8078]">{'Elite / Gold badges for >= 75% / 90%'}</div>
                 </div>
               </div>
 
