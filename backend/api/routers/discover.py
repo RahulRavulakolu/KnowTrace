@@ -196,10 +196,39 @@ def ingest_catalog_course(
             message="Course is already enrolled in your learning workspace.",
         )
 
+    # Disambiguate title if user already has a course with the same title
+    course_title = detail["title"]
+    title_collision = (
+        db.query(Course)
+        .filter(
+            Course.owner_id == user.id,
+            Course.title == course_title,
+        )
+        .first()
+    )
+    if title_collision:
+        inst_label = (detail.get("institution") or request.platform.upper()).strip()
+        candidate = f"{course_title} ({inst_label})"
+        if (
+            not db.query(Course)
+            .filter(Course.owner_id == user.id, Course.title == candidate)
+            .first()
+        ):
+            course_title = candidate
+        else:
+            suffix = 2
+            while (
+                db.query(Course)
+                .filter(Course.owner_id == user.id, Course.title == f"{candidate} #{suffix}")
+                .first()
+            ):
+                suffix += 1
+            course_title = f"{candidate} #{suffix}"
+
     # Create new course in KnowTrace
     new_course = Course(
         owner_id=user.id,
-        title=detail["title"],
+        title=course_title,
         source_platform=request.platform,
         source_id=request.source_id,
         source_url=detail.get("source_url", ""),

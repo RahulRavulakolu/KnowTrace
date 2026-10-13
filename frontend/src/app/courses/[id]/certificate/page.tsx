@@ -16,7 +16,6 @@ import {
   Building2,
   Calendar,
   CreditCard,
-  ArrowRight,
   Video,
   HelpCircle,
   AlertTriangle,
@@ -48,12 +47,24 @@ export default function CourseCertificatePage({
   });
 
   const isEligible = certDetails?.eligible ?? false;
+  const isCourseCompleted = Boolean(
+    isEligible || ((course?.overallMastery ?? 0) >= (course?.targetMastery ?? 80) && (course?.activeMisconceptionsCount ?? 0) === 0)
+  );
 
   const claimMutation = useMutation({
     mutationFn: () => api.claimCertificate(courseId),
     onSuccess: (res) => {
       setClaimSuccessMsg(res.message);
       queryClient.invalidateQueries({ queryKey: ['certificate', courseId] });
+    },
+  });
+
+  const completeMutation = useMutation({
+    mutationFn: () => api.completeCourse(courseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['course', courseId] });
+      queryClient.invalidateQueries({ queryKey: ['certificate', courseId] });
+      queryClient.invalidateQueries({ queryKey: ['concepts', courseId] });
     },
   });
 
@@ -67,8 +78,8 @@ export default function CourseCertificatePage({
   };
 
   const handlePrint = () => {
-    if (!isEligible) {
-      alert('Certificate is locked. You must complete at least 80% of recorded syllabus lectures before you can print the official certificate.');
+    if (!isCourseCompleted) {
+      alert('Certificate is locked. Complete the course or syllabus lectures to print the official certificate.');
       return;
     }
     if (typeof window !== 'undefined') {
@@ -134,13 +145,13 @@ export default function CourseCertificatePage({
     <AppShell courseId={courseId} title="Course Certificate & Accreditation">
       <div className="space-y-8 max-w-6xl mx-auto pb-16">
         {/* Page Hero Header */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-950 via-zinc-900 to-indigo-950 text-white shadow-xl relative overflow-hidden border border-amber-500/20">
+        <div className="no-print p-6 sm:p-8 rounded-3xl bg-gradient-to-br bg-[#141619] text-white shadow-xl relative overflow-hidden border border-amber-500/20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-3 max-w-2xl">
               <div className="flex items-center gap-2 flex-wrap">
-                {isEligible ? (
+                {isCourseCompleted ? (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
                     <Award className="w-3.5 h-3.5 text-emerald-400" />
                     Verified & Unlocked
@@ -164,22 +175,27 @@ export default function CourseCertificatePage({
             </div>
 
             <div className="shrink-0 flex flex-col sm:flex-row md:flex-col gap-3">
-              <button
-                onClick={handlePrint}
-                disabled={!isEligible}
-                className={`px-4 py-2.5 rounded-xl border text-xs font-bold inline-flex items-center justify-center gap-2 transition-all ${
-                  isEligible
-                    ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white cursor-pointer'
-                    : 'bg-zinc-800/60 border-zinc-700/60 text-zinc-400 cursor-not-allowed opacity-75'
-                }`}
-                title={!isEligible ? 'Certificate locked until syllabus is completed' : 'Print Certificate'}
-              >
-                {isEligible ? <Printer className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-                <span>{isEligible ? 'Print Certificate' : 'Certificate Locked'}</span>
-              </button>
+              {isCourseCompleted ? (
+                <button
+                  onClick={handlePrint}
+                  className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-extrabold inline-flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print Certificate</span>
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 text-xs font-bold inline-flex items-center justify-center gap-2 cursor-not-allowed opacity-75"
+                  title="Complete course milestones (>= 80% mastery) to unlock certificate printing"
+                >
+                  <Lock className="w-4 h-4 text-amber-400" />
+                  <span>Certificate Locked</span>
+                </button>
+              )}
               <button
                 onClick={handleCopyLink}
-                className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-zinc-950 text-xs font-extrabold inline-flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
+                className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-all cursor-pointer border border-white/20"
               >
                 {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 <span>{copiedLink ? 'Link Copied!' : 'Share Verification Link'}</span>
@@ -188,19 +204,34 @@ export default function CourseCertificatePage({
           </div>
         </div>
 
+        {claimSuccessMsg && (
+          <div className="no-print p-4 rounded-2xl bg-emerald-950/40 border border-emerald-800 text-emerald-200 text-xs sm:text-sm flex items-center justify-between gap-3 shadow-lg">
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+              <span>{claimSuccessMsg}</span>
+            </div>
+            <button
+              onClick={() => setClaimSuccessMsg(null)}
+              className="text-xs text-emerald-400 hover:underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {/* SECTION 1: HOW TO GET THIS CERTIFICATE (CRITERIA CHECKLIST) */}
-        <section className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+        <section className="no-print space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1D2024] pb-3">
             <div>
-              <h2 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h2 className="text-xl font-extrabold text-[#F6F5EE] flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-[#E06D3B]" />
                 <span>How to Get This Certificate</span>
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-[#7E8078]">
                 Fulfill all 4 core cognitive and syllabus benchmarks to earn your KnowTrace Verified Certificate.
               </p>
             </div>
-            <div className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0 self-start sm:self-auto">
+            <div className="text-xs font-bold px-3 py-1 rounded-full bg-[#E06D3B]/10 text-[#E06D3B] border border-[#1D2024] shrink-0 self-start sm:self-auto font-mono">
               {completedCriteriaCount} of {criteriaList.length} Requirements Met ({certDetails?.overall_progress_pct ?? 0}% Ready)
             </div>
           </div>
@@ -213,52 +244,52 @@ export default function CourseCertificatePage({
                   key={item.key}
                   className={`p-5 rounded-2xl border transition-all ${
                     item.met
-                      ? 'bg-emerald-500/5 border-emerald-500/30 dark:border-emerald-500/20'
-                      : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800'
+                      ? 'bg-emerald-950/20 border-emerald-800/40'
+                      : 'bg-[#141619] border-[#1D2024]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5">
                         {item.met ? (
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                         ) : (
-                          <div className="w-5 h-5 rounded-full border-2 border-zinc-400 dark:border-zinc-600 flex items-center justify-center text-[10px] font-bold text-zinc-500">
+                          <div className="w-5 h-5 rounded-full border-2 border-[#1D2024] flex items-center justify-center text-[10px] font-bold text-[#7E8078]">
                             !
                           </div>
                         )}
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                          <h3 className="text-sm font-bold text-[#F6F5EE]">
                             {item.name}
                           </h3>
                           <span
                             className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
                               item.met
-                                ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
-                                : 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
+                                ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/40'
+                                : 'bg-amber-950/60 text-amber-300 border border-amber-800/40'
                             }`}
                           >
                             {item.met ? 'Satisfied' : 'In Progress'}
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                        <p className="text-xs text-[#7E8078] leading-relaxed">
                           {item.desc}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+                  <div className="mt-4 pt-3 border-t border-[#1D2024] flex items-center justify-between">
                     <div className="text-xs">
-                      <span className="text-zinc-400 font-medium">Current: </span>
-                      <strong className="text-zinc-800 dark:text-zinc-200 font-mono">
+                      <span className="text-[#7E8078] font-medium">Current: </span>
+                      <strong className="text-[#F6F5EE] font-mono">
                         {item.current}
                       </strong>
-                      <span className="text-zinc-400 mx-1.5">•</span>
-                      <span className="text-zinc-400 font-medium">Requirement: </span>
-                      <span className="text-zinc-600 dark:text-zinc-400 font-mono font-medium">
+                      <span className="text-[#7E8078] mx-1.5">•</span>
+                      <span className="text-[#7E8078] font-medium">Requirement: </span>
+                      <span className="text-[#C8C6B9] font-mono font-medium">
                         {item.target}
                       </span>
                     </div>
@@ -266,7 +297,7 @@ export default function CourseCertificatePage({
                     {!item.met && (
                       <Link
                         href={item.actionHref}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/80 text-indigo-700 dark:text-indigo-300 font-bold text-xs transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#E06D3B]/10 hover:bg-[#E06D3B]/20 text-[#E06D3B] border border-[#E06D3B]/30 font-bold text-xs transition-colors cursor-pointer"
                       >
                         <ActionIcon className="w-3.5 h-3.5" />
                         <span>{item.actionLabel}</span>
@@ -279,18 +310,18 @@ export default function CourseCertificatePage({
           </div>
 
           {/* Quick claim banner */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#141619] border border-[#1D2024] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className={`p-2.5 rounded-xl text-white shrink-0 ${isEligible ? 'bg-indigo-600' : 'bg-zinc-600'}`}>
+              <div className={`p-2.5 rounded-xl shrink-0 ${isEligible ? 'bg-[#E06D3B] text-white' : 'bg-[#1D2024] text-[#7E8078]'}`}>
                 {isEligible ? <Award className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
               </div>
               <div>
-                <h4 className="text-sm font-bold text-indigo-950 dark:text-indigo-200">
+                <h4 className="text-sm font-bold text-[#F6F5EE]">
                   {isEligible
                     ? 'Congratulations! You are eligible to claim this certificate.'
                     : 'Certificate Issuance Status: Locked'}
                 </h4>
-                <p className="text-xs text-indigo-800/80 dark:text-indigo-300/80">
+                <p className="text-xs text-[#7E8078]">
                   {isEligible
                     ? 'All requirements are fulfilled. Claim below to stamp your digital credential and generate permanent verification hashes.'
                     : `Syllabus incomplete (${certDetails?.criteria?.lecture_progress?.current ?? 0}% completed). Complete at least 80% of recorded syllabus lectures to unlock.`}
@@ -306,8 +337,8 @@ export default function CourseCertificatePage({
               disabled={!isEligible || claimMutation.isPending}
               className={`px-5 py-2.5 rounded-xl font-extrabold text-xs inline-flex items-center gap-2 transition-all shrink-0 ${
                 isEligible
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md active:scale-95 cursor-pointer'
-                  : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-not-allowed opacity-75'
+                  ? 'bg-[#E06D3B] hover:bg-[#FF9457] text-white shadow-md active:scale-95 cursor-pointer'
+                  : 'bg-[#0C0D0E] border border-[#1D2024] text-[#7E8078] cursor-not-allowed opacity-75'
               }`}
             >
               {isEligible ? <Award className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
@@ -320,89 +351,94 @@ export default function CourseCertificatePage({
               </span>
             </button>
           </div>
-
-          {claimSuccessMsg && (
-            <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs font-medium flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span>{claimSuccessMsg}</span>
-            </div>
-          )}
         </section>
 
-        {/* SECTION 2: OFFICIAL PLATFORM ACCREDITATION & PROCTORED EXAM (NPTEL / SWAYAM / MITx) */}
+        {/* SECTION 2: OFFICIAL PROCTORED CERTIFICATION INFO (NPTEL/EXTERNAL) */}
         {platformInfo && (
-          <section id="official-portal" className="space-y-4">
-            <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-              <h2 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <section className="no-print space-y-4">
+            <div className="border-b border-[#1D2024] pb-3">
+              <h2 className="text-xl font-extrabold text-[#F6F5EE] flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-amber-500" />
-                <span>Official {platformInfo.platform} Proctored Certification Guidelines</span>
+                <span>Official Proctored Certification ({platformInfo.platform})</span>
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Instructions for in-person proctored examination, exam center booking, and university credit transfer.
+              <p className="text-xs text-[#7E8078]">
+                In addition to your KnowTrace Cognitive Credential, register for the official national proctored exam.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 space-y-1">
-                  <div className="flex items-center gap-2 text-zinc-400 text-xs font-semibold">
-                    <Building2 className="w-4 h-4 text-amber-500" />
-                    <span>Exam Format</span>
+            <div className="p-6 rounded-3xl bg-[#141619] border border-[#1D2024] space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-[#0C0D0E] border border-[#1D2024] space-y-1">
+                  <div className="text-[11px] font-bold text-[#7E8078] uppercase flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#E06D3B]" />
+                    Exam Dates
                   </div>
-                  <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 pt-1">
-                    {platformInfo.exam_type}
-                  </p>
+                  <div className="text-sm font-extrabold text-[#F6F5EE]">
+                    {platformInfo.exam_dates || 'October / November 2026'}
+                  </div>
+                  <div className="text-[11px] text-[#7E8078]">In-person at designated test centers</div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 space-y-1">
-                  <div className="flex items-center gap-2 text-zinc-400 text-xs font-semibold">
-                    <Calendar className="w-4 h-4 text-indigo-500" />
-                    <span>Registration Window</span>
+                <div className="p-4 rounded-2xl bg-[#0C0D0E] border border-[#1D2024] space-y-1">
+                  <div className="text-[11px] font-bold text-[#7E8078] uppercase flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-amber-500" />
+                    Registration Deadline
                   </div>
-                  <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 pt-1">
-                    {platformInfo.exam_registration_window}
-                  </p>
+                  <div className="text-sm font-extrabold text-[#F6F5EE]">
+                    {platformInfo.registration_deadline || 'Open on portal'}
+                  </div>
+                  <div className="text-[11px] text-[#7E8078]">Late fee applicable after deadline</div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 space-y-1">
-                  <div className="flex items-center gap-2 text-zinc-400 text-xs font-semibold">
-                    <CreditCard className="w-4 h-4 text-emerald-500" />
-                    <span>Examination Fee</span>
+                <div className="p-4 rounded-2xl bg-[#0C0D0E] border border-[#1D2024] space-y-1">
+                  <div className="text-[11px] font-bold text-[#7E8078] uppercase flex items-center gap-1.5">
+                    <CreditCard className="w-3.5 h-3.5 text-emerald-400" />
+                    Exam Fee
                   </div>
-                  <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 pt-1">
-                    {platformInfo.fee}
-                  </p>
+                  <div className="text-sm font-extrabold text-[#F6F5EE]">
+                    {platformInfo.exam_fee || '₹1,000 / $15'}
+                  </div>
+                  <div className="text-[11px] text-[#7E8078]">Subsidized for SC/ST/PwD candidates</div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 space-y-1">
-                  <div className="flex items-center gap-2 text-zinc-400 text-xs font-semibold">
-                    <Award className="w-4 h-4 text-purple-500" />
-                    <span>Credit Transfer</span>
+                <div className="p-4 rounded-2xl bg-[#0C0D0E] border border-[#1D2024] space-y-1">
+                  <div className="text-[11px] font-bold text-[#7E8078] uppercase flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-purple-400" />
+                    Passing Criteria
                   </div>
-                  <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 pt-1">
-                    {platformInfo.credit_transfer}
-                  </p>
+                  <div className="text-sm font-extrabold text-[#F6F5EE]">
+                    {platformInfo.passing_criteria || '25% Assignments + 75% Proctored Exam >= 40%'}
+                  </div>
+                  <div className="text-[11px] text-[#7E8078]">Elite / Gold badges for >= 75% / 90%</div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-2">
-                <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-300">
-                  Platform Passing Criteria & Verification Formula
-                </h4>
-                <p className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed font-medium">
-                  {platformInfo.eligibility_rule}
-                </p>
-              </div>
+              {/* Guidelines list */}
+              {platformInfo.guidelines && platformInfo.guidelines.length > 0 && (
+                <div className="space-y-2 pt-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#7E8078]">
+                    Portal Registration & In-Person Guidelines
+                  </h4>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-[#C8C6B9]">
+                    {platformInfo.guidelines.map((g: string, i: number) => (
+                      <li key={i} className="flex items-start gap-2 bg-[#0C0D0E] p-3 rounded-xl border border-[#1D2024]">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>{g}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                <div className="text-xs text-zinc-500">
+              <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-[#1D2024]">
+                <div className="text-xs text-[#7E8078]">
                   Register for the official examination directly on the national portal to earn paper-printed hardcopy and QR-verified university certificates.
                 </div>
                 <a
                   href={platformInfo.portal_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 text-white dark:text-zinc-950 font-bold text-xs inline-flex items-center gap-2 transition-all shrink-0 cursor-pointer shadow-xs"
+                  className="px-5 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-xs inline-flex items-center gap-2 transition-all shrink-0 cursor-pointer shadow-xs"
                 >
                   <span>Open {platformInfo.platform} Portal</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -414,36 +450,37 @@ export default function CourseCertificatePage({
 
         {/* SECTION 3: DIGITAL CERTIFICATE PREVIEW CANVAS */}
         <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div className="no-print flex items-center justify-between border-b border-[#1D2024] pb-3">
             <div>
-              <h2 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h2 className="text-xl font-extrabold text-[#F6F5EE] flex items-center gap-2">
                 <Award className="w-5 h-5 text-amber-500" />
                 <span>Certificate of Cognitive Mastery Preview</span>
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                {isEligible
-                  ? 'Cryptographically signed credential with Bayesian knowledge tracing verification.'
-                  : 'Official certificate is locked until at least 80% of the syllabus lectures are completed.'}
+              <p className="text-xs text-[#7E8078]">
+                Cryptographically signed credential with Bayesian knowledge tracing verification.
               </p>
             </div>
-            {isEligible && (
+            {isCourseCompleted ? (
               <button
                 onClick={handlePrint}
-                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
+                className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Print Preview</span>
+                <span>Print Certificate</span>
               </button>
+            ) : (
+              <span className="text-xs font-semibold text-zinc-400 inline-flex items-center gap-1">
+                <Lock className="w-3.5 h-3.5 text-amber-500" />
+                <span>Locked</span>
+              </span>
             )}
           </div>
 
-          {/* Certificate Canvas / Card Wrapper with Locked Overlay */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+          {isCourseCompleted ? (
+            /* Certificate Canvas / Card */
             <div
               id="certificate-print-area"
-              className={`p-8 sm:p-12 bg-radial from-amber-50/60 via-white to-amber-50/30 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-4 border-double border-amber-600/40 dark:border-amber-500/30 relative overflow-hidden transition-all duration-300 ${
-                !isEligible ? 'filter blur-[5px] opacity-25 select-none pointer-events-none' : ''
-              }`}
+              className="p-8 sm:p-12 rounded-3xl bg-radial from-amber-50/60 via-white to-amber-50/30 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-4 border-double border-amber-600/40 dark:border-amber-500/30 shadow-2xl relative overflow-hidden"
             >
               {/* Watermark Logo Accent */}
               <div className="absolute inset-0 flex items-center justify-center opacity-3 dark:opacity-5 pointer-events-none select-none">
@@ -459,58 +496,58 @@ export default function CourseCertificatePage({
               <div className="relative z-10 text-center space-y-6 max-w-3xl mx-auto">
                 {/* Certificate Header */}
                 <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-black tracking-widest uppercase border border-amber-500/20">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-black tracking-widest uppercase border border-amber-500/20">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                     KNOWTRACE ACADEMIC HONORS & COGNITIVE MASTERY
                   </div>
-                  <h3 className="text-3xl sm:text-4xl font-serif font-black tracking-wide text-zinc-900 dark:text-zinc-50 pt-1">
+                  <h3 className="text-3xl sm:text-4xl font-serif font-black tracking-wide text-[#F6F5EE] pt-1">
                     Certificate of Achievement
                   </h3>
-                  <p className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
+                  <p className="text-xs uppercase tracking-widest text-[#7E8078] font-semibold">
                     This is proudly presented to
                   </p>
                 </div>
 
                 {/* Recipient Name */}
                 <div className="py-2 border-b-2 border-dashed border-amber-500/30 max-w-lg mx-auto">
-                  <div className="text-3xl sm:text-4xl font-serif font-bold text-amber-700 dark:text-amber-300 italic tracking-wide">
+                  <div className="text-3xl sm:text-4xl font-serif font-bold text-amber-300 italic tracking-wide">
                     {certDetails?.student?.name || 'Alex Chen'}
                   </div>
                 </div>
 
                 {/* Award Description */}
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed max-w-2xl mx-auto">
+                <p className="text-xs sm:text-sm text-[#C8C6B9] leading-relaxed max-w-2xl mx-auto">
                   for demonstrating verified cognitive proficiency and surpassing rigorous Bayesian knowledge tracing standards in the course
                 </p>
 
                 {/* Course Title & Platform */}
                 <div className="space-y-1">
-                  <div className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[#F6F5EE] tracking-tight">
                     {course?.name || certDetails?.course_name || 'Machine Learning'}
                   </div>
-                  <div className="text-xs font-semibold text-zinc-500">
+                  <div className="text-xs font-semibold text-[#7E8078]">
                     Offered via {certDetails?.source_platform || 'NPTEL'} • {certDetails?.institution || 'IIT Madras'}
                   </div>
                 </div>
 
                 {/* Mastery Grade Badge */}
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-200">
-                  <ShieldCheck className="w-4 h-4 text-amber-600" />
+                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300">
+                  <ShieldCheck className="w-4 h-4 text-amber-500" />
                   <span className="text-xs font-mono font-black">
                     Calibrated Mastery: {course?.overallMastery ?? 82}% • Elite / Distinction
                   </span>
                 </div>
 
                 {/* Signatures & Verification Seal */}
-                <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 items-end gap-6 border-t border-zinc-200/80 dark:border-zinc-800 text-left sm:text-center">
+                <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 items-end gap-6 border-t border-[#1D2024] text-left sm:text-center">
                   <div className="space-y-1">
-                    <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
+                    <div className="font-serif italic text-base text-[#F6F5EE] font-bold border-b border-[#1D2024] pb-1">
                       {certDetails?.instructor || 'Prof. Balaraman Ravindran'}
                     </div>
-                    <div className="text-[11px] font-semibold text-zinc-500">
+                    <div className="text-[11px] font-semibold text-[#7E8078]">
                       Lead Course Instructor
                     </div>
-                    <div className="text-[10px] text-zinc-400">
+                    <div className="text-[10px] text-[#7E8078]">
                       {certDetails?.institution || 'IIT Madras'}
                     </div>
                   </div>
@@ -519,19 +556,19 @@ export default function CourseCertificatePage({
                     <div className="w-16 h-16 rounded-full border-2 border-dashed border-amber-500/60 flex items-center justify-center bg-amber-500/5">
                       <Award className="w-8 h-8 text-amber-500" />
                     </div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">
                       Official Seal
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <div className="font-serif italic text-base text-zinc-800 dark:text-zinc-200 font-bold border-b border-zinc-300 dark:border-zinc-700 pb-1">
+                    <div className="font-serif italic text-base text-[#F6F5EE] font-bold border-b border-[#1D2024] pb-1">
                       KnowTrace Academic Council
                     </div>
-                    <div className="text-[11px] font-semibold text-zinc-500">
+                    <div className="text-[11px] font-semibold text-[#7E8078]">
                       Adaptive Engine Director
                     </div>
-                    <div className="text-[10px] text-zinc-400">
+                    <div className="text-[10px] text-[#7E8078]">
                       Issued: {certDetails?.student?.completion_date || 'October 2026'}
                     </div>
                   </div>
@@ -554,42 +591,87 @@ export default function CourseCertificatePage({
                 </div>
               </div>
             </div>
-
-            {/* Locked Overlay if not eligible */}
-            {!isEligible && (
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 sm:p-10 text-center bg-zinc-950/80 backdrop-blur-md border-2 border-amber-500/30 rounded-3xl">
-                <div className="p-4 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-400 mb-3 shadow-xl">
-                  <Lock className="w-8 h-8" />
-                </div>
-                <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-2">
-                  Prerequisites Required
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
-                  Certificate Locked: Syllabus Incomplete
+          ) : (
+            /* Locked State Card */
+            <div className="no-print p-8 sm:p-12 rounded-3xl bg-zinc-900/60 dark:bg-zinc-900 border border-zinc-800 text-center space-y-6">
+              <div className="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
+                <Lock className="w-8 h-8" />
+              </div>
+              <div className="space-y-2 max-w-md mx-auto">
+                <h3 className="text-lg font-extrabold text-zinc-100">
+                  Certificate Locked — Complete Course to Unlock
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-300 max-w-lg mb-5 leading-relaxed">
-                  You have completed <strong>{certDetails?.criteria?.lecture_progress?.current ?? 0}%</strong> of the syllabus. At least <strong>80%</strong> of course lectures must be completed to unlock and claim your official KnowTrace certificate.
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Your official KnowTrace Certificate of Cognitive Mastery will unlock automatically once you achieve at least 80% concept mastery, complete required lectures, and resolve any active misconceptions.
                 </p>
+              </div>
 
-                {/* Progress bar */}
-                <div className="w-full max-w-xs bg-zinc-800 rounded-full h-2.5 mb-6 overflow-hidden">
+              {/* Progress Summary */}
+              <div className="max-w-md mx-auto p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-left space-y-3">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-400 font-medium">Concept Mastery</span>
+                  <span className="font-mono font-bold text-amber-400">
+                    {course?.overallMastery ?? 65}% / 80% Target
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-amber-500 to-emerald-500 h-2.5 rounded-full transition-all duration-500"
-                    style={{ width: `${Math.min(100, Math.max(5, certDetails?.criteria?.lecture_progress?.current ?? 0))}%` }}
+                    className="h-full bg-amber-500 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(100, (((course?.overallMastery ?? 65) / 80) * 100))}%`,
+                    }}
                   />
                 </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-400 font-medium">Lecture Progress</span>
+                  <span className="font-mono font-bold text-amber-400">
+                    {certDetails?.criteria?.lecture_progress?.current ?? 0}% / 80% Target
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(100, certDetails?.criteria?.lecture_progress?.current ?? 0)}%`,
+                    }}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-[11px] text-zinc-400 pt-1 border-t border-zinc-800/60">
+                  <span>Active Misconceptions</span>
+                  <span className="font-mono font-bold text-zinc-200">
+                    {course?.activeMisconceptionsCount ?? 0} active (0 required)
+                  </span>
+                </div>
+              </div>
 
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Link
+                  href={`/courses/${courseId}/quiz/new`}
+                  className="px-5 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-xs inline-flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+                >
+                  <HelpCircle className="w-4 h-4" />
+                  <span>Take Adaptive Quiz</span>
+                </Link>
                 <Link
                   href={`/courses/${courseId}/lectures`}
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-600 hover:to-indigo-700 text-white font-black text-xs sm:text-sm shadow-xl hover:shadow-2xl transition-all inline-flex items-center gap-2 active:scale-95 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs inline-flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Video className="w-4 h-4" />
-                  <span>Watch Lectures to Unlock ({certDetails?.criteria?.lecture_progress?.current ?? 0}% / 80%)</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>Watch Lectures</span>
                 </Link>
+                <button
+                  onClick={() => completeMutation.mutate()}
+                  disabled={completeMutation.isPending}
+                  className="px-5 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold text-xs inline-flex items-center gap-2 transition-all cursor-pointer"
+                  title="Fast-track to 100% completion for evaluation and testing"
+                >
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>{completeMutation.isPending ? 'Unlocking...' : 'Simulate 100% Course Completion (Demo)'}</span>
+                </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       </div>
     </AppShell>

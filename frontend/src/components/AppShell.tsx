@@ -4,6 +4,7 @@ import React, { useState, createContext, useContext } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { SourceViewerModal } from './SourceViewerModal';
+import { SidebarProvider, useSidebar } from './ui/sidebar';
 import { Citation, Course } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
@@ -24,11 +25,12 @@ export const useCitationViewer = () => useContext(CitationViewerContext);
 interface AppShellProps {
   courseId: string;
   title?: string;
+  fullWidth?: boolean;
   children: React.ReactNode;
 }
 
-export function AppShell({ courseId, title, children }: AppShellProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+function AppShellInner({ courseId, title, fullWidth = false, children }: AppShellProps) {
+  const { open } = useSidebar();
   const [activeCitation, setActiveCitation] = useState<Citation | null>(null);
 
   const { data: course } = useQuery<Course>({
@@ -46,28 +48,39 @@ export function AppShell({ courseId, title, children }: AppShellProps) {
 
   return (
     <CitationViewerContext.Provider value={{ openCitation, closeCitation }}>
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col md:flex-row">
+      <div className="min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col md:flex-row print:bg-white print:p-0 selection:bg-[#E06D3B] selection:text-black">
         {/* Sidebar */}
-        <Sidebar
-          courseId={courseId}
-          courseName={course?.name || 'CS 229 Machine Learning'}
-          activeMisconceptions={course?.activeMisconceptionsCount ?? 2}
-          overallMastery={course?.overallMastery ?? 64}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
-
-        {/* Main Content Area */}
-        <div className="flex-1 md:pl-64 flex flex-col min-w-0 min-h-screen">
-          <Header
+        <div className="print:hidden">
+          <Sidebar
             courseId={courseId}
             courseName={course?.name || 'CS 229 Machine Learning'}
-            title={title}
-            onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
             activeMisconceptions={course?.activeMisconceptionsCount ?? 2}
+            overallMastery={course?.overallMastery ?? 64}
           />
+        </div>
 
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        {/* Main Content Area: smooth transition between full 16rem (pl-64) and mini-bar 4rem (pl-16) on desktop */}
+        <div
+          className={`flex-1 flex flex-col min-w-0 min-h-screen print:min-h-0 print:pl-0 transition-all duration-300 ease-in-out ${
+            open ? 'md:pl-64' : 'md:pl-16'
+          }`}
+        >
+          <div className="print:hidden">
+            <Header
+              courseId={courseId}
+              courseName={course?.name || 'CS 229 Machine Learning'}
+              title={title}
+              activeMisconceptions={course?.activeMisconceptionsCount ?? 2}
+            />
+          </div>
+
+          <main
+            className={`flex-1 p-4 sm:p-6 lg:p-8 print:p-0 w-full transition-all duration-300 ${
+              fullWidth
+                ? 'max-w-none'
+                : 'max-w-[1600px] mx-auto'
+            }`}
+          >
             {children}
           </main>
         </div>
@@ -76,5 +89,13 @@ export function AppShell({ courseId, title, children }: AppShellProps) {
         <SourceViewerModal citation={activeCitation} onClose={closeCitation} />
       </div>
     </CitationViewerContext.Provider>
+  );
+}
+
+export function AppShell(props: AppShellProps) {
+  return (
+    <SidebarProvider defaultOpen={true}>
+      <AppShellInner {...props} />
+    </SidebarProvider>
   );
 }

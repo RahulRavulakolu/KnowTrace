@@ -21,7 +21,7 @@ export function ConfidenceSlider({ value, onChange, disabled = false }: Confiden
   const current = CONFIDENCE_LEVELS.find((l) => l.level === value) || CONFIDENCE_LEVELS[2];
 
   return (
-    <div className="w-full bg-zinc-50 dark:bg-zinc-900/60 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800">
+    <div className="w-full bg-[#0C0D0E]/60 p-4 rounded-xl border border-[#1D2024]">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
           <span>Metacognitive Confidence</span>
@@ -46,7 +46,7 @@ export function ConfidenceSlider({ value, onChange, disabled = false }: Confiden
           value={value}
           disabled={disabled}
           onChange={(e) => onChange(parseInt(e.target.value, 10))}
-          className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full h-2 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#E06D3B] focus:outline-hidden disabled:opacity-50 disabled:cursor-not-allowed"
         />
 
         {/* Level markers */}
@@ -58,7 +58,7 @@ export function ConfidenceSlider({ value, onChange, disabled = false }: Confiden
               disabled={disabled}
               onClick={() => onChange(lvl.level)}
               className={`flex flex-col items-center transition-colors cursor-pointer ${
-                value === lvl.level ? 'text-indigo-600 font-bold dark:text-indigo-400' : 'hover:text-zinc-600 dark:hover:text-zinc-300'
+                value === lvl.level ? 'text-[#E06D3B] font-bold dark:text-[#E06D3B]' : 'hover:text-zinc-600 dark:hover:text-zinc-300'
               }`}
             >
               <span>{lvl.level}</span>

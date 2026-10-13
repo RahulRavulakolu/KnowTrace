@@ -158,6 +158,10 @@ export const api = {
       });
       if (res.ok) {
         const data = await res.json();
+        const courses = getStorage<Record<string, Course>>('courses', {
+          [INITIAL_COURSE.id]: INITIAL_COURSE,
+        });
+        const existingLocal = courses[String(data.id)];
         const course: Course = {
           id: String(data.id),
           name: data.title || 'Course',
@@ -168,8 +172,8 @@ export const api = {
           createdAt: data.created_at ? String(data.created_at).split('T')[0] : new Date().toISOString().split('T')[0],
           materialsCount: 2,
           conceptCount: 6,
-          overallMastery: 65,
-          activeMisconceptionsCount: 0,
+          overallMastery: existingLocal?.overallMastery ?? 65,
+          activeMisconceptionsCount: existingLocal?.activeMisconceptionsCount ?? 0,
           source_platform: data.source_platform,
           source_id: data.source_id,
           source_url: data.source_url,
@@ -178,9 +182,6 @@ export const api = {
           institution: data.institution,
           certificate_available: Boolean(data.certificate_available ?? true),
         };
-        const courses = getStorage<Record<string, Course>>('courses', {
-          [INITIAL_COURSE.id]: INITIAL_COURSE,
-        });
         courses[course.id] = course;
         setStorage('courses', courses);
         return course;
@@ -928,7 +929,9 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
         concepts.reduce((sum, c) => sum + c.mastery, 0) / concepts.length
       );
       course.overallMastery = avgMastery;
-      setStorage('courses', { [course.id]: course });
+      const storedCourses = getStorage<Record<string, Course>>('courses', {});
+      storedCourses[course.id] = { ...course, overallMastery: avgMastery };
+      setStorage('courses', storedCourses);
     }
 
     let detectedMisconception: QuestionFeedbackResult['detectedMisconception'] = undefined;
@@ -964,9 +967,8 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
     };
 
     attempt.results[question.id] = result;
-    if (attempt.currentQuestionIndex < attempt.totalQuestions - 1) {
-      attempt.currentQuestionIndex += 1;
-    } else {
+    const answeredCount = Object.keys(attempt.results).length;
+    if (answeredCount >= attempt.totalQuestions) {
       attempt.completed = true;
       const correctCount = Object.values(attempt.results).filter((r) => r.isCorrect).length;
       attempt.scorePercentage = Math.round((correctCount / attempt.totalQuestions) * 100);
@@ -984,6 +986,43 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
 
     setStorage('quiz_attempt_' + attemptId, attempt);
     return result;
+  },
+
+  async advanceQuizQuestion(attemptId: string): Promise<QuizAttempt | null> {
+    const attempt = await this.getQuizAttempt(attemptId);
+    if (!attempt) return null;
+    if (attempt.currentQuestionIndex < attempt.totalQuestions - 1) {
+      attempt.currentQuestionIndex += 1;
+      setStorage('quiz_attempt_' + attemptId, attempt);
+    }
+    return attempt;
+  },
+
+  async completeCourse(courseId: string): Promise<Course> {
+    const course = await this.getCourse(courseId);
+    course.overallMastery = 88;
+    course.activeMisconceptionsCount = 0;
+    const storedCourses = getStorage<Record<string, Course>>('courses', {});
+    storedCourses[course.id] = { ...course, overallMastery: 88, activeMisconceptionsCount: 0 };
+    setStorage('courses', storedCourses);
+
+    const concepts = await this.getConcepts(courseId);
+    const updatedConcepts = concepts.map((c) => ({
+      ...c,
+      mastery: Math.max(82, c.mastery),
+      uncertainty: 5,
+      forgettingRisk: 'low' as const,
+    }));
+    setStorage('concepts_' + courseId, updatedConcepts);
+
+    const misconceptions = await this.getMisconceptions(courseId);
+    const updatedMisconceptions = misconceptions.map((m) => ({
+      ...m,
+      status: 'resolved' as const,
+    }));
+    setStorage('misconceptions_' + courseId, updatedMisconceptions);
+
+    return storedCourses[course.id];
   },
 
   // --- MISCONCEPTIONS ---
@@ -1674,10 +1713,12 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
       });
       if (res.ok) {
         const raw = await res.json();
-        const rawMastery = typeof raw.overall_mastery === 'number' ? raw.overall_mastery : 82.5;
+        const course = await this.getCourse(courseId);
+        const rawMastery = typeof raw.overall_mastery === 'number' ? raw.overall_mastery : (course.overallMastery ?? 82.5);
         const conceptMet = rawMastery >= 80;
         const examMet = (raw.criteria?.diagnostic_exam?.met ?? true);
-        const misconceptionsMet = (raw.criteria?.critical_misconceptions?.met ?? true);
+        const activeMisc = course.activeMisconceptionsCount ?? 0;
+        const misconceptionsMet = (raw.criteria?.critical_misconceptions?.met ?? (activeMisc === 0));
         const overallEligible = conceptMet && isLectureMet && examMet && misconceptionsMet;
 
         const criteriaObj = {
@@ -1705,7 +1746,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
           critical_misconceptions: {
             name: 'Zero Critical Misconceptions',
             required: 0,
-            current: raw.criteria?.critical_misconceptions?.current || 0,
+            current: raw.criteria?.critical_misconceptions?.current || activeMisc,
             met: misconceptionsMet,
             description: 'Resolve all active cognitive misconceptions detected by KT diagnostic engine.',
           },
@@ -1713,10 +1754,10 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
 
         return {
           course_id: raw.course_id || courseId,
-          course_name: raw.course_name || raw.course_title || 'Course',
-          source_platform: raw.source_platform || raw.platform_info?.platform || 'NPTEL',
-          institution: raw.institution || raw.platform_info?.institution || 'IIT Madras',
-          instructor: raw.instructor || 'Prof. Balaraman Ravindran',
+          course_name: course.name || raw.course_name || raw.course_title || 'Course',
+          source_platform: course.source_platform || raw.source_platform || raw.platform_info?.platform || 'NPTEL',
+          institution: course.institution || raw.institution || raw.platform_info?.institution || 'IIT Madras',
+          instructor: course.instructor || raw.instructor || 'Prof. Balaraman Ravindran',
           certificate_available: Boolean(raw.certificate_available ?? true),
           eligible: overallEligible,
           overall_progress_pct: Math.round((rawMastery + actualLecturePct) / 2),

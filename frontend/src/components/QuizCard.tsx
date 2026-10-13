@@ -69,10 +69,10 @@ export function QuizCard({
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md p-6 sm:p-8 space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-zinc-100 dark:border-zinc-800">
+    <div className="w-full max-w-3xl mx-auto bg-[#141619] rounded-2xl border border-[#1D2024] shadow-md p-6 sm:p-8 space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-2 pb-4 border-b border-[#1D2024]">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300">
+          <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-[#E06D3B]/15 text-[#E06D3B] border border-[#E06D3B]/30">
             Question {currentIndex + 1} of {totalQuestions}
           </span>
           <span
@@ -84,20 +84,20 @@ export function QuizCard({
           </span>
         </div>
 
-        <div className="text-xs font-medium text-zinc-500">
-          Target: <strong className="text-zinc-800 dark:text-zinc-200">{question.conceptName}</strong>
+        <div className="text-xs font-medium text-[#7E8078]">
+          Target: <strong className="text-[#F6F5EE]">{question.conceptName}</strong>
         </div>
       </div>
 
-      <div className="flex items-start gap-2 p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100/80 dark:border-indigo-900/30 text-xs text-indigo-900 dark:text-indigo-200">
-        <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+      <div className="flex items-start gap-2 p-3 rounded-xl bg-[#0C0D0E] border border-[#1D2024] text-xs text-[#F6F5EE]">
+        <Sparkles className="w-4 h-4 text-[#E06D3B] shrink-0 mt-0.5" />
         <div>
           <span className="font-bold">Adaptive Selection Reason: </span>
-          <span className="text-indigo-800 dark:text-indigo-300">{question.whySelectedReason}</span>
+          <span className="text-[#C8C6B9]">{question.whySelectedReason}</span>
         </div>
       </div>
 
-      <div className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
+      <div className="text-base sm:text-lg font-bold text-[#F6F5EE] leading-snug">
         {question.question}
       </div>
 
@@ -115,13 +115,13 @@ export function QuizCard({
               className={`p-4 rounded-xl border transition-all text-sm flex items-start gap-3.5 ${
                 isSubmitted
                   ? isCorrect
-                    ? 'border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-100 font-semibold'
+                    ? 'border-emerald-500 bg-emerald-950/60 text-emerald-200 font-semibold'
                     : isWrongSelection
-                    ? 'border-rose-500 bg-rose-50/60 dark:bg-rose-950/40 text-rose-950 dark:text-rose-100 font-semibold'
-                    : 'border-zinc-200 dark:border-zinc-800 opacity-60'
+                    ? 'border-rose-500 bg-rose-950/60 text-rose-200 font-semibold'
+                    : 'border-[#1D2024] bg-[#0C0D0E] opacity-60 text-[#7E8078]'
                   : isSelected
-                  ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-100 shadow-xs cursor-pointer'
-                  : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer'
+                  ? 'border-[#E06D3B] bg-[#E06D3B]/10 text-[#F6F5EE] shadow-xs cursor-pointer'
+                  : 'border-[#1D2024] bg-[#0C0D0E] hover:border-[#1D2024]/80 hover:bg-[#1A1D21] text-[#C8C6B9] cursor-pointer'
               }`}
             >
               <div
@@ -131,10 +131,10 @@ export function QuizCard({
                       ? 'border-emerald-600 bg-emerald-600 text-white'
                       : isWrongSelection
                       ? 'border-rose-600 bg-rose-600 text-white'
-                      : 'border-zinc-300 dark:border-zinc-700'
+                      : 'border-[#1D2024]'
                     : isSelected
-                    ? 'border-indigo-600 bg-indigo-600 text-white'
-                    : 'border-zinc-300 dark:border-zinc-600'
+                    ? 'border-[#E06D3B] bg-[#E06D3B] text-white'
+                    : 'border-[#1D2024] bg-[#141619]'
                 }`}
               >
                 {isSubmitted ? (
@@ -167,7 +167,7 @@ export function QuizCard({
           {question.hint && (
             <div>
               {showHint ? (
-                <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2">
+                <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-800 text-xs text-amber-200 flex items-start gap-2">
                   <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold">Pedagogical Hint: </span>
@@ -178,7 +178,7 @@ export function QuizCard({
                 <button
                   type="button"
                   onClick={() => setShowHint(true)}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-amber-600 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7E8078] hover:text-[#E06D3B] transition-colors cursor-pointer"
                 >
                   <Lightbulb className="w-3.5 h-3.5" />
                   <span>Need a hint?</span>
@@ -192,7 +192,7 @@ export function QuizCard({
               type="button"
               disabled={!selectedOptionId || isSubmitting}
               onClick={handleSubmit}
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white font-bold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-95"
+              className="px-6 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] disabled:opacity-40 text-white font-bold text-sm font-mono shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-95"
             >
               {isSubmitting ? 'Evaluating...' : 'Submit Answer'}
             </button>
@@ -201,39 +201,39 @@ export function QuizCard({
       )}
 
       {result && (
-        <div className="space-y-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in duration-300">
+        <div className="space-y-4 pt-4 border-t border-[#1D2024] animate-in fade-in duration-300">
           <div
             className={`p-4 rounded-xl flex items-center justify-between ${
               result.isCorrect
-                ? 'bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100'
-                : 'bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-100'
+                ? 'bg-emerald-950/60 border border-emerald-800 text-emerald-200'
+                : 'bg-rose-950/60 border border-rose-800 text-rose-200'
             }`}
           >
             <div className="flex items-center gap-2.5 font-bold text-sm">
               {result.isCorrect ? (
                 <>
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                   <span>Correct Answer! Well done.</span>
                 </>
               ) : (
                 <>
-                  <XCircle className="w-5 h-5 text-rose-600" />
+                  <XCircle className="w-5 h-5 text-rose-400" />
                   <span>Incorrect Answer.</span>
                 </>
               )}
             </div>
 
-            <div className="flex items-center gap-2 bg-white/80 dark:bg-zinc-900/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 font-mono text-xs">
-              <span className="font-semibold text-zinc-600 dark:text-zinc-400">
+            <div className="flex items-center gap-2 bg-[#0C0D0E] px-3 py-1.5 rounded-lg border border-[#1D2024] font-mono text-xs">
+              <span className="font-semibold text-[#7E8078]">
                 {result.conceptName}:
               </span>
-              <span className="text-zinc-500">{result.masteryBefore}%</span>
+              <span className="text-[#7E8078]">{result.masteryBefore}%</span>
               <span>→</span>
               <span
                 className={`font-bold flex items-center gap-0.5 ${
                   result.masteryDelta >= 0
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-rose-600 dark:text-rose-400'
+                    ? 'text-emerald-400'
+                    : 'text-rose-400'
                 }`}
               >
                 {result.masteryDelta >= 0 ? (
@@ -247,27 +247,27 @@ export function QuizCard({
           </div>
 
           {result.detectedMisconception && (
-            <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 text-xs text-amber-950 dark:text-amber-100 flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-xl bg-amber-950/50 border border-amber-800 text-xs text-amber-200 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <span className="font-bold text-amber-900 dark:text-amber-200">
+                <span className="font-bold text-amber-300">
                   Detected Misconception: {result.detectedMisconception.title}
                 </span>
-                <p className="leading-relaxed">{result.detectedMisconception.description}</p>
-                <div className="text-[11px] font-semibold text-amber-700 dark:text-amber-300 pt-1">
+                <p className="leading-relaxed text-[#C8C6B9]">{result.detectedMisconception.description}</p>
+                <div className="text-[11px] font-semibold text-amber-400 pt-1">
                   Added to your personal Misconceptions tab for remediation.
                 </div>
               </div>
             </div>
           )}
 
-          <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 text-xs leading-relaxed space-y-2">
-            <div className="font-bold text-zinc-900 dark:text-zinc-100">Grounded Explanation:</div>
-            <p className="text-zinc-700 dark:text-zinc-300">{result.explanation}</p>
+          <div className="p-4 rounded-xl bg-[#0C0D0E] border border-[#1D2024] text-xs leading-relaxed space-y-2">
+            <div className="font-bold text-[#F6F5EE]">Grounded Explanation:</div>
+            <p className="text-[#C8C6B9]">{result.explanation}</p>
 
             {result.citation && (
               <div className="pt-2 flex items-center gap-2">
-                <span className="text-zinc-400 font-semibold text-[11px]">Cited Source:</span>
+                <span className="text-[#7E8078] font-semibold text-[11px]">Cited Source:</span>
                 <CitationChip citation={result.citation} onClick={onCitationClick} />
               </div>
             )}
@@ -277,7 +277,7 @@ export function QuizCard({
             <button
               type="button"
               onClick={onNext}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-sm font-mono shadow-md transition-all active:scale-95 cursor-pointer"
             >
               <span>{isLastQuestion ? 'View Complete Results' : 'Next Adaptive Question'}</span>
               <ArrowRight className="w-4 h-4" />

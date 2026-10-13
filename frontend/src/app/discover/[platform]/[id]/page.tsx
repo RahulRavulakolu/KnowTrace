@@ -94,7 +94,7 @@ export default function DiscoverCourseDetailPage() {
           </p>
           <Link
             href="/discover"
-            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold"
+            className="px-4 py-2 rounded-xl bg-[#E06D3B] text-white text-xs font-bold"
           >
             Back to Catalog
           </Link>
@@ -119,7 +119,7 @@ export default function DiscoverCourseDetailPage() {
 
         <Link
           href="/discover"
-          className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+          className="text-xs font-semibold text-[#E06D3B] dark:text-[#E06D3B] hover:underline"
         >
           Explore All Courses
         </Link>
@@ -159,7 +159,7 @@ export default function DiscoverCourseDetailPage() {
               href={course.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
+              className="inline-flex items-center gap-1 text-[#E06D3B] dark:text-[#E06D3B] hover:underline font-semibold"
             >
               <span>Original Source Page</span>
               <ExternalLink className="w-3 h-3" />
@@ -184,7 +184,7 @@ export default function DiscoverCourseDetailPage() {
               className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-xs font-bold transition-all shadow-md active:scale-95 ${
                 enrolled
                   ? 'bg-emerald-600 text-white'
-                  : 'bg-indigo-600 hover:bg-indigo-700 text-white hover:shadow-indigo-500/20'
+                  : 'bg-[#E06D3B] hover:bg-[#FF9457] text-white hover:shadow-indigo-500/20'
               }`}
             >
               {enrolling ? (

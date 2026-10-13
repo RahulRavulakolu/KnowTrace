@@ -32,12 +32,12 @@ export function SourceViewerModal({ citation, onClose }: SourceViewerModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-zinc-950/70 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="relative w-full max-w-5xl h-[90vh] bg-[#141619] rounded-2xl shadow-2xl overflow-hidden border border-[#1D2024] flex flex-col">
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors shadow-xs cursor-pointer"
+          className="absolute top-4 right-4 z-50 p-2 rounded-xl bg-[#0C0D0E] hover:bg-[#1D2024] text-[#C8C6B9] hover:text-[#F6F5EE] border border-[#1D2024] transition-colors shadow-xs cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>

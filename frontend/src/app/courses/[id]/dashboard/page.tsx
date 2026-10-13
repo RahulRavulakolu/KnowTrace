@@ -67,214 +67,251 @@ export default function CourseDashboardPage({
   return (
     <AppShell courseId={courseId} title="Learning Dashboard">
       <div className="space-y-8">
-        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-950 to-zinc-950 text-white shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        {/* ASYMMETRIC HORIZON HERO */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#141619] border border-[#1D2024] text-[#F6F5EE] shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#E06D3B]/5 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-xl">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-indigo-200 border border-white/15">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                Adaptive Learning Path Active
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                Welcome back, Alex!
-              </h1>
-              <p className="text-xs sm:text-sm text-indigo-200/80 leading-relaxed">
-                Your estimated exam readiness is at{' '}
-                <strong className="text-white font-mono">{overallMastery}%</strong>. Focus on{' '}
-                <span className="text-amber-300 font-semibold">{course?.name?.includes('Math') ? 'Mathematical Induction' : 'Regularization'}</span> and review the
-                active lecture videos to reach your 85% goal.
-              </p>
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Column: Trajectory & Primary Urgent Action (7 cols) */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E06D3B]/15 text-[#E06D3B] border border-[#E06D3B]/30 font-mono">
+                  <Sparkles className="w-3.5 h-3.5 text-[#E06D3B]" />
+                  Bayesian Calibration Active
+                </span>
+                <span className="text-xs text-[#7E8078] font-mono">
+                  Target: 85% Mastery Goal
+                </span>
+              </div>
+
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#F6F5EE]">
+                  Welcome back, Alex
+                </h1>
+                <p className="text-xs sm:text-sm text-[#C8C6B9] mt-1.5 leading-relaxed max-w-xl">
+                  Estimated exam readiness sits at{' '}
+                  <strong className="text-[#F6F5EE] font-mono font-bold">{overallMastery}%</strong>. Active retention decay detected in core prerequisites.
+                </p>
+              </div>
+
+              {/* High-Impact Next Action Banner */}
+              <div className="p-3.5 rounded-2xl bg-[#0C0D0E] border border-[#1D2024] flex items-center justify-between gap-4 flex-wrap">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#E06D3B]/15 text-[#E06D3B] border border-[#E06D3B]/30 flex items-center justify-center shrink-0">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#7E8078]">
+                      Recommended Next Action
+                    </div>
+                    <div className="text-xs font-bold text-[#F6F5EE]">
+                      Remediate: {weakConcepts[0]?.name || 'Regularization'}
+                    </div>
+                  </div>
+                </div>
+
+                <Link
+                  href={`/courses/${courseId}/quiz/new?concept=${weakConcepts[0]?.id || ''}`}
+                  className="px-4 py-2 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-black text-xs font-bold transition-all shadow-xs inline-flex items-center gap-1.5 active:scale-95"
+                >
+                  <span>Launch Diagnostic</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 shrink-0">
+            {/* Right Column: Unified Quick-Switch Command Matrix (5 cols) */}
+            <div className="lg:col-span-5 grid grid-cols-3 gap-2.5 bg-[#0C0D0E]/60 p-3 rounded-2xl border border-[#1D2024]">
               <Link
                 href={`/courses/${courseId}/lectures`}
-                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-rose-500 flex items-center justify-center text-white group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#E06D3B] group-hover:scale-105 transition-transform">
                   <Video className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold">Lectures</span>
+                <span className="text-[11px] font-semibold text-[#F6F5EE]">Lectures</span>
               </Link>
 
               <Link
                 href={`/courses/${courseId}/tutor`}
-                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-indigo-500 flex items-center justify-center text-white group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#E06D3B] group-hover:scale-105 transition-transform">
                   <BotMessageSquare className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold">Ask Tutor</span>
+                <span className="text-[11px] font-semibold text-[#F6F5EE]">AI Tutor</span>
               </Link>
 
               <Link
                 href={`/courses/${courseId}/quiz/new`}
-                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#E06D3B] group-hover:scale-105 transition-transform">
                   <HelpCircle className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold">Take Quiz</span>
+                <span className="text-[11px] font-semibold text-[#F6F5EE]">Quiz</span>
               </Link>
 
               <Link
                 href={`/courses/${courseId}/map`}
-                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-purple-500 flex items-center justify-center text-white group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#E06D3B] group-hover:scale-105 transition-transform">
                   <Network className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold">Concept Map</span>
+                <span className="text-[11px] font-semibold text-[#F6F5EE]">Map</span>
               </Link>
 
               <Link
                 href={`/courses/${courseId}/plan`}
-                className="p-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-white group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#E06D3B] group-hover:scale-105 transition-transform">
                   <CalendarCheck className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold">Study Plan</span>
+                <span className="text-[11px] font-semibold text-[#F6F5EE]">Plan</span>
               </Link>
 
               <Link
                 href={`/courses/${courseId}/certificate`}
-                className="p-3 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/30 transition-all text-center flex flex-col items-center gap-1.5 group cursor-pointer"
+                className="p-3 rounded-xl bg-[#141619] hover:bg-[#1A1D21] border border-[#1D2024] hover:border-[#D48838]/40 transition-all text-center flex flex-col items-center gap-2 group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-xl bg-amber-400 text-zinc-950 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D21] border border-[#1D2024] flex items-center justify-center text-[#D48838] group-hover:scale-105 transition-transform">
                   <Award className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-amber-200">Certificate</span>
+                <span className="text-[11px] font-semibold text-[#D48838]">Certificate</span>
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-            <div className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
+        {/* COGNITIVE TELEMETRY LEDGER */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-2xl bg-[#141619] border border-[#1D2024] overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-[#1D2024]">
+          {/* Tile 1: Overall Mastery */}
+          <div className="p-5 flex flex-col justify-between">
+            <div className="text-[11px] text-[#7E8078] font-mono font-semibold uppercase tracking-wider mb-2">
               Overall Mastery
             </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-mono font-black text-indigo-600 dark:text-indigo-400">
+            <div className="flex items-baseline justify-between mb-3">
+              <span className="text-3xl font-mono font-black text-[#E06D3B]">
                 {overallMastery}%
               </span>
-              <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-0.5">
-                <TrendingUp className="w-3.5 h-3.5" /> +6% this week
+              <span className="text-[11px] font-semibold text-[#3E8E68] flex items-center gap-0.5 font-mono">
+                <TrendingUp className="w-3.5 h-3.5" /> +6% / wk
               </span>
             </div>
-            <div className="mt-3">
-              <ProgressBar progress={overallMastery} size="sm" showPercentage={false} />
-            </div>
+            <ProgressBar progress={overallMastery} size="sm" showPercentage={false} variant="terracotta" />
           </div>
 
-          <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-            <div className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
-              Weak Concepts
+          {/* Tile 2: Weak Concepts */}
+          <div className="p-5 flex flex-col justify-between">
+            <div className="text-[11px] text-[#7E8078] font-mono font-semibold uppercase tracking-wider mb-2">
+              Weak Concepts (&lt;60%)
             </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-mono font-black text-rose-600 dark:text-rose-400">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-3xl font-mono font-black text-[#C94A44]">
                 {weakConcepts.length}
               </span>
-              <span className="text-[11px] text-zinc-400">Below 60% mark</span>
+              <span className="text-[11px] text-[#7E8078] font-mono">High priority</span>
             </div>
-            <div className="text-xs text-zinc-500 mt-2 truncate">
-              {weakConcepts.map((c) => c.name).join(', ') || 'None detected'}
+            <div className="text-xs text-[#C8C6B9] truncate pt-2 border-t border-[#1D2024]/60">
+              {weakConcepts.map((c) => c.name).join(', ') || 'No weak concepts'}
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-            <div className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
+          {/* Tile 3: Misconceptions */}
+          <div className="p-5 flex flex-col justify-between">
+            <div className="text-[11px] text-[#7E8078] font-mono font-semibold uppercase tracking-wider mb-2">
               Active Misconceptions
             </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-mono font-black text-amber-600 dark:text-amber-400">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-3xl font-mono font-black text-[#D48838]">
                 {activeMisconceptions.length}
               </span>
               <Link
                 href={`/courses/${courseId}/misconceptions`}
-                className="text-[11px] font-bold text-amber-600 hover:underline"
+                className="text-[11px] font-mono font-bold text-[#D48838] hover:text-[#FF9457] transition-colors"
               >
                 Remediate →
               </Link>
             </div>
-            <div className="text-xs text-zinc-500 mt-2 truncate">
-              {activeMisconceptions[0]?.title || 'All clear'}
+            <div className="text-xs text-[#C8C6B9] truncate pt-2 border-t border-[#1D2024]/60">
+              {activeMisconceptions[0]?.title || 'All calibrated'}
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-            <div className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
-              Forgetting Risk
+          {/* Tile 4: Forgetting Risk */}
+          <div className="p-5 flex flex-col justify-between">
+            <div className="text-[11px] text-[#7E8078] font-mono font-semibold uppercase tracking-wider mb-2">
+              Retention Decay
             </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-mono font-black text-rose-500">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-3xl font-mono font-black text-[#C94A44]">
                 {forgettingRiskConcepts.length}
               </span>
-              <span className="text-[11px] text-zinc-400 font-mono">Spaced decay</span>
+              <span className="text-[11px] text-[#7E8078] font-mono">Spaced decay</span>
             </div>
-            <div className="text-xs text-zinc-500 mt-2 truncate">
-              {forgettingRiskConcepts.map((c) => c.name).join(', ') || 'No decay alerts'}
+            <div className="text-xs text-[#C8C6B9] truncate pt-2 border-t border-[#1D2024]/60">
+              {forgettingRiskConcepts.map((c) => c.name).join(', ') || 'Retention stable'}
             </div>
           </div>
         </div>
 
         {/* Certificate Eligibility & Accreditation Card */}
-        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-indigo-500/10 border border-amber-500/30 dark:border-amber-500/20 shadow-sm relative overflow-hidden">
+        <div className="p-5 sm:p-6 rounded-3xl bg-[#141619] border border-[#1D2024] shadow-sm relative overflow-hidden">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
-                  <Award className="w-3.5 h-3.5 text-amber-500" />
-                  Official Certification Available
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D48838]/15 text-[#D48838] border border-[#D48838]/30 font-mono">
+                  <Award className="w-3.5 h-3.5 text-[#D48838]" />
+                  Official Accreditation Pathway
                 </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                <span className="text-xs text-[#7E8078] font-mono">
                   {certDetails?.source_platform || 'NPTEL'} • {certDetails?.institution || 'IIT Madras'}
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-500/20">
-                  {certDetails?.eligible ? 'Criteria Met - Ready to Claim' : `${certDetails?.overall_progress_pct ?? 78}% Overall Progress`}
+                <span className="text-xs px-2.5 py-0.5 rounded-md bg-[#3E8E68]/15 text-[#3E8E68] font-mono font-semibold border border-[#3E8E68]/30">
+                  {certDetails?.eligible ? 'Criteria Met - Ready to Claim' : `${certDetails?.overall_progress_pct ?? 78}% Verified Benchmark`}
                 </span>
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                Course Certificate & Academic Accreditation
+              <h3 className="text-lg font-bold text-[#F6F5EE]">
+                Cognitive Mastery Certification & Accreditation
               </h3>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#C8C6B9] leading-relaxed">
                 Earn an official Verified Certificate of Cognitive Mastery by fulfilling 4 benchmarks (80% Concept Mastery, 80% Lecture Watch Time, 75% Diagnostic Exam, and 0 Misconceptions). Includes {certDetails?.platform_info?.platform || 'NPTEL'} proctored exam center guidelines.
               </p>
 
               {certDetails?.criteria?.concept_mastery && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
-                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.concept_mastery?.met ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300'}`}>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.concept_mastery?.met ? 'bg-[#3E8E68]/10 border-[#3E8E68]/30 text-[#3E8E68]' : 'bg-[#0C0D0E] border-[#1D2024] text-[#C8C6B9]'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold truncate">Mastery</span>
-                      {certDetails.criteria.concept_mastery?.met && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+                      {certDetails.criteria.concept_mastery?.met && <CheckCircle2 className="w-3.5 h-3.5 text-[#3E8E68] shrink-0" />}
                     </div>
-                    <div className="font-mono text-sm font-bold mt-0.5">{certDetails.criteria.concept_mastery?.current}% / {certDetails.criteria.concept_mastery?.required}%</div>
+                    <div className="font-mono text-sm font-bold mt-0.5 text-[#F6F5EE]">{certDetails.criteria.concept_mastery?.current}% / {certDetails.criteria.concept_mastery?.required}%</div>
                   </div>
 
-                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.lecture_progress?.met ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300'}`}>
+                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.lecture_progress?.met ? 'bg-[#3E8E68]/10 border-[#3E8E68]/30 text-[#3E8E68]' : 'bg-[#0C0D0E] border-[#1D2024] text-[#C8C6B9]'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold truncate">Lectures</span>
-                      {certDetails.criteria.lecture_progress?.met && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+                      {certDetails.criteria.lecture_progress?.met && <CheckCircle2 className="w-3.5 h-3.5 text-[#3E8E68] shrink-0" />}
                     </div>
-                    <div className="font-mono text-sm font-bold mt-0.5">{certDetails.criteria.lecture_progress?.current}% / {certDetails.criteria.lecture_progress?.required}%</div>
+                    <div className="font-mono text-sm font-bold mt-0.5 text-[#F6F5EE]">{certDetails.criteria.lecture_progress?.current}% / {certDetails.criteria.lecture_progress?.required}%</div>
                   </div>
 
-                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.diagnostic_exam?.met ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300'}`}>
+                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.diagnostic_exam?.met ? 'bg-[#3E8E68]/10 border-[#3E8E68]/30 text-[#3E8E68]' : 'bg-[#0C0D0E] border-[#1D2024] text-[#C8C6B9]'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold truncate">Exam Score</span>
-                      {certDetails.criteria.diagnostic_exam?.met && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+                      {certDetails.criteria.diagnostic_exam?.met && <CheckCircle2 className="w-3.5 h-3.5 text-[#3E8E68] shrink-0" />}
                     </div>
-                    <div className="font-mono text-sm font-bold mt-0.5">{certDetails.criteria.diagnostic_exam?.current}% / {certDetails.criteria.diagnostic_exam?.required}%</div>
+                    <div className="font-mono text-sm font-bold mt-0.5 text-[#F6F5EE]">{certDetails.criteria.diagnostic_exam?.current}% / {certDetails.criteria.diagnostic_exam?.required}%</div>
                   </div>
 
-                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.critical_misconceptions?.met ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-rose-500/10 border-rose-500/20 text-rose-700 dark:text-rose-300'}`}>
+                  <div className={`p-2.5 rounded-xl border text-xs ${certDetails.criteria.critical_misconceptions?.met ? 'bg-[#3E8E68]/10 border-[#3E8E68]/30 text-[#3E8E68]' : 'bg-[#C94A44]/10 border-[#C94A44]/30 text-[#C94A44]'}`}>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold truncate">Misconceptions</span>
-                      {certDetails.criteria.critical_misconceptions?.met && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+                      {certDetails.criteria.critical_misconceptions?.met && <CheckCircle2 className="w-3.5 h-3.5 text-[#3E8E68] shrink-0" />}
                     </div>
-                    <div className="font-mono text-sm font-bold mt-0.5">{certDetails.criteria.critical_misconceptions?.current} remaining</div>
+                    <div className="font-mono text-sm font-bold mt-0.5 text-[#F6F5EE]">{certDetails.criteria.critical_misconceptions?.current} remaining</div>
                   </div>
                 </div>
               )}
@@ -283,14 +320,14 @@ export default function CourseDashboardPage({
             <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0 w-full sm:w-auto">
               <Link
                 href={`/courses/${courseId}/certificate`}
-                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-zinc-950 font-extrabold text-xs inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-98 text-center"
+                className="px-5 py-3 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-black font-extrabold text-xs inline-flex items-center justify-center gap-2 shadow-md transition-all active:scale-98 text-center"
               >
-                <Award className="w-4 h-4 text-zinc-950" />
-                <span>How to Get Certificate →</span>
+                <Award className="w-4 h-4 text-black" />
+                <span>Certification Roadmap →</span>
               </Link>
               <Link
                 href={`/courses/${courseId}/certificate#official-portal`}
-                className="px-4 py-2.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-amber-500/40 text-zinc-700 dark:text-zinc-300 font-bold text-xs inline-flex items-center justify-center gap-1.5 transition-colors text-center"
+                className="px-4 py-2.5 rounded-xl bg-[#0C0D0E] border border-[#1D2024] hover:border-[#E06D3B]/40 text-[#C8C6B9] hover:text-[#F6F5EE] font-semibold text-xs inline-flex items-center justify-center gap-1.5 transition-colors text-center"
               >
                 <span>Platform Exam Info</span>
               </Link>
@@ -299,16 +336,16 @@ export default function CourseDashboardPage({
         </div>
 
         {activeMisconceptions.length > 0 && (
-          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 flex items-start justify-between flex-wrap gap-4 shadow-xs">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#C94A44]/10 border border-[#C94A44]/30 flex items-start justify-between flex-wrap gap-4 shadow-xs">
             <div className="flex items-start gap-3.5 max-w-2xl">
-              <div className="p-2 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 shrink-0">
+              <div className="p-2 rounded-xl bg-[#C94A44]/20 text-[#C94A44] shrink-0">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-sm font-bold text-amber-900 dark:text-amber-200">
+                <h4 className="text-sm font-bold text-[#F6F5EE]">
                   Active Misconception: {activeMisconceptions[0].title}
                 </h4>
-                <p className="text-xs text-amber-800/90 dark:text-amber-300/80 leading-relaxed">
+                <p className="text-xs text-[#C8C6B9] leading-relaxed">
                   {activeMisconceptions[0].description}
                 </p>
               </div>
@@ -316,28 +353,28 @@ export default function CourseDashboardPage({
 
             <Link
               href={`/courses/${courseId}/misconceptions`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#C94A44] hover:bg-[#C94A44]/80 text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer font-mono"
             >
-              <span>Review 5-Step Remediation</span>
+              <span>5-Step Remediation</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs space-y-4">
+          <div className="lg:col-span-2 p-6 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-2xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                <h3 className="text-sm font-bold text-[#F6F5EE]">
                   Mastery Trajectory Over Time
                 </h3>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-[#7E8078]">
                   Progress across quizzes and adaptive practice sessions
                 </p>
               </div>
               <Link
                 href={`/courses/${courseId}/map`}
-                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                className="text-xs font-mono font-bold text-[#E06D3B] hover:underline"
               >
                 Inspect Graph →
               </Link>
@@ -346,16 +383,16 @@ export default function CourseDashboardPage({
             <MasteryChart />
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs space-y-4 flex flex-col justify-between">
+          <div className="p-6 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-2xs space-y-4 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <CalendarCheck className="w-4 h-4 text-indigo-500" />
-                  <span>Today&apos;s Study Schedule</span>
+                <h3 className="text-sm font-bold text-[#F6F5EE] flex items-center gap-2">
+                  <CalendarCheck className="w-4 h-4 text-[#E06D3B]" />
+                  <span>Today&apos;s Cognitive Schedule</span>
                 </h3>
                 <Link
                   href={`/courses/${courseId}/plan`}
-                  className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                  className="text-xs font-mono font-bold text-[#E06D3B] hover:underline"
                 >
                   Full Plan →
                 </Link>
@@ -372,36 +409,36 @@ export default function CourseDashboardPage({
                   return (
                     <div
                       key={task.id}
-                      className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 space-y-2 text-xs hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors"
+                      className="p-3 rounded-xl bg-[#0C0D0E] border border-[#1D2024] space-y-2 text-xs hover:border-[#E06D3B]/40 transition-colors"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate pr-2">
+                        <span className="font-bold text-[#F6F5EE] truncate pr-2">
                           {task.conceptName}
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-400 shrink-0">
+                        <span className="text-[10px] font-mono text-[#7E8078] shrink-0">
                           {task.durationMinutes}m
                         </span>
                       </div>
-                      <div className="text-[11px] text-zinc-500 flex items-center justify-between">
+                      <div className="text-[11px] text-[#7E8078] flex items-center justify-between">
                         <span className="inline-flex items-center gap-1 font-medium">
                           {task.activity === 'Study' ? (
-                            <Video className="w-3 h-3 text-rose-500" />
+                            <Video className="w-3 h-3 text-[#E06D3B]" />
                           ) : task.activity === 'Practice' ? (
-                            <HelpCircle className="w-3 h-3 text-emerald-500" />
+                            <HelpCircle className="w-3 h-3 text-[#3E8E68]" />
                           ) : (
-                            <CalendarCheck className="w-3 h-3 text-amber-500" />
+                            <CalendarCheck className="w-3 h-3 text-[#D48838]" />
                           )}
-                          <span>{task.activity}</span>
+                          <span className="text-[#C8C6B9]">{task.activity}</span>
                         </span>
-                        <span className="text-[10px] text-zinc-400">{task.timeSlot}</span>
+                        <span className="text-[10px] font-mono text-[#7E8078]">{task.timeSlot}</span>
                       </div>
-                      <div className="pt-1 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/60">
-                        <span className="text-[10px] text-zinc-400 truncate max-w-[140px]">
+                      <div className="pt-1 flex items-center justify-between border-t border-[#1D2024]">
+                        <span className="text-[10px] text-[#7E8078] truncate max-w-[140px]">
                           {task.lectureId ? 'Recorded Lecture' : 'Interactive Practice'}
                         </span>
                         <Link
                           href={targetHref}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/80 text-indigo-700 dark:text-indigo-300 font-semibold text-[11px] transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#141619] hover:bg-[#1A1D21] text-[#E06D3B] font-semibold text-[11px] border border-[#1D2024] hover:border-[#E06D3B]/40 transition-colors cursor-pointer"
                         >
                           {task.lectureId || task.activity === 'Study' ? (
                             <>
@@ -424,7 +461,7 @@ export default function CourseDashboardPage({
 
             <Link
               href={`/courses/${courseId}/plan`}
-              className="w-full mt-4 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-zinc-800 dark:text-zinc-200 hover:text-indigo-600 dark:hover:text-indigo-300 font-bold text-xs text-center transition-colors block"
+              className="w-full mt-4 py-2.5 rounded-xl bg-[#0C0D0E] hover:bg-[#1A1D21] text-[#F6F5EE] border border-[#1D2024] hover:border-[#E06D3B]/40 font-bold text-xs text-center transition-colors block font-mono"
             >
               Continue Today&apos;s Plan
             </Link>
@@ -434,18 +471,18 @@ export default function CourseDashboardPage({
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+              <h3 className="text-base font-bold text-[#F6F5EE]">
                 Concept-Level Knowledge Tracing
               </h3>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-[#7E8078]">
                 Calibrated mastery scores with Bayesian uncertainty bands (±) and forgetting risk
               </p>
             </div>
             <Link
               href={`/courses/${courseId}/quiz/new`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-black text-xs font-bold shadow-xs transition-all active:scale-95"
             >
-              <HelpCircle className="w-3.5 h-3.5" />
+              <HelpCircle className="w-3.5 h-3.5 text-black" />
               <span>Start Diagnostic Quiz</span>
             </Link>
           </div>

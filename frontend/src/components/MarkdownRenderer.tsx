@@ -60,7 +60,7 @@ function renderInlineFormatting(
       return (
         <span
           key={index}
-          className="inline-flex items-center px-1.5 py-0.5 mx-1 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-mono text-[12px] font-medium border border-indigo-200/60 dark:border-indigo-800/60 align-baseline select-all"
+          className="inline-flex items-center px-1.5 py-0.5 mx-1 rounded bg-[#E06D3B]/10 text-[#E06D3B] font-mono text-[12px] font-medium border border-[#1D2024] dark:border-[#1D2024]/60 align-baseline select-all"
         >
           {formatted}
         </span>
@@ -71,7 +71,7 @@ function renderInlineFormatting(
     if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
       const boldText = part.slice(2, -2);
       return (
-        <strong key={index} className="font-bold text-zinc-900 dark:text-zinc-100">
+        <strong key={index} className="font-bold text-[#F6F5EE]">
           {boldText}
         </strong>
       );
@@ -83,7 +83,7 @@ function renderInlineFormatting(
       return (
         <code
           key={index}
-          className="px-1.5 py-0.5 mx-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 font-mono text-xs border border-zinc-200/60 dark:border-zinc-700/60"
+          className="px-1.5 py-0.5 mx-0.5 rounded bg-[#1A1D21] text-[#FF9457] font-mono text-xs border border-[#1D2024]"
         >
           {codeText}
         </code>
@@ -102,7 +102,7 @@ function renderInlineFormatting(
             key={index}
             type="button"
             onClick={() => onCitationClick(matchedCitation)}
-            className="inline-flex items-center gap-0.5 px-1.5 py-0.2 mx-0.5 rounded bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-[11px] font-mono font-bold hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors cursor-pointer border border-indigo-300 dark:border-indigo-700 align-baseline"
+            className="inline-flex items-center gap-0.5 px-1.5 py-0.2 mx-0.5 rounded bg-[#E06D3B]/15 text-[#E06D3B] text-[11px] font-mono font-bold hover:bg-[#E06D3B]/25 transition-colors cursor-pointer border border-[#E06D3B]/40 align-baseline"
             title={`View Source: ${matchedCitation.sourceTitle}`}
           >
             {part}
@@ -112,7 +112,7 @@ function renderInlineFormatting(
       return (
         <span
           key={index}
-          className="inline-block px-1.5 py-0.2 mx-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-[11px] font-mono font-semibold"
+          className="inline-block px-1.5 py-0.2 mx-0.5 rounded bg-[#E06D3B]/10 text-[#E06D3B] text-[11px] font-mono font-semibold"
         >
           {part}
         </span>
@@ -122,7 +122,7 @@ function renderInlineFormatting(
     // Italic: *...*
     if (part.startsWith('*') && part.endsWith('*') && part.length >= 2) {
       return (
-        <em key={index} className="italic text-zinc-700 dark:text-zinc-300">
+        <em key={index} className="italic text-[#C8C6B9]">
           {part.slice(1, -1)}
         </em>
       );
@@ -152,7 +152,7 @@ export function MarkdownRenderer({
         <ol key={`list-${elements.length}`} className="my-2.5 space-y-2 list-none pl-0">
           {currentList.items.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2 text-sm leading-relaxed">
-              <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold font-mono mt-0.5">
+              <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-[#E06D3B]/15 text-[#E06D3B] text-xs font-bold font-mono mt-0.5">
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
@@ -167,7 +167,7 @@ export function MarkdownRenderer({
         <ul key={`list-${elements.length}`} className="my-2.5 space-y-1.5 list-none pl-0">
           {currentList.items.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2 text-sm leading-relaxed">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0 mt-2" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E06D3B] shrink-0 mt-2" />
               <div className="flex-1 min-w-0">
                 {renderInlineFormatting(item, citations, onCitationClick)}
               </div>
@@ -218,7 +218,7 @@ export function MarkdownRenderer({
       elements.push(
         <h4
           key={`h4-${i}`}
-          className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mt-3 mb-1"
+          className="text-sm font-bold text-[#F6F5EE] mt-3 mb-1"
         >
           {renderInlineFormatting(line.slice(4), citations, onCitationClick)}
         </h4>
@@ -230,7 +230,7 @@ export function MarkdownRenderer({
       elements.push(
         <h3
           key={`h3-${i}`}
-          className="text-base font-extrabold text-zinc-900 dark:text-zinc-100 mt-3.5 mb-1.5"
+          className="text-base font-extrabold text-[#F6F5EE] mt-3.5 mb-1.5"
         >
           {renderInlineFormatting(line.slice(3), citations, onCitationClick)}
         </h3>
@@ -243,7 +243,7 @@ export function MarkdownRenderer({
       elements.push(
         <blockquote
           key={`quote-${i}`}
-          className="border-l-3 border-indigo-500 pl-3 py-1 my-2 text-xs italic text-zinc-600 dark:text-zinc-300 bg-indigo-50/40 dark:bg-indigo-950/20 rounded-r"
+          className="border-l-3 border-[#E06D3B] pl-3 py-1 my-2 text-xs italic text-[#C8C6B9] bg-[#141619] rounded-r"
         >
           {renderInlineFormatting(line.slice(2), citations, onCitationClick)}
         </blockquote>

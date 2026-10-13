@@ -72,7 +72,7 @@ export default function CourseUploadPage({
             type="button"
             disabled={materials.length === 0}
             onClick={handleStartProcessing}
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] disabled:opacity-40 text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer shrink-0"
           >
             <span>Start Processing ({materials.length} Files)</span>
             <ArrowRight className="w-4 h-4" />
@@ -87,7 +87,7 @@ export default function CourseUploadPage({
         />
 
         {materials.length > 0 && (
-          <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between flex-wrap gap-3">
+          <div className="p-4 rounded-2xl bg-[#141619] border border-[#1D2024] shadow-sm flex items-center justify-between flex-wrap gap-3">
             <div className="text-xs text-zinc-600 dark:text-zinc-400">
               Ready to parse <strong className="text-zinc-900 dark:text-zinc-100">{materials.length} files</strong> into knowledge chunks and multimodal embeddings.
             </div>
@@ -95,7 +95,7 @@ export default function CourseUploadPage({
             <button
               type="button"
               onClick={handleStartProcessing}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] text-white font-bold text-xs shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
             >
               <Play className="w-4 h-4 fill-current" />
               <span>Start Multimodal Processing</span>

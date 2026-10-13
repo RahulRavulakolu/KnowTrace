@@ -54,7 +54,7 @@ export function CatalogCourseCard({
   return (
     <div
       onClick={() => onPreview?.(course)}
-      className="group rounded-[1.75rem] p-1 bg-white/[0.03] border border-white/[0.08] hover:border-indigo-500/40 hover:bg-white/[0.05] transition-all duration-300 shadow-2xl hover:shadow-[0_0_35px_rgba(99,102,241,0.15)] flex flex-col justify-between cursor-pointer text-left"
+      className="group rounded-[1.75rem] p-1 bg-white/[0.03] border border-white/[0.08] hover:border-[#E06D3B]/40 hover:bg-white/[0.05] transition-all duration-300 shadow-2xl hover:shadow-[0_0_35px_rgba(99,102,241,0.15)] flex flex-col justify-between cursor-pointer text-left"
     >
       <div className="rounded-[calc(1.75rem-0.25rem)] bg-[#0C0C14]/95 p-5 sm:p-6 backdrop-blur-xl flex flex-col justify-between h-full border border-white/[0.02] shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
         <div>
@@ -70,7 +70,7 @@ export function CatalogCourseCard({
 
           {/* Institution & Instructor */}
           <div className="flex items-center gap-1.5 text-xs text-[#9E9EA8] font-medium mb-2">
-            <GraduationCap className="w-3.5 h-3.5 text-indigo-400/80 shrink-0" />
+            <GraduationCap className="w-3.5 h-3.5 text-[#E06D3B]/80 shrink-0" />
             <span className="font-semibold text-[#EDEDE8] truncate">
               {course.institution}
             </span>
@@ -162,7 +162,7 @@ export function CatalogCourseCard({
               className={`inline-flex items-center gap-1.5 pl-3.5 pr-2 py-1.5 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
                 enrolled
                   ? 'bg-emerald-600 text-white'
-                  : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] active:scale-95'
+                  : 'bg-[#E06D3B] hover:bg-[#E06D3B] text-white shadow-[0_0_20px_rgba(99,102,241,0.3)] active:scale-95'
               }`}
             >
               {enrolling ? (

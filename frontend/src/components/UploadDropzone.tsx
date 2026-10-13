@@ -64,7 +64,7 @@ export function UploadDropzone({
   const getIcon = (type: MaterialType) => {
     switch (type) {
       case 'pdf':
-        return <FileText className="w-5 h-5 text-indigo-500" />;
+        return <FileText className="w-5 h-5 text-[#E06D3B]" />;
       case 'ppt':
       case 'pptx':
         return <Presentation className="w-5 h-5 text-amber-500" />;
@@ -82,8 +82,8 @@ export function UploadDropzone({
         onClick={() => fileInputRef.current?.click()}
         className={`relative p-8 sm:p-12 rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center text-center cursor-pointer ${
           isDragging
-            ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/30 scale-[1.01]'
-            : 'border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-indigo-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/60'
+            ? 'border-[#E06D3B] bg-[#E06D3B]/10 scale-[1.01]'
+            : 'border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-[#E06D3B]/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/60'
         }`}
       >
         <input
@@ -95,7 +95,7 @@ export function UploadDropzone({
           onChange={(e) => processFiles(e.target.files)}
         />
 
-        <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 shadow-xs">
+        <div className="w-16 h-16 rounded-2xl bg-[#E06D3B]/10 flex items-center justify-center text-[#E06D3B] mb-4 shadow-xs">
           <UploadCloud className="w-8 h-8" />
         </div>
 
@@ -103,7 +103,7 @@ export function UploadDropzone({
           Drag & Drop Files Here
         </h3>
         <p className="text-xs text-zinc-500 mb-4 max-w-sm">
-          or <span className="text-indigo-600 dark:text-indigo-400 font-semibold underline">Browse your computer</span> to upload textbooks, lecture slides, and videos
+          or <span className="text-[#E06D3B] font-semibold underline">Browse your computer</span> to upload textbooks, lecture slides, and videos
         </p>
 
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400 font-mono">
@@ -111,14 +111,14 @@ export function UploadDropzone({
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border border-indigo-100 dark:border-indigo-900/40">
+      <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r bg-[#141619] border border-[#1D2024]">
         <div className="flex items-center gap-3">
-          <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+          <Sparkles className="w-5 h-5 text-[#E06D3B] shrink-0" />
           <div className="text-xs">
-            <span className="font-bold text-indigo-950 dark:text-indigo-200">
+            <span className="font-bold text-[#F6F5EE]">
               Need sample lecture materials?
             </span>
-            <p className="text-indigo-700/80 dark:text-indigo-300/80">
+            <p className="text-[#C8C6B9]">
               1-click load real CS 229 Machine Learning slides, notes, and video session.
             </p>
           </div>
@@ -126,7 +126,7 @@ export function UploadDropzone({
         <button
           type="button"
           onClick={onPreloadDemoFiles}
-          className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition-colors shrink-0 cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-[#E06D3B] hover:bg-[#FF9457] text-white text-xs font-semibold shadow-xs transition-colors shrink-0 cursor-pointer"
         >
           Load Demo Materials
         </button>
@@ -138,7 +138,7 @@ export function UploadDropzone({
         </h4>
 
         {materials.length === 0 ? (
-          <div className="p-6 text-center text-xs text-zinc-400 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900">
+          <div className="p-6 text-center text-xs text-zinc-400 border border-[#1D2024] rounded-xl bg-[#141619]">
             No files staged for processing yet.
           </div>
         ) : (
@@ -146,7 +146,7 @@ export function UploadDropzone({
             {materials.map((file) => (
               <div
                 key={file.id}
-                className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
+                className="flex items-center justify-between p-3.5 rounded-xl border border-[#1D2024] bg-[#141619] shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="p-2 rounded-lg bg-zinc-50 dark:bg-zinc-800">

@@ -62,21 +62,21 @@ export default function QuizSetupPage({
     <AppShell courseId={courseId} title="Configure Adaptive Quiz">
       <div className="max-w-3xl mx-auto space-y-6">
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#E06D3B]">
             Diagnostic & Practice Engine
           </span>
-          <h1 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 mt-0.5">
+          <h1 className="text-2xl font-extrabold text-[#F6F5EE] mt-0.5">
             Configure Your Quiz Session
           </h1>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-[#7E8078] mt-1">
             Questions adapt in real-time to your confidence and mastery level.
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-8 text-xs">
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#141619] border border-[#1D2024] shadow-md space-y-8 text-xs">
           {/* Quiz Mode Selection */}
           <div>
-            <label className="block font-bold text-zinc-800 dark:text-zinc-200 mb-2">
+            <label className="block font-bold text-[#F6F5EE] mb-2">
               Quiz Evaluation Mode
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -84,15 +84,15 @@ export default function QuizSetupPage({
                 onClick={() => setMode('adaptive')}
                 className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
                   mode === 'adaptive'
-                    ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-100 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300'
+                    ? 'border-[#E06D3B] bg-[#E06D3B]/10 text-[#F6F5EE] shadow-xs'
+                    : 'border-[#1D2024] bg-[#0C0D0E] hover:border-[#1D2024]/80 text-[#C8C6B9]'
                 }`}
               >
-                <div className="flex items-center gap-2 font-bold mb-1 text-sm text-indigo-600 dark:text-indigo-400">
+                <div className="flex items-center gap-2 font-bold mb-1 text-sm text-[#E06D3B]">
                   <Zap className="w-4 h-4 fill-current" />
                   <span>Adaptive Mode (Recommended)</span>
                 </div>
-                <p className="text-zinc-500 text-[11px] leading-relaxed">
+                <p className="text-[#7E8078] text-[11px] leading-relaxed">
                   Selects questions dynamically based on prerequisite mastery, detected misconceptions,
                   and item response difficulty.
                 </p>
@@ -102,15 +102,15 @@ export default function QuizSetupPage({
                 onClick={() => setMode('mock')}
                 className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
                   mode === 'mock'
-                    ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-100 shadow-xs'
-                    : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-300'
+                    ? 'border-[#E06D3B] bg-[#E06D3B]/10 text-[#F6F5EE] shadow-xs'
+                    : 'border-[#1D2024] bg-[#0C0D0E] hover:border-[#1D2024]/80 text-[#C8C6B9]'
                 }`}
               >
-                <div className="flex items-center gap-2 font-bold mb-1 text-sm text-zinc-800 dark:text-zinc-200">
-                  <Target className="w-4 h-4" />
+                <div className="flex items-center gap-2 font-bold mb-1 text-sm text-[#F6F5EE]">
+                  <Target className="w-4 h-4 text-[#E06D3B]" />
                   <span>Mock Exam Simulation</span>
                 </div>
-                <p className="text-zinc-500 text-[11px] leading-relaxed">
+                <p className="text-[#7E8078] text-[11px] leading-relaxed">
                   Fixed set of balanced questions simulating actual exam distribution without intermediate
                   hints.
                 </p>
@@ -121,10 +121,10 @@ export default function QuizSetupPage({
           {/* Question Count */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="font-bold text-zinc-800 dark:text-zinc-200">
+              <label className="font-bold text-[#F6F5EE]">
                 Number of Questions
               </label>
-              <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="font-mono font-bold text-[#E06D3B]">
                 {questionCount} Questions (~{questionCount * 2} mins)
               </span>
             </div>
@@ -136,8 +136,8 @@ export default function QuizSetupPage({
                   onClick={() => setQuestionCount(num)}
                   className={`flex-1 py-2 rounded-xl font-bold border transition-all cursor-pointer ${
                     questionCount === num
-                      ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
-                      : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
+                      ? 'bg-[#E06D3B] text-white border-[#E06D3B] shadow-xs'
+                      : 'border-[#1D2024] bg-[#0C0D0E] hover:bg-[#1A1D21] text-[#C8C6B9] hover:text-[#F6F5EE]'
                   }`}
                 >
                   {num}
@@ -149,22 +149,22 @@ export default function QuizSetupPage({
           {/* Concepts Selector */}
           <div>
             <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-              <label className="font-bold text-zinc-800 dark:text-zinc-200">
+              <label className="font-bold text-[#F6F5EE]">
                 Target Concepts ({selectedConcepts.length} selected)
               </label>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={selectWeakOnly}
-                  className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:underline cursor-pointer"
+                  className="text-[11px] font-semibold text-rose-400 hover:underline cursor-pointer"
                 >
                   Weak Only (&lt;60%)
                 </button>
-                <span>•</span>
+                <span className="text-[#7E8078]">•</span>
                 <button
                   type="button"
                   onClick={selectAll}
-                  className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                  className="text-[11px] font-semibold text-[#E06D3B] hover:underline cursor-pointer"
                 >
                   Select All
                 </button>
@@ -182,19 +182,19 @@ export default function QuizSetupPage({
                     onClick={() => toggleConcept(concept.id)}
                     className={`p-3 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
-                        ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-100 shadow-2xs'
-                        : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 text-zinc-600 dark:text-zinc-400'
+                        ? 'border-[#E06D3B] bg-[#E06D3B]/10 text-[#F6F5EE] shadow-2xs'
+                        : 'border-[#1D2024] bg-[#0C0D0E] hover:bg-[#1A1D21] text-[#C8C6B9]'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div
                         className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
-                          isSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-zinc-300'
+                          isSelected ? 'border-[#E06D3B] bg-[#E06D3B] text-white' : 'border-[#1D2024] bg-[#141619]'
                         }`}
                       >
                         {isSelected && <span className="text-[10px] font-bold">✓</span>}
                       </div>
-                      <span className="font-semibold text-xs truncate">{concept.name}</span>
+                      <span className="font-semibold text-xs truncate text-[#F6F5EE]">{concept.name}</span>
                     </div>
 
                     <span
@@ -208,12 +208,12 @@ export default function QuizSetupPage({
             </div>
           </div>
 
-          <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-end">
+          <div className="pt-4 border-t border-[#1D2024] flex justify-end">
             <button
               type="button"
               disabled={selectedConcepts.length === 0 || createMutation.isPending}
               onClick={() => createMutation.mutate()}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white font-bold text-sm shadow-md hover:shadow-indigo-500/25 transition-all active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] disabled:opacity-40 text-white font-bold text-sm shadow-md hover:shadow-[#E06D3B]/20 transition-all active:scale-95 cursor-pointer"
             >
               <span>{createMutation.isPending ? 'Preparing Quiz...' : 'Start Diagnostic Quiz'}</span>
               <ArrowRight className="w-4 h-4" />

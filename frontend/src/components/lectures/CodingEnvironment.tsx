@@ -235,7 +235,7 @@ export function CodingEnvironment({
 
   if (!lecture || !exercise) {
     return (
-      <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center text-xs text-zinc-400">
+      <div className="p-6 rounded-2xl bg-[#141619] border border-[#1D2024] text-center text-xs text-[#7E8078]">
         Select a lecture to open its interactive coding environment.
       </div>
     );
@@ -243,26 +243,27 @@ export function CodingEnvironment({
 
   return (
     <div
-      className={`rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xs overflow-hidden flex flex-col space-y-0 ${
+      className={`rounded-2xl bg-[#141619] border border-[#1D2024] shadow-2xs overflow-hidden flex flex-col space-y-0 ${
         isDragging ? 'select-none' : ''
       }`}
     >
       {/* 1. Header Bar */}
-      <div className="px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 shrink-0">
+      <div className="px-4 py-3 bg-[#1A1D21] border-b border-[#1D2024] flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="p-1.5 rounded-lg bg-[#E06D3B]/10 text-[#E06D3B]">
             <Code2 className="w-4 h-4" />
           </div>
-          <div className="min-w-0 flex items-center gap-2 flex-1">
-            <h3
-              className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate"
-              title={exercise.title}
-            >
-              {exercise.title}
-            </h3>
-            <span className="hidden sm:inline-flex shrink-0 text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono font-semibold uppercase">
-              Python 3.12
-            </span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-bold text-[#F6F5EE] truncate">
+                {exercise.title}
+              </h3>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-800/40 font-mono font-semibold uppercase">
+                Python 3.12
+              </span>
+            </div>
+          </div>
+        </div>
           </div>
         </div>
 
@@ -270,16 +271,16 @@ export function CodingEnvironment({
           <button
             type="button"
             onClick={handleCopy}
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#7E8078] hover:text-[#F6F5EE] hover:bg-[#1D2024] transition-colors cursor-pointer"
             title="Copy Code"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
 
           <button
             type="button"
             onClick={handleReset}
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-[#7E8078] hover:text-[#F6F5EE] hover:bg-[#1D2024] transition-colors cursor-pointer"
             title="Reset to Starter Code"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -289,7 +290,7 @@ export function CodingEnvironment({
             type="button"
             onClick={handleRunCode}
             disabled={isRunning}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#E06D3B] hover:bg-[#FF9457] disabled:opacity-50 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
             title="Run Code (Ctrl + Enter)"
           >
             <Play className={`w-3.5 h-3.5 fill-white ${isRunning ? 'animate-spin' : ''}`} />
@@ -300,7 +301,7 @@ export function CodingEnvironment({
       </div>
 
       {/* 2. Instructions Card */}
-      <div className="p-3.5 bg-zinc-50/50 dark:bg-zinc-900/40 border-b border-zinc-100 dark:border-zinc-800/80 text-xs text-zinc-600 dark:text-zinc-300 space-y-2">
+      <div className="p-3.5 bg-[#141619] border-b border-[#1D2024] text-xs text-[#C8C6B9] space-y-2">
         <p className="leading-relaxed whitespace-pre-line text-[11.5px]">
           {exercise.instructions}
         </p>
@@ -310,7 +311,7 @@ export function CodingEnvironment({
             <button
               type="button"
               onClick={() => setShowHints(!showHints)}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 hover:underline cursor-pointer"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E06D3B] hover:underline cursor-pointer"
             >
               <Lightbulb className="w-3 h-3" />
               <span>{showHints ? 'Hide Hints' : `Show Hints (${exercise.hints.length})`}</span>
@@ -318,10 +319,10 @@ export function CodingEnvironment({
             </button>
 
             {showHints && (
-              <div className="mt-2 p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/60 text-[11px] text-amber-800 dark:text-amber-200 space-y-1">
+              <div className="mt-2 p-2.5 rounded-xl bg-[#E06D3B]/10 border border-[#E06D3B]/30 text-[11px] text-[#FF9457] space-y-1">
                 {exercise.hints.map((hint, idx) => (
                   <div key={idx} className="flex items-start gap-1.5">
-                    <span className="font-bold text-amber-600 dark:text-amber-400">•</span>
+                    <span className="font-bold text-[#E06D3B]">•</span>
                     <span>{hint}</span>
                   </div>
                 ))}
@@ -334,12 +335,12 @@ export function CodingEnvironment({
       {/* 3. Code Editor Area (Adjustable Height) */}
       <div
         style={{ height: `${editorHeight}px` }}
-        className="relative bg-zinc-950 text-zinc-100 font-mono text-xs flex overflow-hidden border-b border-zinc-800/80 transition-[height] duration-75"
+        className="relative bg-[#0C0D0E] text-[#F6F5EE] font-mono text-xs flex overflow-hidden border-b border-[#1D2024] transition-[height] duration-75"
       >
         {/* Line Numbers Gutter */}
         <div
           ref={gutterRef}
-          className="w-9 py-3 select-none text-right pr-2.5 text-zinc-600 bg-zinc-900/50 border-r border-zinc-800/80 text-[11px] leading-5 shrink-0 overflow-hidden font-mono"
+          className="w-9 py-3 select-none text-right pr-2.5 text-[#7E8078] bg-[#141619]/60 border-r border-[#1D2024] text-[11px] leading-5 shrink-0 overflow-hidden font-mono"
         >
           {lineNumbers.map((n) => (
             <div key={n}>{n}</div>
@@ -364,32 +365,32 @@ export function CodingEnvironment({
         onMouseDown={handleMouseDown}
         onDoubleClick={handleResetHeights}
         title="Drag up or down to adjust panel height (Double click to reset)"
-        className={`group relative h-3 bg-zinc-900 hover:bg-zinc-800/90 border-b border-zinc-800 flex items-center justify-center cursor-row-resize select-none transition-colors ${
-          isDragging ? 'bg-indigo-950/80 border-indigo-500/80' : ''
+        className={`group relative h-3 bg-[#141619] hover:bg-[#1A1D21] border-b border-[#1D2024] flex items-center justify-center cursor-row-resize select-none transition-colors ${
+          isDragging ? 'bg-[#1A1D21] border-[#E06D3B]' : ''
         }`}
       >
-        <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-zinc-800/90 group-hover:bg-zinc-700/90 group-hover:text-zinc-200 text-zinc-400 transition-colors shadow-xs">
+        <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#1A1D21] group-hover:bg-[#1D2024] group-hover:text-[#F6F5EE] text-[#7E8078] transition-colors shadow-xs">
           <GripHorizontal className="w-3.5 h-3.5" />
           <span className="text-[9px] uppercase tracking-wider font-semibold">Resize Panels</span>
         </div>
       </div>
 
       {/* 5. Console Output Terminal (Adjustable Height & Collapsible) */}
-      <div className="bg-zinc-950 p-3.5 space-y-2 text-xs font-mono">
-        <div className="flex items-center justify-between text-[11px] text-zinc-400 border-b border-zinc-800/80 pb-2">
+      <div className="bg-[#0C0D0E] p-3.5 space-y-2 text-xs font-mono">
+        <div className="flex items-center justify-between text-[11px] text-[#7E8078] border-b border-[#1D2024] pb-2">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setIsTerminalCollapsed(!isTerminalCollapsed)}
-              className="flex items-center gap-1.5 hover:text-zinc-200 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 hover:text-[#F6F5EE] transition-colors cursor-pointer"
               title={isTerminalCollapsed ? 'Expand Terminal' : 'Collapse Terminal'}
             >
-              <Terminal className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="font-bold text-zinc-200">Terminal Output</span>
+              <Terminal className="w-3.5 h-3.5 text-[#E06D3B]" />
+              <span className="font-bold text-[#F6F5EE]">Terminal Output</span>
               {isTerminalCollapsed ? (
-                <ChevronUp className="w-3 h-3 text-zinc-500" />
+                <ChevronUp className="w-3 h-3 text-[#7E8078]" />
               ) : (
-                <ChevronDown className="w-3 h-3 text-zinc-500" />
+                <ChevronDown className="w-3 h-3 text-[#7E8078]" />
               )}
             </button>
 
@@ -406,7 +407,7 @@ export function CodingEnvironment({
             )}
           </div>
 
-          <div className="flex items-center gap-2.5 text-[10px] text-zinc-500">
+          <div className="flex items-center gap-2.5 text-[10px] text-[#7E8078]">
             {output && (
               <>
                 <span className="flex items-center gap-1">
@@ -417,7 +418,7 @@ export function CodingEnvironment({
                 <button
                   type="button"
                   onClick={handleCopyOutput}
-                  className="p-1 rounded hover:text-zinc-200 hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="p-1 rounded hover:text-[#F6F5EE] hover:bg-[#1D2024] transition-colors cursor-pointer"
                   title="Copy Terminal Output"
                 >
                   {copiedOutput ? (
@@ -430,7 +431,7 @@ export function CodingEnvironment({
                 <button
                   type="button"
                   onClick={handleClearOutput}
-                  className="p-1 rounded hover:text-rose-400 hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="p-1 rounded hover:text-rose-400 hover:bg-[#1D2024] transition-colors cursor-pointer"
                   title="Clear Terminal Output"
                 >
                   <Trash2 className="w-3 h-3" />
@@ -438,7 +439,7 @@ export function CodingEnvironment({
               </>
             )}
 
-            <span className="text-zinc-600 hidden sm:inline">Ctrl + Enter to Run</span>
+            <span className="text-[#7E8078] hidden sm:inline">Ctrl + Enter to Run</span>
           </div>
         </div>
 
@@ -446,10 +447,10 @@ export function CodingEnvironment({
         {!isTerminalCollapsed && (
           <div
             style={{ height: `${terminalHeight}px` }}
-            className="overflow-y-auto font-mono text-[11.5px] leading-relaxed text-zinc-300 transition-[height] duration-75 scrollbar-thin pr-1"
+            className="overflow-y-auto font-mono text-[11.5px] leading-relaxed text-[#C8C6B9] transition-[height] duration-75 scrollbar-thin pr-1"
           >
             {isRunning ? (
-              <div className="flex items-center gap-2 text-indigo-400 animate-pulse py-2">
+              <div className="flex items-center gap-2 text-[#E06D3B] animate-pulse py-2">
                 <Play className="w-3.5 h-3.5 animate-spin" />
                 <span>Executing in isolated Python sandbox...</span>
               </div>
@@ -466,11 +467,11 @@ export function CodingEnvironment({
                   </pre>
                 )}
                 {!output.stdout && !output.stderr && (
-                  <span className="text-zinc-500 italic">Program finished with no output.</span>
+                  <span className="text-[#7E8078] italic">Program finished with no output.</span>
                 )}
               </div>
             ) : (
-              <div className="text-zinc-600 italic py-2">
+              <div className="text-[#7E8078] italic py-2">
                 Click &quot;Run Code&quot; to test your algorithm in the sandbox.
               </div>
             )}
@@ -478,14 +479,14 @@ export function CodingEnvironment({
         )}
 
         {/* Footer actions: AI review bridge & Syllabus switch */}
-        <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px]">
+        <div className="pt-2 border-t border-[#1D2024] flex items-center justify-between text-[11px]">
           <Link
             href={`/courses/${courseId}/tutor?prompt=${encodeURIComponent(
               `Here is my code for ${lecture.title} (${exercise.title}):\n\n\`\`\`python\n${code}\n\`\`\`\n\nCan you review this code, explain its time and space complexity, and give feedback?`
             )}`}
-            className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 text-[#E06D3B] hover:text-[#FF9457] font-semibold transition-colors"
           >
-            <Sparkles className="w-3 h-3 text-indigo-400" />
+            <Sparkles className="w-3 h-3 text-[#E06D3B]" />
             <span>Ask AI Tutor to Review Code →</span>
           </Link>
 
@@ -493,7 +494,7 @@ export function CodingEnvironment({
             <button
               type="button"
               onClick={onOpenSyllabus}
-              className="text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+              className="text-[#7E8078] hover:text-[#F6F5EE] transition-colors cursor-pointer"
             >
               View Syllabus ({lecture.order}) 📑
             </button>

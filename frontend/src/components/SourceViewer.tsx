@@ -50,7 +50,7 @@ export function SourceViewer({
   const getDocIcon = (type: MaterialType) => {
     switch (type) {
       case 'pdf':
-        return <BookOpen className="w-5 h-5 text-indigo-500" />;
+        return <BookOpen className="w-5 h-5 text-[#E06D3B]" />;
       case 'ppt':
       case 'pptx':
         return <Presentation className="w-5 h-5 text-amber-500" />;
@@ -82,16 +82,16 @@ export function SourceViewer({
   const totalSlides = document.totalSlides || 32;
 
   return (
-    <div className={`flex flex-col h-full bg-white dark:bg-zinc-900 ${isModal ? 'p-6' : ''}`}>
+    <div className={`flex flex-col h-full bg-[#141619] ${isModal ? 'p-6' : ''}`}>
       {/* Top Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-[#1D2024] mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50">
+          <div className="p-2 rounded-xl bg-[#E06D3B]/10">
             {getDocIcon(document.type)}
           </div>
           <div>
-            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">{document.title}</h2>
-            <div className="text-xs text-zinc-400 flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#F6F5EE]">{document.title}</h2>
+            <div className="text-xs text-[#7E8078] flex items-center gap-2">
               <span className="uppercase font-semibold">{document.type}</span>
               <span>•</span>
               <span>{document.fileSize}</span>
@@ -103,7 +103,7 @@ export function SourceViewer({
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-xl border border-[#1D2024] bg-[#0C0D0E] text-xs font-semibold text-[#C8C6B9] hover:text-[#F6F5EE] hover:bg-[#1D2024] transition-colors cursor-pointer"
           >
             Close Viewer
           </button>
@@ -113,9 +113,9 @@ export function SourceViewer({
       {/* Main View based on type */}
       <div className="flex-1 min-h-[480px]">
         {document.type === 'pdf' && (
-          <div className="flex flex-col h-full bg-zinc-100 dark:bg-zinc-950 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+          <div className="flex flex-col h-full bg-zinc-100 dark:bg-zinc-950 rounded-xl overflow-hidden border border-[#1D2024]">
             {/* PDF Toolbar */}
-            <div className="flex items-center justify-between px-4 py-2.5 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 text-xs">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#141619] border-b border-[#1D2024] text-xs">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-zinc-700 dark:text-zinc-300">
                   PDF Document Viewer
@@ -148,18 +148,18 @@ export function SourceViewer({
 
             {/* Realistic Page Canvas / Paper */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-8 flex justify-center bg-zinc-200/60 dark:bg-zinc-950">
-              <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 shadow-xl rounded-lg p-8 sm:p-12 relative border border-zinc-200 dark:border-zinc-800 min-h-[550px] flex flex-col justify-between">
+              <div className="w-full max-w-2xl bg-[#141619] shadow-xl rounded-lg p-8 sm:p-12 relative border border-[#1D2024] min-h-[550px] flex flex-col justify-between">
                 <div>
                   <div className="border-b border-zinc-100 dark:border-zinc-800 pb-4 mb-6 flex justify-between items-center text-xs text-zinc-400">
                     <span className="font-mono uppercase tracking-wider">{document.title}</span>
                     <span className="font-bold">PAGE {currentPage}</span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4 font-serif">
+                  <h3 className="text-lg font-bold text-[#F6F5EE] mb-4 font-serif">
                     {pageData.heading}
                   </h3>
 
-                  <div className="text-zinc-700 dark:text-zinc-300 text-sm leading-relaxed font-serif space-y-4">
+                  <div className="text-[#C8C6B9] text-sm leading-relaxed font-serif space-y-4">
                     <p className="whitespace-pre-line">{pageData.text}</p>
 
                     {(highlightSnippet || pageData.highlightSnippet) && (
@@ -197,8 +197,8 @@ export function SourceViewer({
         )}
 
         {(document.type === 'ppt' || document.type === 'pptx') && (
-          <div className="flex flex-col h-full bg-zinc-100 dark:bg-zinc-950 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
-            <div className="flex items-center justify-between px-4 py-2.5 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 text-xs">
+          <div className="flex flex-col h-full bg-zinc-100 dark:bg-zinc-950 rounded-xl overflow-hidden border border-[#1D2024]">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#141619] border-b border-[#1D2024] text-xs">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-zinc-700 dark:text-zinc-300">Slide Deck Viewer</span>
                 <span className="text-zinc-400 font-mono">
@@ -229,10 +229,10 @@ export function SourceViewer({
 
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col items-center justify-center">
               <div className="w-full max-w-3xl aspect-video bg-gradient-to-br from-zinc-900 to-zinc-950 text-white rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between border border-zinc-800 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#E06D3B]/10 rounded-full blur-3xl pointer-events-none" />
 
                 <div>
-                  <div className="flex items-center justify-between text-xs text-indigo-400 font-mono mb-2">
+                  <div className="flex items-center justify-between text-xs text-[#E06D3B] font-mono mb-2">
                     <span>{document.title}</span>
                     <span>SLIDE #{slideData.slideNumber}</span>
                   </div>
@@ -243,7 +243,7 @@ export function SourceViewer({
                   <ul className="space-y-3 text-sm sm:text-base text-zinc-300">
                     {slideData.bullets.map((bullet, idx) => (
                       <li key={idx} className="flex items-start gap-2.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#E06D3B] mt-2 shrink-0" />
                         <span>{bullet}</span>
                       </li>
                     ))}
@@ -252,7 +252,7 @@ export function SourceViewer({
 
                 <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400">
                   <span className="font-mono">KnowTrace Visual Grounding System</span>
-                  <span className="px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800 text-[10px] font-semibold">
+                  <span className="px-2 py-0.5 rounded-full bg-[#141619] text-[#E06D3B] border border-[#1D2024] text-[10px] font-semibold">
                     High-Relevance Slide
                   </span>
                 </div>
@@ -314,7 +314,7 @@ function VideoPlayerSection({
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-full gap-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl p-4 overflow-hidden border border-zinc-200 dark:border-zinc-800">
+    <div className="flex flex-col lg:flex-row h-full gap-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl p-4 overflow-hidden border border-[#1D2024]">
       <div className="flex-1 flex flex-col">
         <div className="relative aspect-video bg-black rounded-xl overflow-hidden shadow-lg flex items-center justify-center">
           {document.videoUrl ? (
@@ -353,16 +353,16 @@ function VideoPlayerSection({
           </div>
         </div>
 
-        <div className="mt-4 p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+        <div className="mt-4 p-4 rounded-xl bg-[#141619] border border-[#1D2024]">
           <div className="flex items-center justify-between mb-1 text-xs">
-            <span className="font-bold text-zinc-900 dark:text-zinc-100">
+            <span className="font-bold text-[#F6F5EE]">
               Active Grounded Timestamp
             </span>
-            <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold">
+            <span className="font-mono text-[#E06D3B] font-bold">
               {formatTime(currentTime)}
             </span>
           </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed italic">
+          <p className="text-xs text-[#7E8078] leading-relaxed italic">
             {activeSegment
               ? `"${activeSegment.text}"`
               : 'Click any segment in the transcript to jump directly to that cited lecture timestamp.'}
@@ -370,10 +370,10 @@ function VideoPlayerSection({
         </div>
       </div>
 
-      <div className="w-full lg:w-80 flex flex-col bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-        <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 font-semibold text-xs text-zinc-700 dark:text-zinc-300 flex items-center justify-between">
+      <div className="w-full lg:w-80 flex flex-col bg-[#141619] rounded-xl border border-[#1D2024] overflow-hidden">
+        <div className="p-3 bg-[#0C0D0E] border-b border-[#1D2024] font-semibold text-xs text-[#F6F5EE] flex items-center justify-between">
           <span>Interactive Transcript</span>
-          <span className="text-[10px] text-zinc-400">Synced to Audio</span>
+          <span className="text-[10px] text-[#7E8078]">Synced to Audio</span>
         </div>
 
         <div className="flex-1 overflow-y-auto p-3 space-y-2">
@@ -385,14 +385,14 @@ function VideoPlayerSection({
                 onClick={() => handleSeek(seg.start)}
                 className={`p-2.5 rounded-lg text-xs transition-all cursor-pointer ${
                   isCurrent
-                    ? 'bg-indigo-50 text-indigo-900 dark:bg-indigo-950/60 dark:text-indigo-200 border-l-4 border-indigo-600 font-medium shadow-2xs'
-                    : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/40 text-zinc-600 dark:text-zinc-400'
+                    ? 'bg-[#E06D3B]/10 text-[#F6F5EE] border-l-4 border-[#E06D3B] font-medium shadow-2xs'
+                    : 'hover:bg-[#1D2024]/50 text-[#C8C6B9]'
                 }`}
               >
-                <div className="flex items-center justify-between text-[10px] text-zinc-400 mb-1 font-mono">
+                <div className="flex items-center justify-between text-[10px] text-[#7E8078] mb-1 font-mono">
                   <span>{formatTime(seg.start)}</span>
                   {isCurrent && (
-                    <span className="text-indigo-600 dark:text-indigo-400 font-bold">
+                    <span className="text-[#E06D3B] font-bold">
                       PLAYING NOW
                     </span>
                   )}

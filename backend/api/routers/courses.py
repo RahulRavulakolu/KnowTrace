@@ -165,7 +165,7 @@ def course_graph(course_id: str, db: Session = Depends(get_db)) -> dict:
     topics = db.query(Topic).filter(Topic.course_id == course_id).all()
     concepts = db.query(Concept).join(Topic).filter(Topic.course_id == course_id).all()
     concept_ids = [str(concept.id) for concept in concepts]
-    
+
     # Query mastery if available
     mastery_map = {}
     mastery_rows = db.query(LearnerMastery).filter(LearnerMastery.concept_id.in_(concept_ids)).all()

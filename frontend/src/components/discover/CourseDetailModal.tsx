@@ -140,7 +140,7 @@ export function CourseDetailModal({
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
             <span className="flex items-center gap-1.5 font-bold text-zinc-800 dark:text-zinc-200">
-              <GraduationCap className="w-4 h-4 text-indigo-500" />
+              <GraduationCap className="w-4 h-4 text-[#E06D3B]" />
               {course.institution}
             </span>
             {course.instructor && (
@@ -156,7 +156,7 @@ export function CourseDetailModal({
               href={course.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
+              className="inline-flex items-center gap-1 text-[#E06D3B] hover:underline font-semibold"
             >
               <span>View on {course.source_platform_name}</span>
               <ExternalLink className="w-3 h-3" />
@@ -186,7 +186,7 @@ export function CourseDetailModal({
                 {course.resource_summary.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2"
+                    className="p-3 rounded-xl bg-[#0C0D0E] border border-zinc-200/80 dark:border-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                     <span>{item}</span>
@@ -215,7 +215,7 @@ export function CourseDetailModal({
                       setExpandedModules(all);
                     }
                   }}
-                  className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+                  className="text-xs font-semibold text-[#E06D3B] hover:underline"
                 >
                   Toggle All
                 </button>
@@ -227,7 +227,7 @@ export function CourseDetailModal({
                 Loading syllabus structure...
               </div>
             ) : modules.length === 0 ? (
-              <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500 text-center">
+              <div className="p-4 rounded-xl bg-[#0C0D0E] border border-[#1D2024] text-xs text-zinc-500 text-center">
                 Module list is available directly on the original course page at {course.source_platform_name}.
               </div>
             ) : (
@@ -237,7 +237,7 @@ export function CourseDetailModal({
                   return (
                     <div
                       key={idx}
-                      className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 overflow-hidden"
+                      className="rounded-2xl border border-[#1D2024] bg-[#141619]/60 overflow-hidden"
                     >
                       <button
                         type="button"
@@ -332,7 +332,7 @@ export function CourseDetailModal({
               className={`inline-flex items-center gap-2 pl-4 pr-2.5 py-2 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer ${
                 enrolled
                   ? 'bg-emerald-600 text-white'
-                  : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_20px_rgba(99,102,241,0.35)]'
+                  : 'bg-[#E06D3B] hover:bg-[#E06D3B] text-white shadow-[0_0_20px_rgba(99,102,241,0.35)]'
               }`}
             >
               {enrolling ? (
