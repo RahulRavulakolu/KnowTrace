@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { AppShell } from '@/components/AppShell';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Course, CourseCertificateDetails } from '@/types';
 import { useAuth } from '@/context/AuthContext';
+import { Course, CourseCertificateDetails } from '@/types';
 import {
   Award,
   CheckCircle2,
@@ -34,7 +34,6 @@ export default function CourseCertificatePage({
   const courseId = resolvedParams.id;
   const queryClient = useQueryClient();
 
-  const { user } = useAuth();
   const [copiedLink, setCopiedLink] = useState(false);
   const [claimSuccessMsg, setClaimSuccessMsg] = useState<string | null>(null);
 
@@ -47,6 +46,19 @@ export default function CourseCertificatePage({
     queryKey: ['certificate', courseId],
     queryFn: () => api.getCertificate(courseId),
   });
+
+  const { user } = useAuth();
+
+  const rawStudentName =
+    user?.name ||
+    (user?.email ? user.email.split('@')[0] : null) ||
+    (certDetails?.student?.name && !certDetails.student.name.toLowerCase().includes('alex')
+      ? certDetails.student.name
+      : null) ||
+    'Learner';
+
+  const studentName =
+    rawStudentName.charAt(0).toUpperCase() + rawStudentName.slice(1);
 
   const isEligible = certDetails?.eligible ?? false;
   const isCourseCompleted = Boolean(
@@ -513,7 +525,7 @@ export default function CourseCertificatePage({
                 {/* Recipient Name */}
                 <div className="py-2 border-b-2 border-dashed border-amber-500/30 max-w-lg mx-auto">
                   <div className="text-3xl sm:text-4xl font-serif font-bold text-amber-300 italic tracking-wide">
-                    {(user?.name || user?.email?.split('@')[0]) || certDetails?.student?.name || 'Alex Chen'}
+                    {studentName}
                   </div>
                 </div>
 
