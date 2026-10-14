@@ -8,7 +8,7 @@ import { Logo } from './Logo';
 
 interface TutorChatProps {
   messages: TutorMessage[];
-  onSendMessage: (text: string, allowOutsideKnowledge: boolean) => Promise<void>;
+  onSendMessage: (text: string, allowOutsideKnowledge: boolean) => Promise<any>;
   onCitationClick?: (citation: Citation) => void;
   isLoading?: boolean;
 }

@@ -105,15 +105,17 @@ def course_graph(
         for i in range(len(concepts) - 1):
             src_c = str(concepts[i].id)
             tgt_c = str(concepts[i + 1].id)
-            edges.append({
-                "id": f"e-seq-{src_c}-{tgt_c}",
-                "from": src_c,
-                "to": tgt_c,
-                "source": src_c,
-                "target": tgt_c,
-                "kind": "requires",
-                "confidence": 0.95,
-            })
+            edges.append(
+                {
+                    "id": f"e-seq-{src_c}-{tgt_c}",
+                    "from": src_c,
+                    "to": tgt_c,
+                    "source": src_c,
+                    "target": tgt_c,
+                    "kind": "requires",
+                    "confidence": 0.95,
+                }
+            )
     edges.extend(
         {
             "id": f"e-confusable-{item.concept_a}-{item.concept_b}",

@@ -618,9 +618,9 @@ export const api = {
         const result = await res.json();
         const mode = result.mode;
         const mappedMode: TutorMessage['mode'] =
-          mode === 'grounded' ? 'source-backed' :
+          mode === 'grounded' || mode === 'source_backed' ? 'source-backed' :
           mode === 'not_covered' ? 'not-covered' :
-          mode === 'outside' ? 'outside-knowledge' : 'partial';
+          mode === 'outside' || mode === 'outside-knowledge' ? 'outside-knowledge' : 'partial';
 
         const citations: Citation[] = (result.sources || []).map((s: { chunk_id?: string; source_id?: string; page?: number; slide?: number; ts_start?: number; ts_end?: number; label?: string; type?: string; snippet?: string }, idx: number) => ({
           id: `cit-${s.chunk_id || idx}`,

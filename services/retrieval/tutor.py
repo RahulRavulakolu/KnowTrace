@@ -98,7 +98,9 @@ def grounded_generation(query: str, chunks: list[Any], student_context: str = ""
         return answer
     sentences = re.split(r"(?<=[.!?])\s+", answer)
     return " ".join(
-        sentence if re.search(r"\[S\d+\]\.?$", sentence.strip()) else f"{sentence.rstrip('.!?')} [S1]."
+        sentence
+        if re.search(r"\[S\d+\]\.?$", sentence.strip())
+        else f"{sentence.rstrip('.!?')} [S1]."
         for sentence in sentences
         if sentence.strip()
     )
@@ -204,14 +206,87 @@ def tutor_pipeline(
     tau: float = 0.35,
 ) -> dict[str, Any]:
     """Execute rewrite, retrieve, rerank, judge, generate, verify, and cite."""
-    rewritten = query_rewrite(query, chat_history)
+    clean_q = re.sub(r"[^\w\s]", "", query.strip().lower())
+    greetings = {
+        "hello",
+        "hi",
+        "hey",
+        "greetings",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "how are you",
+        "who are you",
+        "what can you do",
+        "help",
+        "help me",
+        "thanks",
+        "thank you",
+        "bye",
+        "goodbye",
+    }
+    if clean_q in greetings or clean_q.startswith("hello ") or clean_q.startswith("hi "):
+        course_title = "your course"
+        if db_session:
+            try:
+                from backend.models.db import Course
+
+                c = db_session.get(Course, course_id)
+                if c and c.title:
+                    course_title = c.title
+            except Exception:
+                pass
+        return {
+            "mode": "source_backed",
+            "answer": (
+                f"Hello! I am your AI Course Tutor for {course_title}. "
+                "You can ask me any questions about the lectures, concepts, or problem sets, "
+                "and I will provide source-grounded answers based on your course materials."
+            ),
+            "confidence": {"score": 1.0, "level": "High"},
+            "sources": [],
+            "outside_knowledge_offered": False,
+            "sufficiency": {"verdict": "sufficient", "answerable_part": "Greeting", "missing": ""},
+            "rewritten_query": query,
+        }
+
+    # Only rewrite when there is conversation history and referential pronouns
+    needs_rewrite = bool(
+        chat_history
+        and len(chat_history) > 0
+        and any(
+            w in clean_q.split()
+            for w in [
+                "it",
+                "this",
+                "that",
+                "these",
+                "those",
+                "they",
+                "its",
+                "their",
+                "previous",
+                "earlier",
+            ]
+        )
+    )
+    rewritten = query_rewrite(query, chat_history) if needs_rewrite else query
+
     embedded = embed_chunks([{"text": rewritten}])[0]["embedding"]
     chunks = retrieve(rewritten, embedded, course_id, top_k=30, db_session=db_session)
-    ranked = rerank(rewritten, chunks, top_k=6)
-    sufficiency = sufficiency_judge(rewritten, ranked)
-    answer = grounded_generation(rewritten, ranked, student_context)
-    verified = claim_verification(answer, ranked)
-    sources = citation_resolver(ranked)
+    ranked = rerank(rewritten, chunks, top_k=6) if chunks else []
+    sufficiency = (
+        sufficiency_judge(rewritten, ranked)
+        if ranked
+        else {"verdict": "insufficient", "answerable_part": "", "missing": query}
+    )
+    answer = grounded_generation(rewritten, ranked, student_context) if ranked else "INSUFFICIENT"
+    verified = (
+        claim_verification(answer, ranked)
+        if answer != "INSUFFICIENT"
+        else {"per_sentence": [], "answer": "INSUFFICIENT", "supported_ratio": 0.0}
+    )
+    sources = citation_resolver(ranked) if ranked else []
     scores = [float(getattr(chunk, "_rerank_score", 0.0)) for chunk in ranked]
     confidence = confidence_score(
         scores[0] if scores else 0.0,
@@ -222,17 +297,34 @@ def tutor_pipeline(
     mode = refusal_logic(
         confidence["score"], sufficiency["verdict"], verified["supported_ratio"], tau
     )
-    outside = False
-    if mode == "not_covered" and allow_outside:
-        outside = True
+
+    # When not covered by course materials: answer with clear disclosure that it's not in the course
+    if mode == "not_covered" or answer == "INSUFFICIENT" or not verified["answer"].strip():
         response = call_llm("A", f"{P11_OUTSIDE_KNOWLEDGE}\nQuestion: {query}")
-        answer = f"This is general knowledge, not from your course.\n{response.content.strip()}"
+        outside_content = response.content.strip()
+        disclaimer = "This topic is not covered in your course materials.\n\n"
+        if not outside_content.lower().startswith(
+            "this topic is not"
+        ) and not outside_content.lower().startswith("this is general knowledge"):
+            final_answer = disclaimer + outside_content
+        else:
+            final_answer = outside_content
+        return {
+            "mode": "outside",
+            "answer": final_answer,
+            "confidence": {"score": 0.5, "level": "Medium"},
+            "sources": [],
+            "outside_knowledge_offered": True,
+            "sufficiency": sufficiency,
+            "rewritten_query": rewritten,
+        }
+
     return {
         "mode": mode,
-        "answer": verified["answer"] if not outside else answer,
+        "answer": verified["answer"],
         "confidence": confidence,
         "sources": sources,
-        "outside_knowledge_offered": outside,
+        "outside_knowledge_offered": False,
         "sufficiency": sufficiency,
         "rewritten_query": rewritten,
     }

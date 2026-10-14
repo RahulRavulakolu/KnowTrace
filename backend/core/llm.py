@@ -178,7 +178,13 @@ def _synthesize_grounded_answer(prompt: str) -> str:
             "Lowering the decision threshold captures more actual positives to increase recall, but admits more false positives "
             "which causes precision to decline [S1]."
         )
-    elif "regularization" in q_lower or "l1" in q_lower or "l2" in q_lower or "lasso" in q_lower or "ridge" in q_lower:
+    elif (
+        "regularization" in q_lower
+        or "l1" in q_lower
+        or "l2" in q_lower
+        or "lasso" in q_lower
+        or "ridge" in q_lower
+    ):
         return (
             "Regularization prevents model overfitting by penalizing large parameter weights in the loss objective [S1]. "
             "L2 regularization (Ridge) adds a squared norm penalty that smoothly shrinks coefficients toward zero without setting them to zero [S1]. "
@@ -204,7 +210,8 @@ def _synthesize_grounded_answer(prompt: str) -> str:
             lbl_m = re.match(r"(\[S\d+\])", c)
             lbl = lbl_m.group(1) if lbl_m else "[S1]"
             lines = [
-                ln.strip() for ln in c.splitlines()
+                ln.strip()
+                for ln in c.splitlines()
                 if not ln.startswith("[S")
                 and not ln.startswith("chunk_id=")
                 and not ln.startswith("Course:")
@@ -216,17 +223,32 @@ def _synthesize_grounded_answer(prompt: str) -> str:
             if body:
                 sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", body) if s.strip()]
                 # Pick actual conceptual sentence, not catalog headers
-                good_sents = [s for s in sents if len(s.split()) >= 6 and not s.lower().startswith("unit")]
+                good_sents = [
+                    s for s in sents if len(s.split()) >= 6 and not s.lower().startswith("unit")
+                ]
                 if good_sents:
                     extracted_points.append(f"{good_sents[0].rstrip('.!?')} {lbl}.")
         if extracted_points:
             return " ".join(extracted_points)
 
+    # Check for greetings
+    clean_q = re.sub(r"[^\w\s]", "", q_lower).strip()
+    if clean_q in (
+        "hello",
+        "hi",
+        "hey",
+        "greetings",
+        "good morning",
+        "good evening",
+        "how are you",
+        "who are you",
+    ):
+        return "Hello! I am your AI Course Tutor. Ask me any question about your course materials, lectures, or problem sets!"
+
     topic_phrase = question.rstrip("?.") if question else "the queried concept"
     return (
-        f"Based on your course materials regarding {topic_phrase}, "
-        "the core theoretical foundations, derivations, and problem sets are covered in the assigned curriculum modules [S1]. "
-        "Refer directly to the linked lecture slides and video explanations for in-depth step-by-step demonstrations [S1]."
+        f"This topic regarding '{topic_phrase}' is not covered in your course materials. "
+        "Please ask a question related to your assigned curriculum modules, or enable general knowledge fallback."
     )
 
 
@@ -245,11 +267,13 @@ def _generate_mock_payload_for_schema(
             rewritten_q = q_m.group(1).strip() if q_m else "course question"
             return json.dumps({"query": rewritten_q})
         if "verdict" in props:
-            return json.dumps({
-                "verdict": "sufficient",
-                "answerable_part": "Course materials cover the foundational definition and relationships for this topic.",
-                "missing": "",
-            })
+            return json.dumps(
+                {
+                    "verdict": "sufficient",
+                    "answerable_part": "Course materials cover the foundational definition and relationships for this topic.",
+                    "missing": "",
+                }
+            )
         if "per_sentence" in props:
             ans_m = re.search(r"Answer:\s*(.+?)(?:\n\n|\n\[S|$)", prompt, re.DOTALL | re.IGNORECASE)
             ans = ans_m.group(1).strip() if ans_m else "Analysis grounded in course material [S1]."
@@ -302,72 +326,86 @@ def _call_gemini(
     )
 
     if not is_placeholder and time.time() >= _gemini_rate_limited_until:
+        import concurrent.futures
+
+        import google.generativeai as genai
+
+        genai.configure(api_key=api_key)
+
+        # Build candidate models starting with user configured model
+        primary_model = settings.GEMINI_MODEL
+        candidates = [primary_model]
+        for fallback in ["gemini-3.1-flash-lite", "gemini-flash-latest"]:
+            if fallback not in candidates:
+                candidates.append(fallback)
+
+        full_prompt = prompt
+        if json_schema:
+            schema_hint = ""
+            if isinstance(json_schema, type) and issubclass(json_schema, BaseModel):
+                schema_hint = json.dumps(json_schema.model_json_schema(), indent=2)
+            elif isinstance(json_schema, dict):
+                schema_hint = json.dumps(json_schema, indent=2)
+            full_prompt += f"\n\nReturn strict JSON adhering to schema:\n{schema_hint}"
+
+        contents: List[Any] = [full_prompt]
+        if images:
+            for img in images:
+                if isinstance(img, (str, Path)) and os.path.exists(str(img)):
+                    import PIL.Image
+
+                    contents.append(PIL.Image.open(img))
+                elif isinstance(img, bytes):
+                    import io
+
+                    import PIL.Image
+
+                    contents.append(PIL.Image.open(io.BytesIO(img)))
+
+        gen_kwargs: dict[str, Any] = {"temperature": temperature}
+        if json_schema:
+            gen_kwargs["response_mime_type"] = "application/json"
         try:
-            import google.generativeai as genai
-
-            genai.configure(api_key=api_key)
-            model_name = settings.GEMINI_MODEL
-            model = genai.GenerativeModel(model_name)
-
-            full_prompt = prompt
-            if json_schema:
-                schema_hint = ""
-                if isinstance(json_schema, type) and issubclass(json_schema, BaseModel):
-                    schema_hint = json.dumps(json_schema.model_json_schema(), indent=2)
-                elif isinstance(json_schema, dict):
-                    schema_hint = json.dumps(json_schema, indent=2)
-                full_prompt += f"\n\nReturn strict JSON adhering to schema:\n{schema_hint}"
-
-            contents: List[Any] = [full_prompt]
-            if images:
-                for img in images:
-                    if isinstance(img, (str, Path)) and os.path.exists(str(img)):
-                        import PIL.Image
-
-                        contents.append(PIL.Image.open(img))
-                    elif isinstance(img, bytes):
-                        import io
-
-                        import PIL.Image
-
-                        contents.append(PIL.Image.open(io.BytesIO(img)))
-
-            gen_kwargs: dict[str, Any] = {"temperature": temperature}
-            if json_schema:
-                gen_kwargs["response_mime_type"] = "application/json"
-            try:
-                generation_config = genai.GenerationConfig(**gen_kwargs)
-            except TypeError:
-                generation_config = genai.GenerationConfig(
-                    temperature=temperature,
-                )
-
-            import concurrent.futures
-
-            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                future = executor.submit(model.generate_content, contents, generation_config=generation_config)
-                response = future.result(timeout=6.0)
-
-            content = response.text
-            validated_data = _parse_and_validate(content, json_schema)
-
-            return LLMResponse(
-                content=content,
-                vendor="gemini",
-                model=model_name,
-                data=validated_data,
-                raw_response=response,
+            generation_config = genai.GenerationConfig(**gen_kwargs)
+        except TypeError:
+            generation_config = genai.GenerationConfig(
+                temperature=temperature,
             )
-        except Exception as exc:
-            err_msg = str(exc).lower()
-            if any(term in err_msg for term in ("quota", "429", "resourceexhausted", "deadline")):
-                _gemini_rate_limited_until = time.time() + 180.0
-                logger.warning("Gemini rate limit or quota exceeded; setting cooldown for 3 minutes: %s", exc)
-            else:
-                logger.warning("Gemini API call failed (%s), falling back to grounded mock response.", exc)
+
+        for model_name in candidates:
+            try:
+                model = genai.GenerativeModel(model_name)
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(
+                        model.generate_content, contents, generation_config=generation_config
+                    )
+                    response = future.result(timeout=6.0)
+
+                content = response.text
+                validated_data = _parse_and_validate(content, json_schema)
+
+                return LLMResponse(
+                    content=content,
+                    vendor="gemini",
+                    model=model_name,
+                    data=validated_data,
+                    raw_response=response,
+                )
+            except Exception as exc:
+                err_msg = str(exc).lower()
+                logger.warning("Gemini model %s call failed: %s", model_name, exc)
+                if any(term in err_msg for term in ("quota", "429", "resourceexhausted")):
+                    _gemini_rate_limited_until = time.time() + 180.0
+                    logger.warning("Gemini rate limit exceeded; setting cooldown for 3 minutes.")
+                    break
+                # If 503 or 404 or timeout, try next candidate model
+                continue
+
     elif time.time() < _gemini_rate_limited_until:
-        logger.info("Gemini in cooldown (%.1fs remaining), serving grounded synthesis directly.",
-                    _gemini_rate_limited_until - time.time())
+        logger.info(
+            "Gemini in cooldown (%.1fs remaining), serving grounded synthesis directly.",
+            _gemini_rate_limited_until - time.time(),
+        )
 
     # Mock fallback
     logger.info("Serving grounded fallback response for Vendor A (Gemini).")
@@ -392,9 +430,7 @@ def _call_groq_or_claude(
     """Call Groq Llama or Claude Haiku (Vendor B)."""
     groq_key = settings.GROQ_API_KEY
     has_valid_groq = bool(
-        groq_key
-        and not groq_key.lower().startswith("mock")
-        and "your_" not in groq_key.lower()
+        groq_key and not groq_key.lower().startswith("mock") and "your_" not in groq_key.lower()
     )
 
     if has_valid_groq and not prefer_claude:

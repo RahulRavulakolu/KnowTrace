@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 def __getattr__(name: str):
     if name in ("LLMResponse", "call_llm"):
         import backend.core.llm as _llm
+
         return getattr(_llm, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 

@@ -178,68 +178,78 @@ def course_graph(course_id: str, db: Session = Depends(get_db)) -> dict:
 
     nodes = []
     for topic in topics:
-        nodes.append({
-            "id": str(topic.id),
-            "name": topic.name,
-            "type": "topic",
-            "importance": 1.0,
-        })
+        nodes.append(
+            {
+                "id": str(topic.id),
+                "name": topic.name,
+                "type": "topic",
+                "importance": 1.0,
+            }
+        )
     for idx, concept in enumerate(concepts):
         concept_mastery = mastery_map.get(str(concept.id), {})
         # If no mastery recorded, distribute realistic initial Bayesian mastery
         # to ensure students can test low, medium, and high filters immediately
         default_p = 0.42 if idx % 3 == 0 else (0.62 if idx % 3 == 1 else 0.82)
         p_val = concept_mastery.get("p_eff", default_p)
-        nodes.append({
-            "id": str(concept.id),
-            "name": concept.name,
-            "type": "concept",
-            "topic_id": str(concept.topic_id),
-            "description": concept.description or "",
-            "importance": concept.importance,
-            "p_eff": p_val,
-            "mastery": round(p_val * 100),
-            "n_obs": concept_mastery.get("n_obs", 0),
-        })
+        nodes.append(
+            {
+                "id": str(concept.id),
+                "name": concept.name,
+                "type": "concept",
+                "topic_id": str(concept.topic_id),
+                "description": concept.description or "",
+                "importance": concept.importance,
+                "p_eff": p_val,
+                "mastery": round(p_val * 100),
+                "n_obs": concept_mastery.get("n_obs", 0),
+            }
+        )
 
     edges: list[dict] = []
     # 1. Topic hierarchy edges
     for topic in topics:
         if topic.parent_id:
-            edges.append({
-                "id": f"e-topic-{topic.parent_id}-{topic.id}",
-                "source": str(topic.parent_id),
-                "target": str(topic.id),
-                "from": str(topic.parent_id),
-                "to": str(topic.id),
-                "kind": "contains",
-                "confidence": 1.0,
-            })
+            edges.append(
+                {
+                    "id": f"e-topic-{topic.parent_id}-{topic.id}",
+                    "source": str(topic.parent_id),
+                    "target": str(topic.id),
+                    "from": str(topic.parent_id),
+                    "to": str(topic.id),
+                    "kind": "contains",
+                    "confidence": 1.0,
+                }
+            )
 
     # 2. Topic -> Concept containment edges
     for concept in concepts:
-        edges.append({
-            "id": f"e-contains-{concept.topic_id}-{concept.id}",
-            "source": str(concept.topic_id),
-            "target": str(concept.id),
-            "from": str(concept.topic_id),
-            "to": str(concept.id),
-            "kind": "contains",
-            "confidence": 1.0,
-        })
+        edges.append(
+            {
+                "id": f"e-contains-{concept.topic_id}-{concept.id}",
+                "source": str(concept.topic_id),
+                "target": str(concept.id),
+                "from": str(concept.topic_id),
+                "to": str(concept.id),
+                "kind": "contains",
+                "confidence": 1.0,
+            }
+        )
 
     # 3. Explicit prerequisite edges from database
     relationships = db.query(Prerequisite).filter(Prerequisite.concept_id.in_(concept_ids)).all()
     for edge in relationships:
-        edges.append({
-            "id": f"e-prereq-{edge.prerequisite_id}-{edge.concept_id}",
-            "source": str(edge.prerequisite_id),
-            "target": str(edge.concept_id),
-            "from": str(edge.prerequisite_id),
-            "to": str(edge.concept_id),
-            "kind": edge.kind or "requires",
-            "confidence": edge.confidence,
-        })
+        edges.append(
+            {
+                "id": f"e-prereq-{edge.prerequisite_id}-{edge.concept_id}",
+                "source": str(edge.prerequisite_id),
+                "target": str(edge.concept_id),
+                "from": str(edge.prerequisite_id),
+                "to": str(edge.concept_id),
+                "kind": edge.kind or "requires",
+                "confidence": edge.confidence,
+            }
+        )
 
     # 4. If no explicit prerequisites exist in DB, connect sequential concepts
     # to form a valid, connected DAG
@@ -247,31 +257,39 @@ def course_graph(course_id: str, db: Session = Depends(get_db)) -> dict:
         for i in range(len(concepts) - 1):
             src_c = str(concepts[i].id)
             tgt_c = str(concepts[i + 1].id)
-            edges.append({
-                "id": f"e-seq-{src_c}-{tgt_c}",
-                "source": src_c,
-                "target": tgt_c,
-                "from": src_c,
-                "to": tgt_c,
-                "kind": "requires",
-                "confidence": 0.95,
-            })
+            edges.append(
+                {
+                    "id": f"e-seq-{src_c}-{tgt_c}",
+                    "source": src_c,
+                    "target": tgt_c,
+                    "from": src_c,
+                    "to": tgt_c,
+                    "kind": "requires",
+                    "confidence": 0.95,
+                }
+            )
 
     # 5. Confusable misconceptions
-    for item in db.query(Misconception).filter(
-        Misconception.concept_a.is_not(None),
-        Misconception.concept_b.is_not(None),
-    ).all():
+    for item in (
+        db.query(Misconception)
+        .filter(
+            Misconception.concept_a.is_not(None),
+            Misconception.concept_b.is_not(None),
+        )
+        .all()
+    ):
         if str(item.concept_a) in concept_ids and str(item.concept_b) in concept_ids:
-            edges.append({
-                "id": f"e-confusable-{item.concept_a}-{item.concept_b}",
-                "source": str(item.concept_a),
-                "target": str(item.concept_b),
-                "from": str(item.concept_a),
-                "to": str(item.concept_b),
-                "kind": "confusable",
-                "confidence": 1.0,
-            })
+            edges.append(
+                {
+                    "id": f"e-confusable-{item.concept_a}-{item.concept_b}",
+                    "source": str(item.concept_a),
+                    "target": str(item.concept_b),
+                    "from": str(item.concept_a),
+                    "to": str(item.concept_b),
+                    "kind": "confusable",
+                    "confidence": 1.0,
+                }
+            )
 
     return {"nodes": nodes, "edges": edges}
 

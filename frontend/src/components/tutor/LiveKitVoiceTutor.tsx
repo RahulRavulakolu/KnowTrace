@@ -97,8 +97,8 @@ export function LiveKitVoiceTutor({
         setAgentState('thinking');
 
         try {
-          // Send turn through KnowTrace grounding pipeline
-          const tutorTurn = await onSendMessage(rawText, false);
+          // Send turn through KnowTrace grounding pipeline (allow outside knowledge fallback with disclosure)
+          const tutorTurn = await onSendMessage(rawText, true);
           if (tutorTurn && tutorTurn.text) {
             setMessages((prev) => {
               if (prev.some((m) => m.id === tutorTurn.id)) return prev;
@@ -153,14 +153,17 @@ export function LiveKitVoiceTutor({
 
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        // Clean markdown symbols for cleaner voice recitation
+        // Clean markdown symbols, emojis, and math for cleaner voice recitation
         const plainText = lastMsg.text
           .replace(/\[S\d+\]/g, '')
+          .replace(/[⚠️💡📚🔍]/g, '')
           .replace(/\*\*/g, '')
           .replace(/#+/g, '')
           .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1 over $2')
           .replace(/\\text\{([^}]+)\}/g, '$1')
-          .replace(/\$+/g, '');
+          .replace(/\$+/g, '')
+          .replace(/^[-*•]\s+/gm, '')
+          .trim();
 
         const utterance = new SpeechSynthesisUtterance(plainText);
         utterance.rate = 1.05;

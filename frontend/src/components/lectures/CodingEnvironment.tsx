@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Play,
@@ -81,15 +81,13 @@ export function CodingEnvironment({
   const gutterRef = useRef<HTMLDivElement>(null);
 
   // Track lecture changes to sync starter code
-  const prevLectureIdRef = useRef<string | null>(lecture?.id || null);
-  if (lecture?.id && lecture.id !== prevLectureIdRef.current) {
-    prevLectureIdRef.current = lecture.id;
-    if (exercise) {
+  useEffect(() => {
+    if (lecture?.id && exercise) {
       setCode(exercise.starterCode);
       setOutput(null);
       setShowHints(false);
     }
-  }
+  }, [lecture?.id, exercise]);
 
   // Sync gutter scroll with textarea
   const handleEditorScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
