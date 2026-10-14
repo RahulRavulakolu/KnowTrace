@@ -27,37 +27,14 @@ export function Logo({
 
   const content = (
     <div className={`inline-flex items-center gap-2 select-none ${className}`}>
-      {variant === 'icon' ? (
-        <Image
-          src="/logo-icon.png"
-          alt="KnowTrace"
-          width={96}
-          height={96}
-          className={`${sizeClasses} object-contain transition-transform group-hover:scale-105`}
-          priority={priority}
-        />
-      ) : (
-        <>
-          {/* Light mode logo */}
-          <Image
-            src="/logo.png"
-            alt="KnowTrace — Learn Smarter. Go Deeper."
-            width={270}
-            height={99}
-            className={`${sizeClasses} object-contain dark:hidden transition-transform group-hover:scale-[1.02]`}
-            priority={priority}
-          />
-          {/* Dark mode logo */}
-          <Image
-            src="/logo-dark.png"
-            alt="KnowTrace — Learn Smarter. Go Deeper."
-            width={270}
-            height={99}
-            className={`${sizeClasses} object-contain hidden dark:block transition-transform group-hover:scale-[1.02]`}
-            priority={priority}
-          />
-        </>
-      )}
+      <Image
+        src="/logo.png"
+        alt="KnowTrace"
+        width={270}
+        height={99}
+        className={`${sizeClasses} object-contain transition-transform group-hover:scale-[1.02]`}
+        priority={priority}
+      />
     </div>
   );
 
