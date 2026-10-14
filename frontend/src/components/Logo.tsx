@@ -43,7 +43,7 @@ export function Logo({
             src="/logo.png"
             alt="KnowTrace — Learn Smarter. Go Deeper."
             width={270}
-            height={88}
+            height={99}
             className={`${sizeClasses} object-contain dark:hidden transition-transform group-hover:scale-[1.02]`}
             priority={priority}
           />
@@ -52,7 +52,7 @@ export function Logo({
             src="/logo-dark.png"
             alt="KnowTrace — Learn Smarter. Go Deeper."
             width={270}
-            height={88}
+            height={99}
             className={`${sizeClasses} object-contain hidden dark:block transition-transform group-hover:scale-[1.02]`}
             priority={priority}
           />
