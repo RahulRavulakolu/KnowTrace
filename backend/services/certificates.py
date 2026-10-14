@@ -144,10 +144,17 @@ def get_course_certificate_data(
     # Resolve student
     student_name = "Alex Chen"
     student_id = "KT-4829"
+    if not user_id and course and course.owner_id:
+        user_id = course.owner_id
     if user_id:
         u = db.get(User, user_id)
-        if u and u.name:
-            student_name = u.name
+        if u:
+            if u.name:
+                student_name = u.name
+            elif u.email:
+                student_name = u.email.split("@")[0].capitalize()
+            if u.id:
+                student_id = f"KT-{u.id[:4].upper()}"
 
     # Calculate overall concept mastery from topics/concepts
     topics = db.query(Topic).filter(Topic.course_id == course_id).all()

@@ -9,6 +9,7 @@ import { ProgressBar } from '@/components/ProgressBar';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Course, Concept, Misconception, StudyPlanBlock, CourseCertificateDetails } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 import {
   BotMessageSquare,
   HelpCircle,
@@ -62,6 +63,9 @@ export default function CourseDashboardPage({
   const activeMisconceptions = misconceptions.filter((m) => m.status === 'active');
   const todayTasks = studyPlan.filter((b) => b.day === 'today');
 
+  const { user } = useAuth();
+  const displayName = user?.name || user?.email?.split('@')[0] || 'Learner';
+
   const overallMastery = course?.overallMastery ?? 64;
 
   return (
@@ -86,7 +90,7 @@ export default function CourseDashboardPage({
 
               <div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#F6F5EE]">
-                  Welcome back, Alex
+                  Welcome back, {displayName}
                 </h1>
                 <p className="text-xs sm:text-sm text-[#C8C6B9] mt-1.5 leading-relaxed max-w-xl">
                   Estimated exam readiness sits at{' '}
