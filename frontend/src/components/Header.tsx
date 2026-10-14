@@ -32,7 +32,7 @@ export function Header({
   };
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-[#0C0D0E]/85 backdrop-blur-md border-b border-[#1D2024] px-4 sm:px-6 flex items-center justify-between text-[#F6F5EE]">
+    <header className="sticky top-0 z-30 h-16 w-full bg-[#0C0D0E]/85 backdrop-blur-md border-b border-[#1D2024] px-4 sm:px-6 flex items-center justify-between text-[#F6F5EE]">
       <div className="flex items-center gap-2 sm:gap-3">
         <SidebarTrigger
           onClick={onMenuToggle}

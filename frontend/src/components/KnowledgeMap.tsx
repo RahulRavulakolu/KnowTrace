@@ -224,7 +224,7 @@ export function KnowledgeMap({
   }, [formattedEdges, setEdges]);
 
   return (
-    <div className="w-full h-[650px] bg-[#0C0D0E] rounded-2xl border border-[#1D2024] relative overflow-hidden shadow-xs">
+    <div className="w-full h-[650px] lg:h-[calc(100vh-13rem)] min-h-[620px] bg-[#0C0D0E] rounded-2xl border border-[#1D2024] relative overflow-hidden shadow-xs">
       {/* Top Filter & Legend Bar */}
       <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between flex-wrap gap-2 pointer-events-none">
         {/* Filter Pills */}

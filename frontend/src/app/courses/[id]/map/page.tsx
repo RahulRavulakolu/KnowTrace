@@ -35,7 +35,7 @@ export default function KnowledgeMapPage({
 
   return (
     <AppShell courseId={courseId} title="Interactive Knowledge Graph" fullWidth>
-      <div className="space-y-4">
+      <div className="w-full space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#E06D3B] font-mono">
@@ -51,7 +51,7 @@ export default function KnowledgeMapPage({
         </div>
 
         {graphData ? (
-          <div className="relative">
+          <div className="w-full relative">
             <KnowledgeMap
               graphData={graphData}
               onSelectConcept={(id) => setSelectedConceptId(id)}

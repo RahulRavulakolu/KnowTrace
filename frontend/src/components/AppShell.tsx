@@ -48,7 +48,7 @@ function AppShellInner({ courseId, title, fullWidth = false, children }: AppShel
 
   return (
     <CitationViewerContext.Provider value={{ openCitation, closeCitation }}>
-      <div className="min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col md:flex-row print:bg-white print:p-0 selection:bg-[#E06D3B] selection:text-black">
+      <div className="w-full flex-1 min-h-screen bg-[#0C0D0E] text-[#F6F5EE] flex flex-col print:bg-white print:p-0 selection:bg-[#E06D3B] selection:text-black">
         {/* Sidebar */}
         <div className="print:hidden">
           <Sidebar
@@ -61,11 +61,11 @@ function AppShellInner({ courseId, title, fullWidth = false, children }: AppShel
 
         {/* Main Content Area: smooth transition between full 16rem (pl-64) and mini-bar 4rem (pl-16) on desktop */}
         <div
-          className={`flex-1 flex flex-col min-w-0 min-h-screen print:min-h-0 print:pl-0 transition-all duration-300 ease-in-out ${
+          className={`flex-1 w-full flex flex-col min-w-0 min-h-screen print:min-h-0 print:pl-0 transition-all duration-300 ease-in-out ${
             open ? 'md:pl-64' : 'md:pl-16'
           }`}
         >
-          <div className="print:hidden">
+          <div className="print:hidden w-full">
             <Header
               courseId={courseId}
               courseName={course?.name || 'CS 229 Machine Learning'}
