@@ -142,12 +142,16 @@ def get_course_certificate_data(
         certificate_available = bool(course.certificate_available)
 
     # Resolve student
-    student_name = "Alex Chen"
+    student_name = "Learner"
     student_id = "KT-4829"
-    if user_id:
-        u = db.get(User, user_id)
-        if u and u.name:
-            student_name = u.name
+    resolved_user_id = user_id or (getattr(course, "owner_id", None) if course else None)
+    if resolved_user_id:
+        u = db.get(User, resolved_user_id)
+        if u:
+            if u.name:
+                student_name = u.name
+            elif u.email:
+                student_name = u.email.split("@")[0].capitalize()
 
     # Calculate overall concept mastery from topics/concepts
     topics = db.query(Topic).filter(Topic.course_id == course_id).all()

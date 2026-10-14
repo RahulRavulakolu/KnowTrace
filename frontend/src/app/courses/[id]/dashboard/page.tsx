@@ -8,6 +8,7 @@ import { MasteryChart } from '@/components/MasteryChart';
 import { ProgressBar } from '@/components/ProgressBar';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
 import { Course, Concept, Misconception, StudyPlanBlock, CourseCertificateDetails } from '@/types';
 import {
   BotMessageSquare,
@@ -57,12 +58,26 @@ export default function CourseDashboardPage({
     queryFn: () => api.getCertificate(courseId),
   });
 
+  const { user } = useAuth();
+
   const weakConcepts = concepts.filter((c) => c.mastery < 60);
   const forgettingRiskConcepts = concepts.filter((c) => c.forgettingRisk === 'high');
   const activeMisconceptions = misconceptions.filter((m) => m.status === 'active');
   const todayTasks = studyPlan.filter((b) => b.day === 'today');
 
   const overallMastery = course?.overallMastery ?? 64;
+
+  // Derive personalized learner username
+  const rawUsername =
+    user?.name ||
+    (user?.email ? user.email.split('@')[0] : null) ||
+    (certDetails?.student?.name && !certDetails.student.name.toLowerCase().includes('alex')
+      ? certDetails.student.name
+      : null) ||
+    'Learner';
+
+  const formattedUsername =
+    rawUsername.charAt(0).toUpperCase() + rawUsername.slice(1);
 
   return (
     <AppShell courseId={courseId} title="Learning Dashboard">
@@ -86,7 +101,7 @@ export default function CourseDashboardPage({
 
               <div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#F6F5EE]">
-                  Welcome back, Alex
+                  Welcome back, {formattedUsername}
                 </h1>
                 <p className="text-xs sm:text-sm text-[#C8C6B9] mt-1.5 leading-relaxed max-w-xl">
                   Estimated exam readiness sits at{' '}

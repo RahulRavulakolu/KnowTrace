@@ -1773,7 +1773,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
           overall_progress_pct: Math.round((rawMastery + actualLecturePct) / 2),
           criteria: criteriaObj,
           student: raw.student || {
-            name: raw.student_name || 'Alex Chen',
+            name: raw.student_name || 'Learner',
             id: raw.student_id || 'KT-4829',
             completion_date: raw.issue_date || 'October 10, 2026',
             certificate_id: raw.credential_id || `KT-NPTE-${courseId.slice(0, 6).toUpperCase()}-2026`,
@@ -1851,7 +1851,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
         },
       },
       student: {
-        name: 'Alex Chen',
+        name: 'Learner',
         id: 'kt-learner-demo',
         completion_date: 'October 10, 2026',
         certificate_id: `KT-${platform.slice(0, 4).toUpperCase()}-${courseId.slice(0, 6).toUpperCase()}-2026`,
@@ -1918,7 +1918,7 @@ In **Lecture 04**, we establish that minimizing empirical training error alone r
     return {
       success: true,
       certificate_id: `KT-CLAIMED-${courseId.slice(0, 6).toUpperCase()}-2026`,
-      message: 'Certificate successfully verified and claimed for Alex Chen.',
+      message: 'Certificate successfully verified and claimed.',
     };
   },
 
